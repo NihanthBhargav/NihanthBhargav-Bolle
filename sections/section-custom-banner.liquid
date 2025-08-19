@@ -1,8 +1,7 @@
 <div class="custom-banner-section">
-  <!-- Top frame -->
-  <div class="top-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');"></div>
-
-  <!-- Content Area -->
+  <div class="top-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
+    <!-- This div will hold the repeating pattern at the top -->
+  </div>
   <div class="content-background-area">
     <div class="banner-content">
       <h1 class="main-heading">{{ section.settings.heading }}</h1>
@@ -14,13 +13,11 @@
       </div>
     </div>
   </div>
-
-  <!-- Bottom frame (added new block) -->
-  <div class="bottom-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');"></div>
-
-  <!-- Conclusion -->
   <div class="conclusion-text">
     {{ section.settings.conclusion_text }}
+  </div>
+  <div class="down-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 800 }}');">
+    <!-- This div will hold the frame image at the bottom right -->
   </div>
 </div>
 
@@ -31,46 +28,56 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* Explicitly set background color to white for the entire section */
+    background-color: white;
+    overflow: hidden; /* Ensure patterns and content fit within */
+    min-height: 700px; /* Adjust based on your overall content height */
   }
 
   .top-frame-background {
     width: 100%;
-    height: 300px;
-    background-size: auto 100%;
-    background-position: center bottom;
-    background-repeat: repeat-x;
-    background-color: #f7e7d9;
+    height: 300px; /* Adjust height based on how much of the frame should be visible at the top */
+    background-size: auto 100%; /* Scale height to 100%, auto width to maintain aspect ratio */
+    background-position: center bottom; /* Position frame to show bottom part, as seen in image */
+    background-repeat: repeat-x; /* Repeats horizontally */
+    /* Removed background-color here as main section is white */
     overflow: hidden;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Keep it below content if there are overlaps */
   }
 
   .content-background-area {
     width: 100%;
-    background-color: #f7e7d9;
-    padding: 50px 20px;
+    /* No background-color here, as the main section is white and frame overlays */
+    padding-top: 50px; /* Padding above heading */
+    padding-bottom: 50px; /* Padding below button */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Ensure content area is above other elements */
+    flex-grow: 1; /* Allow content area to take available vertical space */
   }
 
   .banner-content {
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 900px; /* Limit content width for better readability */
+    padding: 0 20px; /* Horizontal padding for smaller screens */
   }
 
   .main-heading {
-    font-family: 'Helvetica', Arial, sans-serif;
-    font-size: 3.5em;
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
+    font-size: 3.5em; /* Adjust to match Figma */
     font-weight: bold;
     margin-bottom: 20px;
     color: black;
   }
 
   .subheading {
-    font-family: 'Helvetica', Arial, sans-serif;
-    font-size: 1.2em;
-    max-width: 600px;
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
+    font-size: 1.2em; /* Adjust to match Figma */
+    max-width: 600px; /* Control width of the text block */
     margin: 0 auto 40px;
     line-height: 1.5;
     color: black;
@@ -82,26 +89,26 @@
     gap: 20px;
   }
 
-  /* Button Styles */
+  /* SHOP NOW Button Styles (black to yellow slide-in) */
   .shop-now-banner-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: black;
+    background-color: black; /* Initial color */
     color: white;
-    font-family: 'Helvetica', Arial, sans-serif;
-    font-size: 1em;
-    font-weight: 700;
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Keep font consistent or define in theme settings */
+    font-size: 1em; /* Adjust as needed */
+    font-weight: 700; /* Bold */
     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 15px 30px;
+    padding: 15px 30px; /* Adjust padding */
     border: none;
     cursor: pointer;
-    transition: color 0.3s ease;
-    z-index: 1;
+    transition: color 0.3s ease; /* Transition for text color */
+    z-index: 1; /* Ensure text is above ::before pseudo-element */
   }
 
   .shop-now-banner-btn::before {
@@ -111,52 +118,63 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: #FFF544;
-    transition: left 0.4s ease;
-    z-index: -1;
+    background: #FFF544; /* Yellow background for hover */
+    transition: left 0.4s ease; /* Transition for the slide-in effect */
+    z-index: -1; /* Place behind button text */
   }
 
   .shop-now-banner-btn:hover {
-    color: black;
+    color: black; /* Text becomes black on hover */
   }
 
   .shop-now-banner-btn:hover::before {
-    left: 0;
+    left: 0; /* Slides the yellow background in */
   }
 
   .shop-now-banner-btn span {
-    margin-left: 12px;
-    font-size: 1.2em;
-  }
-
-  /* Bottom frame styles */
-  .bottom-frame-background {
-    width: 100%;
-    height: 120px; /* adjust size of bottom frame */
-    background-size: auto 100%;
-    background-position: right top; /* aligned bottom-right */
-    background-repeat: repeat-x;
-    background-color: #f7e7d9;
-    position: relative;
-    z-index: 1;
+    margin-left: 12px; /* Space between text and arrow */
+    font-size: 1.2em; /* Arrow size */
   }
 
   .conclusion-text {
     text-align: center;
-    width: 100%;
-    padding: 20px 0;
-    font-family: 'Helvetica', Arial, sans-serif;
-    font-size: 0.8em;
+    width: 100%; /* Ensure it spans full width */
+    padding: 20px 0; /* Add some padding */
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
+    font-size: 0.8em; /* Adjust as needed */
     color: #555;
-    background-color: #f7e7d9;
+    background-color: transparent; /* Text will be over the bottom frame or white background */
+    position: relative; /* Changed to relative so it flows in column, but you can absolute if preferred */
+    z-index: 3;
   }
 
+  /* New styles for the bottom-right frame */
+  .down-frame-background {
+    position: absolute;
+    bottom: 0; /* Position at the bottom of the section */
+    right: 0; /* Position at the right of the section */
+    width: 500px; /* Adjust width as needed for the frame section you want to show */
+    height: 400px; /* Adjust height as needed for the frame section you want to show */
+    background-size: auto 100%; /* Scale height to 100% of this div, auto width */
+    background-position: top right; /* Position frame to show top-right part of the SVG */
+    background-repeat: no-repeat; /* Ensure it does not repeat */
+    z-index: 0; /* Place behind all other content and top frame */
+    pointer-events: none; /* Allows clicks/interactions on elements behind it */
+  }
+
+
+  /* Responsive Design */
   @media screen and (max-width: 768px) {
     .main-heading { font-size: 2.5em; }
     .subheading { font-size: 1em; }
     .banner-buttons { flex-direction: column; gap: 10px; }
-    .top-frame-background { height: 200px; }
-    .bottom-frame-background { height: 80px; }
+    .top-frame-background {
+      height: 200px; /* Adjust height on smaller screens */
+    }
+    .down-frame-background {
+      width: 300px; /* Adjust width on smaller screens */
+      height: 250px; /* Adjust height on smaller screens */
+    }
   }
 </style>
 
@@ -167,8 +185,8 @@
     {
       "type": "image_picker",
       "id": "pattern_image",
-      "label": "Frame Pattern Image",
-      "info": "Upload the frame.svg image. It will repeat across top & bottom."
+      "label": "Pattern Image (Top & Bottom Frames)",
+      "info": "Upload the frame.svg image. It will be used for both the top repeating pattern and the bottom-right frame."
     },
     {
       "type": "text",
