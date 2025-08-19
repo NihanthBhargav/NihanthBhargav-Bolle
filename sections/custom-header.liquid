@@ -2,7 +2,7 @@
   <div class="page-width header-content">
     <div class="header-logo">
       {%- if section.settings.logo_image != blank -%}
-        {# Applying max-width to the image itself for sizing control #}
+
         {{ section.settings.logo_image | image_url: width: 200 | image_tag: class: 'tissos-vision-logo' }}
       {%- else -%}
         <h2 class="site-name">{{ shop.name }}</h2>
