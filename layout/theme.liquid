@@ -309,17 +309,14 @@
 
     {# REPLACED: Original header-group section with your custom-header #}
     {% section 'custom-header' %}
+      <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+        {# This conditional check ensures the banner only appears on the HOME PAGE #}
+        {% if template.name == 'index' %}
+          {% section 'section-custom-banner' %}
+        {% endif %}
 
-  
-
-    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {# This conditional check makes sure the banner only appears on your specific page if needed #}
-      {% if template.name == 'page' and page.handle == 'my-custom-banner-test-page' %}
-        {% section 'section-custom-banner' %}
-      {% endif %}
-
-      {{ content_for_layout }} {# This renders the unique content of the page (e.g., your actual page content) #}
-    </main>
+        {{ content_for_layout }} {# This renders the unique content of the specific page (e.g., product page, collection page, or the rest of the homepage content) #}
+      </main>
 
     {% sections 'footer-group' %}
 
