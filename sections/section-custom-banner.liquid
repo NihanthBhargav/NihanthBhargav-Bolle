@@ -1,16 +1,11 @@
-<div class="custom-banner-section">
-  <div class="top-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
-    <!-- This div will hold the repeating pattern at the top -->
-  </div>
-  <div class="content-background-area">
-    <div class="banner-content">
-      <h1 class="main-heading">{{ section.settings.heading }}</h1>
-      <div class="subheading">{{ section.settings.subheading }}</div>
-      <div class="banner-buttons">
-        <a href="{{ section.settings.button_link }}" class="shop-now-banner-btn">
-          SHOP NOW <span>→</span>
-        </a>
-      </div>
+<div class="custom-banner-section" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
+  <div class="banner-content">
+    <h1 class="main-heading">{{ section.settings.heading }}</h1>
+    <div class="subheading">{{ section.settings.subheading }}</div>
+    <div class="banner-buttons">
+      <a href="{{ section.settings.button_link }}" class="shop-now-banner-btn">
+        SHOP NOW <span>→</span>
+      </a>
     </div>
   </div>
   <div class="conclusion-text">
@@ -22,41 +17,32 @@
   .custom-banner-section {
     position: relative;
     width: 100%;
+    min-height: 700px; /* Adjust this height to match the overall banner height from Figma */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* Removed background-color here, as it's now applied to content-background-area */
-  }
-
-  .top-frame-background {
-    width: 100%;
-    height: 300px; /* Adjust height based on how much of the frame should be visible at the top */
-    background-size: auto 100%; /* Scale height to 100%, auto width to maintain aspect ratio */
-    background-position: center bottom; /* Position frame to show bottom part, as seen in image */
+    flex-direction: column; /* Changed to column to stack content and push to bottom */
+    justify-content: flex-end; /* Pushes content to the bottom */
+    align-items: flex-start; /* Aligns content to the left */
+    text-align: left; /* Aligns text within content block to the left */
+    overflow: hidden; /* Ensure pattern doesn't spill out */
+    background-color: #f7e7d9; /* Base background color behind the pattern */
+    background-size: auto 100%; /* Scale height to 100% of container, auto width */
+    background-position: center; /* Center the pattern horizontally */
     background-repeat: repeat-x; /* Repeats horizontally */
-    background-color: white; /* Base color for the top frame area, matching the overall theme's light background */
-    overflow: hidden; /* Ensure pattern doesn't spill */
-    position: relative;
-    z-index: 1; /* Keep it below content if there are overlaps */
+    padding-bottom: 50px; /* Space for the conclusion text - adjust if text is still too close to bottom */
+    box-sizing: border-box; /* Include padding in element's total height */
+    padding-left: 5%; /* Add overall left padding to the section for content alignment */
+    padding-right: 5%; /* Maintain right padding for consistency on larger screens */
   }
 
-  .content-background-area {
-    width: 100%;
-    background-color: #f7e7d9; /* Solid background for the content section (adjust to Figma's exact color) */
-    padding-top: 50px; /* Padding above heading */
-    padding-bottom: 50px; /* Padding below button */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    z-index: 2; /* Ensure content area is above the frame below it if any */
-  }
-
+  /* The banner-content now directly sits on the custom-banner-section's background */
   .banner-content {
+    position: relative;
+    z-index: 2; /* Content above background */
+    margin-top: auto; /* Pushes banner-content to the bottom when flex-end is used on parent */
+    margin-bottom: 0; /* Ensures no extra space below content */
+    padding: 20px 0; /* Internal padding for text/button, remove side padding as section handles it */
     max-width: 900px; /* Limit content width for better readability */
-    padding: 0 20px; /* Horizontal padding for smaller screens */
+    text-align: left; /* Ensure inner text alignment is left */
   }
 
   .main-heading {
@@ -71,14 +57,14 @@
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
     font-size: 1.2em; /* Adjust to match Figma */
     max-width: 600px; /* Control width of the text block */
-    margin: 0 auto 40px;
+    margin: 0 0 40px 0; /* Removed auto margins for left alignment */
     line-height: 1.5;
     color: black;
   }
 
   .banner-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Align buttons to the left */
     gap: 20px;
   }
 
@@ -136,16 +122,26 @@
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
     font-size: 0.8em; /* Adjust as needed */
     color: #555;
-    background-color: #f7e7d9; /* Match main banner background if needed */
+    background-color: transparent; /* This text is overlaid on the pattern, so its background should be transparent */
+    position: absolute; /* Position relative to .custom-banner-section */
+    bottom: 0; /* Align to the bottom of the section */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3; /* Ensure it's above other elements if needed */
   }
 
   /* Responsive Design */
   @media screen and (max-width: 768px) {
     .main-heading { font-size: 2.5em; }
     .subheading { font-size: 1em; }
-    .banner-buttons { flex-direction: column; gap: 10px; }
-    .top-frame-background {
-      height: 200px; /* Adjust height on smaller screens */
+    .banner-buttons { flex-direction: column; gap: 10px; justify-content: center; } /* Center buttons on mobile */
+    .custom-banner-section {
+      min-height: 500px; /* Adjust height on smaller screens */
+      padding-left: 5%; /* Maintain padding on smaller screens */
+      padding-right: 5%;
+    }
+    .banner-content {
+      text-align: center; /* Center text on mobile */
     }
   }
 </style>
@@ -157,8 +153,8 @@
     {
       "type": "image_picker",
       "id": "pattern_image",
-      "label": "Top Frame Pattern Image",
-      "info": "Upload the frame.svg image. It will repeat across the top section."
+      "label": "Background pattern image",
+      "info": "Upload the frame.svg image. It will repeat across the entire banner background."
     },
     {
       "type": "text",
