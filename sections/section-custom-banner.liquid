@@ -17,32 +17,35 @@
   .custom-banner-section {
     position: relative;
     width: 100%;
-    min-height: 700px; /* Adjust this height to match the overall banner height from Figma */
+    min-height: 700px; /* Adjust height to fit your content and background */
     display: flex;
-    flex-direction: column; /* Changed to column to stack content and push to bottom */
-    justify-content: flex-end; /* Pushes content to the bottom */
-    align-items: flex-start; /* Aligns content to the left */
-    text-align: left; /* Aligns text within content block to the left */
-    overflow: hidden; /* Ensure pattern doesn't spill out */
-    background-color: #f7e7d9; /* Base background color behind the pattern */
-    background-size: auto 100%; /* Scale height to 100% of container, auto width */
-    background-position: center; /* Center the pattern horizontally */
+    flex-direction: column; /* Stack content and push to bottom-left */
+    justify-content: flex-end; /* Push content block to the bottom */
+    align-items: flex-start; /* Align content block to the left */
+    overflow: hidden; /* Important for background repetition and content fitting */
+
+    /* Background pattern styles */
+    background-color: white; /* Explicitly white background color */
+    background-size: auto 100%; /* Scale height to 100% of container, auto width to maintain aspect ratio */
+    background-position: center; /* Center the pattern horizontally and vertically within the section */
     background-repeat: repeat-x; /* Repeats horizontally */
-    padding-bottom: 50px; /* Space for the conclusion text - adjust if text is still too close to bottom */
+
+    padding-left: 5%; /* Left padding for content block */
+    padding-right: 5%; /* Right padding for content block */
+    padding-bottom: 50px; /* Space for the conclusion text at the very bottom */
     box-sizing: border-box; /* Include padding in element's total height */
-    padding-left: 5%; /* Add overall left padding to the section for content alignment */
-    padding-right: 5%; /* Maintain right padding for consistency on larger screens */
   }
 
-  /* The banner-content now directly sits on the custom-banner-section's background */
   .banner-content {
+    /* Content (heading, subheading, button) positioning */
     position: relative;
-    z-index: 2; /* Content above background */
-    margin-top: auto; /* Pushes banner-content to the bottom when flex-end is used on parent */
-    margin-bottom: 0; /* Ensures no extra space below content */
-    padding: 20px 0; /* Internal padding for text/button, remove side padding as section handles it */
+    z-index: 2; /* Ensure content is above background */
+    margin-top: auto; /* Push this content block to the bottom when flex-end is used on parent */
+    margin-bottom: 0; /* No extra space below content */
+    padding: 20px 0; /* Internal vertical padding for text/button, horizontal padding from .custom-banner-section */
     max-width: 900px; /* Limit content width for better readability */
     text-align: left; /* Ensure inner text alignment is left */
+    color: black; /* Ensure text is visible against white background */
   }
 
   .main-heading {
@@ -142,6 +145,10 @@
     }
     .banner-content {
       text-align: center; /* Center text on mobile */
+      padding: 0; /* Remove internal padding on mobile, section padding will apply */
+    }
+    .subheading {
+      margin: 0 auto 40px auto; /* Re-center subheading on mobile */
     }
   }
 </style>
