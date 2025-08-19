@@ -310,11 +310,15 @@
     {# REPLACED: Original header-group section with your custom-header #}
     {% section 'custom-header' %}
 
-    {% section 'section-custom-banner' %}
+  
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {% section 'section-custom-banner' %} {# Your custom banner section #}
-      {{ content_for_layout }} {# This will render your specific page content (like page.test-page.liquid) #}
+      {# This conditional check makes sure the banner only appears on your specific page if needed #}
+      {% if template.name == 'page' and page.handle == 'my-custom-banner-test-page' %}
+        {% section 'section-custom-banner' %}
+      {% endif %}
+
+      {{ content_for_layout }} {# This renders the unique content of the page (e.g., your actual page content) #}
     </main>
 
     {% sections 'footer-group' %}
