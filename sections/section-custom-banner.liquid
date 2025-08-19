@@ -25,13 +25,14 @@
   .custom-banner-section {
     position: relative;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* Explicitly set background color to white for the entire section */
-    background-color: white;
-    overflow: hidden; /* Ensure patterns and content fit within */
     min-height: 700px; /* Adjust based on your overall content height */
+    display: flex;
+    flex-direction: column; /* Stacks children vertically */
+    justify-content: space-between; /* Pushes top-frame to top, content-area and conclusion to bottom */
+    align-items: center; /* Default for horizontal centering of main elements, adjusted inside */
+
+    background-color: white; /* Explicitly white background color */
+    overflow: hidden; /* Ensure patterns and content fit within */
   }
 
   .top-frame-background {
@@ -40,7 +41,6 @@
     background-size: auto 100%; /* Scale height to 100%, auto width to maintain aspect ratio */
     background-position: center bottom; /* Position frame to show bottom part, as seen in image */
     background-repeat: repeat-x; /* Repeats horizontally */
-    /* Removed background-color here as main section is white */
     overflow: hidden;
     position: relative;
     z-index: 1; /* Keep it below content if there are overlaps */
@@ -48,22 +48,24 @@
 
   .content-background-area {
     width: 100%;
-    /* No background-color here, as the main section is white and frame overlays */
     padding-top: 50px; /* Padding above heading */
     padding-bottom: 50px; /* Padding below button */
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    flex-direction: column; /* Stack content elements vertically */
+    justify-content: flex-end; /* Pushes content to the bottom of this area */
+    align-items: flex-start; /* Aligns content to the left of this area */
+    text-align: left; /* Aligns text within content block to the left */
     position: relative;
     z-index: 2; /* Ensure content area is above other elements */
-    flex-grow: 1; /* Allow content area to take available vertical space */
+    flex-grow: 1; /* Allow content area to take available vertical space between top frame and conclusion */
+    padding-left: 5%; /* Padding for the content block from the left edge */
+    box-sizing: border-box; /* Include padding in width */
   }
 
   .banner-content {
     max-width: 900px; /* Limit content width for better readability */
-    padding: 0 20px; /* Horizontal padding for smaller screens */
+    /* Removed padding as it's now handled by content-background-area */
+    padding: 0;
   }
 
   .main-heading {
@@ -78,14 +80,14 @@
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
     font-size: 1.2em; /* Adjust to match Figma */
     max-width: 600px; /* Control width of the text block */
-    margin: 0 auto 40px;
+    margin: 0 0 40px 0; /* Align left, specific bottom margin */
     line-height: 1.5;
     color: black;
   }
 
   .banner-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Align buttons to the left */
     gap: 20px;
   }
 
@@ -144,8 +146,9 @@
     font-size: 0.8em; /* Adjust as needed */
     color: #555;
     background-color: transparent; /* Text will be over the bottom frame or white background */
-    position: relative; /* Changed to relative so it flows in column, but you can absolute if preferred */
+    position: relative; /* Changed to relative so it flows in column */
     z-index: 3;
+    /* Removed absolute positioning to allow flexbox to manage its position relative to content-background-area */
   }
 
   /* New styles for the bottom-right frame */
@@ -167,13 +170,17 @@
   @media screen and (max-width: 768px) {
     .main-heading { font-size: 2.5em; }
     .subheading { font-size: 1em; }
-    .banner-buttons { flex-direction: column; gap: 10px; }
+    .banner-buttons { flex-direction: column; gap: 10px; justify-content: center; }
     .top-frame-background {
       height: 200px; /* Adjust height on smaller screens */
     }
     .down-frame-background {
       width: 300px; /* Adjust width on smaller screens */
       height: 250px; /* Adjust height on smaller screens */
+    }
+    .content-background-area {
+      padding-left: 20px; /* Adjust left padding for mobile */
+      padding-right: 20px; /* Add right padding for mobile */
     }
   }
 </style>
