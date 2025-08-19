@@ -16,7 +16,7 @@
   <div class="conclusion-text">
     {{ section.settings.conclusion_text }}
   </div>
-  <div class="down-frame-background" style="background-image: url('{{ section.settings.down_pattern_image | image_url: width: 800 }}');">
+  <div class="down-frame-background" style="background-image: url('{{ section.settings.down_pattern_image | image_url: width: 890 }}');">
     <!-- This div will hold the frame image at the bottom right -->
   </div>
 </div>
@@ -25,7 +25,7 @@
   .custom-banner-section {
     position: relative;
     width: 100%;
-    min-height: 700px; /* Adjust based on your overall content height */
+    min-height: 700px; /* Base height for the entire banner section */
     display: flex;
     flex-direction: column; /* Stacks children vertically */
     justify-content: space-between; /* Pushes top-frame to top, content-area and conclusion to bottom */
@@ -37,9 +37,9 @@
 
   .top-frame-background {
     width: 100%;
-    height: 300px; /* Adjust height based on how much of the frame should be visible at the top */
+    height: 390px; /* Specific height as per your request */
     background-size: auto 100%; /* Scale height to 100%, auto width to maintain aspect ratio */
-    background-position: center bottom; /* Position frame to show bottom part, as seen in image */
+    background-position: center bottom; /* Position frame to show bottom part */
     background-repeat: repeat-x; /* Repeats horizontally */
     overflow: hidden;
     position: relative;
@@ -57,8 +57,8 @@
     text-align: left; /* Aligns text within content block to the left */
     position: relative;
     z-index: 2; /* Ensure content area is above other elements */
-    flex-grow: 1; /* Allow content area to take available vertical space between top frame and conclusion */
-    padding-left: 5%; /* Padding for the content block from the left edge */
+    flex-grow: 1; /* Allow content area to take available vertical space */
+    padding-left: 67px; /* Explicit left padding for content block, based on your 'left: 67px' */
     box-sizing: border-box; /* Include padding in width */
   }
 
@@ -68,20 +68,29 @@
   }
 
   .main-heading {
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
-    font-size: 3.5em; /* Adjust to match Figma */
-    font-weight: bold;
-    margin-bottom: 20px;
+    /* Specific styles for the title */
+    width: 459px; /* As per your request */
+    height: 70px; /* As per your request */
+    font-family: 'Jost', sans-serif;
+    font-weight: 500; /* Medium weight */
+    font-size: 70px; /* As per your request */
+    line-height: 100%; /* As per your request */
+    letter-spacing: 0px; /* As per your request */
     color: black;
+    margin-bottom: 20px;
   }
 
   .subheading {
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
-    font-size: 1.2em; /* Adjust to match Figma */
-    max-width: 600px; /* Control width of the text block */
-    margin: 0 0 40px 0; /* Align left, specific bottom margin */
-    line-height: 1.5;
+    /* Specific styles for the subtext */
+    width: 483px; /* As per your request */
+    height: 84px; /* As per your request */
+    font-family: 'Jost', sans-serif;
+    font-weight: 400; /* Regular weight */
+    font-size: 20px; /* As per your request */
+    line-height: 140%; /* As per your request */
+    letter-spacing: 0px; /* As per your request */
     color: black;
+    margin: 0 0 40px 0; /* Align left, specific bottom margin */
   }
 
   .banner-buttons {
@@ -138,26 +147,32 @@
   }
 
   .conclusion-text {
-    text-align: center;
-    width: 100%; /* Ensure it spans full width */
-    padding: 20px 0; /* Add some padding */
+    /* Specific styles for the conclusion text container */
+    width: 100%; /* Full width as per request */
+    height: 34px; /* Specific height as per request */
+    padding: 10px 50px; /* Specific padding as per request */
+    background-color: #F5F5F5; /* Specific light grey background */
+    text-align: center; /* Center text within its own div */
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
     font-size: 0.8em; /* Adjust as needed */
     color: #555;
-    background-color: lightgrey; /* Light grey background for conclusion text */
-    position: relative; /* Changed to relative so it flows in column */
+    position: relative; /* Flows with the content */
     z-index: 3;
+    box-sizing: border-box; /* Include padding in height */
+    display: flex; /* Use flexbox for vertical alignment */
+    align-items: center; /* Vertically center text if height is greater than line-height */
+    justify-content: center; /* Horizontally center text */
   }
 
-  /* Styles for the bottom-right frame (now using a separate image) */
+  /* Styles for the bottom-right frame (using a separate image) */
   .down-frame-background {
     position: absolute;
     bottom: 0; /* Position at the bottom of the section */
     right: 0; /* Position at the right of the section */
-    width: 500px; /* Adjust width as needed for the frame section you want to show */
-    height: 400px; /* Adjust height as needed for the frame section you want to show */
-    background-size: auto 100%; /* Scale height to 100% of this div, auto width */
-    background-position: top right; /* Position frame to show top-right part of the SVG */
+    width: 890px; /* As per your request */
+    height: 402px; /* As per your request */
+    background-size: cover; /* Ensures the image covers the area, might crop */
+    background-position: center; /* Centers the background image within this div */
     background-repeat: no-repeat; /* Ensure it does not repeat */
     z-index: 0; /* Place behind all other content and top frame */
     pointer-events: none; /* Allows clicks/interactions on elements behind it */
@@ -166,19 +181,41 @@
 
   /* Responsive Design */
   @media screen and (max-width: 768px) {
-    .main-heading { font-size: 2.5em; }
-    .subheading { font-size: 1em; }
+    .main-heading {
+      font-size: 2.5em; /* Adjust font size for mobile */
+      width: auto; /* Remove fixed width for responsiveness */
+      height: auto;
+    }
+    .subheading {
+      font-size: 1em; /* Adjust font size for mobile */
+      width: auto; /* Remove fixed width for responsiveness */
+      height: auto;
+      margin: 0 auto 20px auto; /* Center on mobile, adjust margin */
+    }
     .banner-buttons { flex-direction: column; gap: 10px; justify-content: center; }
     .top-frame-background {
-      height: 200px; /* Adjust height on smaller screens */
+      height: 250px; /* Adjust height on smaller screens */
     }
     .down-frame-background {
-      width: 300px; /* Adjust width on smaller screens */
+      width: 100%; /* Make it full width on small screens */
       height: 250px; /* Adjust height on smaller screens */
+      background-size: contain; /* Contain the image on mobile if it looks better */
+      background-position: bottom right; /* Keep it at bottom right */
     }
     .content-background-area {
       padding-left: 20px; /* Adjust left padding for mobile */
       padding-right: 20px; /* Add right padding for mobile */
+      text-align: center; /* Center text on mobile */
+      align-items: center; /* Center items on mobile */
+    }
+    .custom-banner-section {
+      min-height: 500px; /* Adjust overall height on smaller screens */
+      padding-left: 0; /* Remove overall section padding on mobile if content-background-area has it */
+      padding-right: 0;
+    }
+    .conclusion-text {
+      padding: 10px 20px; /* Adjust padding for mobile */
+      height: auto; /* Allow height to adjust for content on mobile */
     }
   }
 </style>
