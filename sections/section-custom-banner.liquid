@@ -1,5 +1,5 @@
 <div class="custom-banner-section">
-  <div class="top-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
+  <div class="top-frame-background" style="background-image: url('{{ section.settings.top_pattern_image | image_url: width: 2000 }}');">
     <!-- This div will hold the repeating pattern at the top -->
   </div>
   <div class="content-background-area">
@@ -16,7 +16,7 @@
   <div class="conclusion-text">
     {{ section.settings.conclusion_text }}
   </div>
-  <div class="down-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 800 }}');">
+  <div class="down-frame-background" style="background-image: url('{{ section.settings.down_pattern_image | image_url: width: 800 }}');">
     <!-- This div will hold the frame image at the bottom right -->
   </div>
 </div>
@@ -64,7 +64,6 @@
 
   .banner-content {
     max-width: 900px; /* Limit content width for better readability */
-    /* Removed padding as it's now handled by content-background-area */
     padding: 0;
   }
 
@@ -145,13 +144,12 @@
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
     font-size: 0.8em; /* Adjust as needed */
     color: #555;
-    background-color: transparent; /* Text will be over the bottom frame or white background */
+    background-color: lightgrey; /* Light grey background for conclusion text */
     position: relative; /* Changed to relative so it flows in column */
     z-index: 3;
-    /* Removed absolute positioning to allow flexbox to manage its position relative to content-background-area */
   }
 
-  /* New styles for the bottom-right frame */
+  /* Styles for the bottom-right frame (now using a separate image) */
   .down-frame-background {
     position: absolute;
     bottom: 0; /* Position at the bottom of the section */
@@ -191,9 +189,15 @@
   "settings": [
     {
       "type": "image_picker",
-      "id": "pattern_image",
-      "label": "Pattern Image (Top & Bottom Frames)",
-      "info": "Upload the frame.svg image. It will be used for both the top repeating pattern and the bottom-right frame."
+      "id": "top_pattern_image",
+      "label": "Top Frame Pattern Image",
+      "info": "Upload the image for the repeating top frame (e.g., frame.svg)."
+    },
+    {
+      "type": "image_picker",
+      "id": "down_pattern_image",
+      "label": "Bottom-Right Frame Image",
+      "info": "Upload the image for the single frame in the bottom-right (e.g., frame_part_2.svg)."
     },
     {
       "type": "text",
@@ -205,7 +209,7 @@
       "type": "richtext",
       "id": "subheading",
       "label": "Subheading",
-      "default": "<p>Discover joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>"
+      "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination<br>Explore our curated selection and find the perfect gifts to<br>delight your loved ones this holiday season</p>"
     },
     {
       "type": "url",
