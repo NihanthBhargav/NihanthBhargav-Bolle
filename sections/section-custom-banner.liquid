@@ -1,5 +1,8 @@
 <div class="custom-banner-section">
-  <div class="background-pattern" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 1440 }}');">
+  <div class="background-wrapper">
+    <div class="background-pattern" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
+      <!-- The pattern image will repeat in this div -->
+    </div>
     <div class="banner-content">
       <h1 class="main-heading">{{ section.settings.heading }}</h1>
       <div class="subheading">{{ section.settings.subheading }}</div>
@@ -18,38 +21,51 @@
 <style>
   .custom-banner-section {
     position: relative;
-    /* Height will be managed by background-pattern or content */
+    width: 100%;
+    /* No fixed height here, let content define it or set min-height on background-wrapper */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-bottom: 50px; /* Space for the conclusion text */
     overflow: hidden; /* Ensure nothing spills out */
+    background-color: #f7e7d9; /* Base background color behind the pattern (adjust to Figma's exact color) */
   }
 
-  .background-pattern {
-    background-size: auto 100%; /* Or 'contain' if the whole image needs to fit. 'auto 100%' stretches height, maintains aspect ratio */
-    background-position: center top; /* Align to center horizontally, top vertically */
-    background-repeat: repeat-x; /* Repeats horizontally as seen in Figma */
+  .background-wrapper {
+    position: relative;
     width: 100%;
-    min-height: 600px; /* Minimum height for the banner area. Adjust as needed. */
+    min-height: 600px; /* Adjust this height to match the overall banner height from Figma */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    position: relative;
-    z-index: 1; /* Ensure pattern is behind content */
+    z-index: 1;
+  }
+
+  .background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: auto 100%; /* Scales the height to 100% of container, auto width to maintain aspect ratio */
+    background-position: center; /* Centers the pattern horizontally */
+    background-repeat: repeat-x; /* Repeats horizontally */
+    z-index: -1; /* Place behind content */
   }
 
   .banner-content {
-    padding-top: 50px; /* Adjust content position if needed */
+    /* Content (heading, subheading, button) positioning */
     position: relative;
-    z-index: 2; /* Ensure content is above pattern */
+    z-index: 2; /* Ensure content is above background pattern */
+    padding-top: 50px; /* Adjust vertical position within the wrapper if needed */
+    padding-bottom: 50px; /* Adjust vertical position within the wrapper if needed */
   }
 
   .main-heading {
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Example font, adjust to Figma */
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma if different */
     font-size: 3.5em; /* Adjust to match Figma */
     font-weight: bold;
     margin-bottom: 20px;
@@ -57,9 +73,9 @@
   }
 
   .subheading {
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Example font, adjust to Figma */
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma if different */
     font-size: 1.2em; /* Adjust to match Figma */
-    max-width: 600px;
+    max-width: 600px; /* Control width of the text block */
     margin: 0 auto 40px;
     line-height: 1.5;
     color: black;
@@ -71,7 +87,7 @@
     gap: 20px;
   }
 
-  /* SHOP NOW Button Styles (similar to CHOOSE GIFT from header) */
+  /* SHOP NOW Button Styles (black to yellow slide-in) */
   .shop-now-banner-btn {
     position: relative;
     display: inline-flex;
@@ -90,7 +106,7 @@
     border: none;
     cursor: pointer;
     transition: color 0.3s ease; /* Transition for text color */
-    z-index: 1;
+    z-index: 1; /* Ensure text is above ::before pseudo-element */
   }
 
   .shop-now-banner-btn::before {
@@ -102,7 +118,7 @@
     height: 100%;
     background: #FFF544; /* Yellow background for hover */
     transition: left 0.4s ease; /* Transition for the slide-in effect */
-    z-index: -1;
+    z-index: -1; /* Place behind button text */
   }
 
   .shop-now-banner-btn:hover {
@@ -114,13 +130,13 @@
   }
 
   .shop-now-banner-btn span {
-    margin-left: 12px;
-    font-size: 1.2em;
+    margin-left: 12px; /* Space between text and arrow */
+    font-size: 1.2em; /* Arrow size */
   }
 
   .conclusion-text {
     text-align: center;
-    margin-top: 30px; /* Space between banner and text */
+    margin-top: 30px; /* Space below the main banner area */
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
     font-size: 0.8em; /* Adjust as needed */
     color: #555;
@@ -142,7 +158,7 @@
       "type": "image_picker",
       "id": "pattern_image",
       "label": "Background pattern image",
-      "info": "Upload the repeating background image (e.g., Frame.svg)."
+      "info": "Upload the frame.svg image. It will repeat to create the background effect."
     },
     {
       "type": "text",
@@ -154,17 +170,17 @@
       "type": "richtext",
       "id": "subheading",
       "label": "Subheading",
-      "default": "<p>Discover joy: Your Ultimate Holiday Gift Destination.</p>"
+      "default": "<p>Discover joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button link"
+      "label": "Shop Now Button Link"
     },
     {
       "type": "text",
       "id": "conclusion_text",
-      "label": "Conclusion Text",
+      "label": "Conclusion Text Below Banner",
       "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
     }
   ],
