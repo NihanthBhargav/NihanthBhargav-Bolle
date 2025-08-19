@@ -1,178 +1,176 @@
-<div class="header-section">
-  <div class="page-width header-content">
-    <div class="header-logo">
-      {%- if section.settings.logo_image != blank -%}
-        {{ section.settings.logo_image | image_url: width: 200 | image_tag }}
-      {%- else -%}
-        <h2 class="site-name">{{ shop.name }}</h2>
-      {%- endif -%}
-    </div>
-    <div class="header-info-text">
-      {{ section.settings.info_text }}
-    </div>
-    <div class="header-button">
-      {%- if section.settings.button_link != blank -%}
-        <a href="{{ section.settings.button_link }}" class="choose-gift-header-btn">
-          CHOOSE GIFT <span>→</span>
+<div class="custom-banner-section">
+  <div class="background-pattern" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 1440 }}');">
+    <div class="banner-content">
+      <h1 class="main-heading">{{ section.settings.heading }}</h1>
+      <div class="subheading">{{ section.settings.subheading }}</div>
+      <div class="banner-buttons">
+        <a href="{{ section.settings.button_link }}" class="shop-now-banner-btn">
+          SHOP NOW <span>→</span>
         </a>
-      {%- endif -%}
+      </div>
     </div>
+  </div>
+  <div class="conclusion-text">
+    {{ section.settings.conclusion_text }}
   </div>
 </div>
 
 <style>
-  .header-button {
-    /* This will override the display: none from base.css */
+  .custom-banner-section {
+    position: relative;
+    /* Height will be managed by background-pattern or content */
     display: flex;
-    /* Add other positioning/spacing styles if needed to align it correctly */
-    justify-content: flex-end; /* Pushes the button to the right */
-    align-items: center; /* Vertically centers the button */
-  }
-
-  .header-section {
-    background-color: #f0f0f0; /* Light grey background, adjust to match Figma */
-    /* Updated padding for the entire header section */
-    padding: 10px 50px; /* Top/bottom 10px, left/right 50px */
-    border-bottom: 1px solid #e0e0e0; /* Subtle border at the bottom */
-    width: 100%; /* Ensures it takes full width */
-    height: 64px; /* Set fixed height as per request */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  }
-
-  .header-content {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    max-width: 1400px; /* Adjust based on your overall layout width */
-    margin: 0 auto;
-    height: 100%; /* Ensure content fills the header height */
+    justify-content: center;
+    padding-bottom: 50px; /* Space for the conclusion text */
+    overflow: hidden; /* Ensure nothing spills out */
   }
 
-  .header-logo {
-    /* Styles for the logo container */
-    /* width: 1440px; This would make it too wide for the header. Remove or adjust if necessary for alignment */
-    /* height: 64px; The header-section already has a height, this might conflict if applied to the logo image. */
-    /* gap: 360px; This is a flex/grid property, applies to parent container. */
-    opacity: 1; /* Default, usually not needed unless explicitly set lower */
-  }
-
-  .header-logo .site-name {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333; /* Default text color if no logo image */
-    margin: 0;
-  }
-
-  .header-info-text {
-    flex-grow: 1; /* Allows text to take up available space */
+  .background-pattern {
+    background-size: auto 100%; /* Or 'contain' if the whole image needs to fit. 'auto 100%' stretches height, maintains aspect ratio */
+    background-position: center top; /* Align to center horizontally, top vertically */
+    background-repeat: repeat-x; /* Repeats horizontally as seen in Figma */
+    width: 100%;
+    min-height: 600px; /* Minimum height for the banner area. Adjust as needed. */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    color: #555;
-    /* New styles for the middle text */
-    width: 260px; /* Fixed width */
-    height: 14px; /* Fixed height */
-    font-family: 'Jost', sans-serif; /* Set font family */
-    font-weight: 400; /* Regular weight */
-    font-size: 16px; /* Specific font size */
-    line-height: 13.42px; /* Specific line height */
-    letter-spacing: 0px; /* Specific letter spacing */
-    /* vertical-align: middle is for inline elements, align-items: center on parent (header-content) already handles vertical alignment */
+    position: relative;
+    z-index: 1; /* Ensure pattern is behind content */
   }
 
-  /* New styles for the CHOOSE GIFT button with transition */
-  .choose-gift-header-btn {
+  .banner-content {
+    padding-top: 50px; /* Adjust content position if needed */
+    position: relative;
+    z-index: 2; /* Ensure content is above pattern */
+  }
+
+  .main-heading {
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Example font, adjust to Figma */
+    font-size: 3.5em; /* Adjust to match Figma */
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: black;
+  }
+
+  .subheading {
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Example font, adjust to Figma */
+    font-size: 1.2em; /* Adjust to match Figma */
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+    color: black;
+  }
+
+  .banner-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  /* SHOP NOW Button Styles (similar to CHOOSE GIFT from header) */
+  .shop-now-banner-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Important for the slide-in effect */
-    background-color: #FFF544; /* Yellow */
-    color: #000;
+    overflow: hidden;
+    background-color: black; /* Initial color */
+    color: white;
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Keep font consistent or define in theme settings */
-    font-size: 0.9em; /* Adjusted to fit header, originally 24px */
+    font-size: 1em; /* Adjust as needed */
     font-weight: 700; /* Bold */
     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 10px 20px; /* Adjusted padding to fit header, originally 20px 60px */
+    padding: 15px 30px; /* Adjust padding */
     border: none;
     cursor: pointer;
     transition: color 0.3s ease; /* Transition for text color */
     z-index: 1;
   }
 
-  .choose-gift-header-btn::before {
+  .shop-now-banner-btn::before {
     content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: #000; /* Black background for hover */
+    background: #FFF544; /* Yellow background for hover */
     transition: left 0.4s ease; /* Transition for the slide-in effect */
     z-index: -1;
   }
 
-  .choose-gift-header-btn:hover {
-    color: #fff; /* White text on hover */
+  .shop-now-banner-btn:hover {
+    color: black; /* Text becomes black on hover */
   }
 
-  .choose-gift-header-btn:hover::before {
-    left: 0; /* Slides the black background in */
+  .shop-now-banner-btn:hover::before {
+    left: 0; /* Slides the yellow background in */
   }
 
-  .choose-gift-header-btn span {
-    margin-left: 8px; /* Adjusted spacing for the arrow */
-    font-size: 1.2em; /* Adjusted arrow size relative to button font size */
+  .shop-now-banner-btn span {
+    margin-left: 12px;
+    font-size: 1.2em;
+  }
+
+  .conclusion-text {
+    text-align: center;
+    margin-top: 30px; /* Space between banner and text */
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
+    font-size: 0.8em; /* Adjust as needed */
+    color: #555;
   }
 
   /* Responsive Design */
   @media screen and (max-width: 768px) {
-    .header-content {
-      flex-direction: column;
-      text-align: center;
-    }
-    .header-info-text {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-    .choose-gift-header-btn {
-      font-size: 0.8em; /* Further reduce font size on small screens */
-      padding: 8px 15px; /* Adjust padding on small screens */
-    }
+    .main-heading { font-size: 2.5em; }
+    .subheading { font-size: 1em; }
+    .banner-buttons { flex-direction: column; gap: 10px; }
   }
 </style>
 
 {% schema %}
 {
-  "name": "Global Header",
+  "name": "Custom Banner",
   "settings": [
     {
       "type": "image_picker",
-      "id": "logo_image",
-      "label": "Logo image",
-      "info": "Group-1000007777.svg"
+      "id": "pattern_image",
+      "label": "Background pattern image",
+      "info": "Upload the repeating background image (e.g., Frame.svg)."
     },
     {
       "type": "text",
-      "id": "info_text",
-      "label": "Information text",
-      "default": "Find the ideal gift for your loved ones."
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
     },
     {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button text",
-      "default": "CHOOSE GIFT"
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Discover joy: Your Ultimate Holiday Gift Destination.</p>"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "conclusion_text",
+      "label": "Conclusion Text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
     }
   ],
   "presets": [
     {
-      "name": "Global Header"
+      "name": "Custom Banner"
     }
   ]
 }
