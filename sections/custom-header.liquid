@@ -2,7 +2,8 @@
   <div class="page-width header-content">
     <div class="header-logo">
       {%- if section.settings.logo_image != blank -%}
-        {{ section.settings.logo_image | image_url: width: 200 | image_tag }}
+        {# Applying max-width to the image itself for sizing control #}
+        {{ section.settings.logo_image | image_url: width: 200 | image_tag: class: 'tissos-vision-logo' }}
       {%- else -%}
         <h2 class="site-name">{{ shop.name }}</h2>
       {%- endif -%}
@@ -22,16 +23,13 @@
 
 <style>
   .header-button {
-    /* This will override the display: none from base.css */
     display: flex;
-    /* Add other positioning/spacing styles if needed to align it correctly */
     justify-content: flex-end; /* Pushes the button to the right */
     align-items: center; /* Vertically centers the button */
   }
 
   .header-section {
     background-color: #f0f0f0; /* Light grey background, adjust to match Figma */
-    /* Updated padding for the entire header section */
     padding: 10px 50px; /* Top/bottom 10px, left/right 50px */
     border-bottom: 1px solid #e0e0e0; /* Subtle border at the bottom */
     width: 100%; /* Ensures it takes full width */
@@ -49,11 +47,15 @@
   }
 
   .header-logo {
-    /* Styles for the logo container */
-    /* width: 1440px; This would make it too wide for the header. Remove or adjust if necessary for alignment */
-    /* height: 64px; The header-section already has a height, this might conflict if applied to the logo image. */
-    /* gap: 360px; This is a flex/grid property, applies to parent container. */
-    opacity: 1; /* Default, usually not needed unless explicitly set lower */
+    opacity: 1; /* As per your request */
+  }
+
+  /* Specific styles for the TISSO VISON logo image */
+  .tissos-vision-logo {
+    max-width: 151.44px; /* Specific width for the image */
+    height: 19px; /* Specific height for the image */
+    opacity: 1; /* As per your request */
+    /* angle: 0 deg is default, not explicitly needed in CSS */
   }
 
   .header-logo .site-name {
@@ -65,16 +67,16 @@
 
   .header-info-text {
     flex-grow: 1; /* Allows text to take up available space */
-    text-align: center;
+    /* Specific styles for the middle text */
+    width: 260px; /* Fixed width as per request */
+    height: 14px; /* Fixed height as per request */
+    font-family: 'Jost', sans-serif; /* Set font family as per request */
+    font-weight: 400; /* Regular weight as per request */
+    font-size: 16px; /* Specific font size as per request */
+    line-height: 13.42px; /* Specific line height as per request */
+    letter-spacing: 0px; /* Specific letter spacing as per request */
+    text-align: center; /* As per your request */
     color: #555;
-    /* New styles for the middle text */
-    width: 260px; /* Fixed width */
-    height: 14px; /* Fixed height */
-    font-family: 'Jost', sans-serif; /* Set font family */
-    font-weight: 400; /* Regular weight */
-    font-size: 16px; /* Specific font size */
-    line-height: 13.42px; /* Specific line height */
-    letter-spacing: 0px; /* Specific letter spacing */
     /* vertical-align: middle is for inline elements, align-items: center on parent (header-content) already handles vertical alignment */
   }
 
@@ -98,6 +100,12 @@
     cursor: pointer;
     transition: color 0.3s ease; /* Transition for text color */
     z-index: 1;
+
+    /* Specific styles for the button */
+    width: 207px; /* As per your request */
+    height: 44px; /* As per your request */
+    opacity: 1; /* As per your request */
+    /* angle: 0 deg is default */
   }
 
   .choose-gift-header-btn::before {
@@ -134,10 +142,19 @@
     .header-info-text {
       margin-top: 10px;
       margin-bottom: 10px;
+      width: auto; /* Remove fixed width for responsiveness */
+      height: auto; /* Remove fixed height for responsiveness */
+      line-height: normal; /* Allow natural line height */
     }
     .choose-gift-header-btn {
       font-size: 0.8em; /* Further reduce font size on small screens */
       padding: 8px 15px; /* Adjust padding on small screens */
+      width: auto; /* Remove fixed width for responsiveness */
+      height: auto; /* Remove fixed height for responsiveness */
+    }
+    .tissos-vision-logo {
+      max-width: 100px; /* Adjust logo size for mobile */
+      height: auto;
     }
   }
 </style>
