@@ -1,8 +1,8 @@
 <div class="custom-banner-section">
-  <div class="background-wrapper">
-    <div class="background-pattern" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
-      <!-- The pattern image will repeat in this div -->
-    </div>
+  <div class="top-frame-background" style="background-image: url('{{ section.settings.pattern_image | image_url: width: 2000 }}');">
+    <!-- This div will hold the repeating pattern at the top -->
+  </div>
+  <div class="content-background-area">
     <div class="banner-content">
       <h1 class="main-heading">{{ section.settings.heading }}</h1>
       <div class="subheading">{{ section.settings.subheading }}</div>
@@ -22,50 +22,45 @@
   .custom-banner-section {
     position: relative;
     width: 100%;
-    /* No fixed height here, let content define it or set min-height on background-wrapper */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding-bottom: 50px; /* Space for the conclusion text */
-    overflow: hidden; /* Ensure nothing spills out */
-    background-color: white; /* Base background color behind the pattern (adjust to Figma's exact color) */
+    /* Removed background-color here, as it's now applied to content-background-area */
   }
 
-  .background-wrapper {
-    position: relative;
+  .top-frame-background {
     width: 100%;
-    min-height: 600px; /* Adjust this height to match the overall banner height from Figma */
+    height: 300px; /* Adjust height based on how much of the frame should be visible at the top */
+    background-size: auto 100%; /* Scale height to 100%, auto width to maintain aspect ratio */
+    background-position: center bottom; /* Position frame to show bottom part, as seen in image */
+    background-repeat: repeat-x; /* Repeats horizontally */
+    background-color: #f7e7d9; /* Base color for the top frame area, matching the overall theme's light background */
+    overflow: hidden; /* Ensure pattern doesn't spill */
+    position: relative;
+    z-index: 1; /* Keep it below content if there are overlaps */
+  }
+
+  .content-background-area {
+    width: 100%;
+    background-color: #f7e7d9; /* Solid background for the content section (adjust to Figma's exact color) */
+    padding-top: 50px; /* Padding above heading */
+    padding-bottom: 50px; /* Padding below button */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    z-index: 1;
-  }
-
-  .background-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: auto 100%; /* Scales the height to 100% of container, auto width to maintain aspect ratio */
-    background-position: center; /* Centers the pattern horizontally */
-    background-repeat: repeat-x; /* Repeats horizontally */
-    z-index: -1; /* Place behind content */
+    position: relative;
+    z-index: 2; /* Ensure content area is above the frame below it if any */
   }
 
   .banner-content {
-    /* Content (heading, subheading, button) positioning */
-    position: relative;
-    z-index: 2; /* Ensure content is above background pattern */
-    padding-top: 50px; /* Adjust vertical position within the wrapper if needed */
-    padding-bottom: 50px; /* Adjust vertical position within the wrapper if needed */
+    max-width: 900px; /* Limit content width for better readability */
+    padding: 0 20px; /* Horizontal padding for smaller screens */
   }
 
   .main-heading {
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma if different */
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
     font-size: 3.5em; /* Adjust to match Figma */
     font-weight: bold;
     margin-bottom: 20px;
@@ -73,7 +68,7 @@
   }
 
   .subheading {
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma if different */
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Use actual font from Figma */
     font-size: 1.2em; /* Adjust to match Figma */
     max-width: 600px; /* Control width of the text block */
     margin: 0 auto 40px;
@@ -136,10 +131,12 @@
 
   .conclusion-text {
     text-align: center;
-    margin-top: 30px; /* Space below the main banner area */
+    width: 100%; /* Ensure it spans full width */
+    padding: 20px 0; /* Add some padding */
     font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
     font-size: 0.8em; /* Adjust as needed */
     color: #555;
+    background-color: #f7e7d9; /* Match main banner background if needed */
   }
 
   /* Responsive Design */
@@ -147,6 +144,9 @@
     .main-heading { font-size: 2.5em; }
     .subheading { font-size: 1em; }
     .banner-buttons { flex-direction: column; gap: 10px; }
+    .top-frame-background {
+      height: 200px; /* Adjust height on smaller screens */
+    }
   }
 </style>
 
@@ -157,8 +157,8 @@
     {
       "type": "image_picker",
       "id": "pattern_image",
-      "label": "Background pattern image",
-      "info": "Upload the frame.svg image. It will repeat to create the background effect."
+      "label": "Top Frame Pattern Image",
+      "info": "Upload the frame.svg image. It will repeat across the top section."
     },
     {
       "type": "text",
