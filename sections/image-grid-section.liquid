@@ -14,6 +14,9 @@
           </div>
         {% endif %}
         <div class="plus-button">+</div>
+        {% if section.settings.overlay_image_1 != blank %}
+          {{ section.settings.overlay_image_1 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+        {% endif %}
       </div>
 
       <div class="grid-item">
@@ -25,6 +28,9 @@
           </div>
         {% endif %}
         <div class="plus-button">+</div>
+        {% if section.settings.overlay_image_2 != blank %}
+          {{ section.settings.overlay_image_2 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+        {% endif %}
       </div>
 
       <div class="grid-item">
@@ -36,6 +42,9 @@
           </div>
         {% endif %}
         <div class="plus-button">+</div>
+        {% if section.settings.overlay_image_3 != blank %}
+          {{ section.settings.overlay_image_3 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+        {% endif %}
       </div>
 
       <div class="grid-item">
@@ -47,6 +56,9 @@
           </div>
         {% endif %}
         <div class="plus-button">+</div>
+        {% if section.settings.overlay_image_4 != blank %}
+          {{ section.settings.overlay_image_4 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+        {% endif %}
       </div>
 
       <div class="grid-item">
@@ -58,6 +70,10 @@
           </div>
         {% endif %}
         <div class="plus-button">+</div>
+        {% if section.settings.overlay_image_5 != blank %}
+          {{ section.settings.overlay_image_5 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+        {% else %}
+        {% endif %}
       </div>
 
       <div class="grid-item">
@@ -69,6 +85,9 @@
           </div>
         {% endif %}
         <div class="plus-button">+</div>
+        {% if section.settings.overlay_image_6 != blank %}
+          {{ section.settings.overlay_image_6 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+        {% endif %}
       </div>
     </div>
   </div>
@@ -113,7 +132,7 @@
   }
 
   .grid-item {
-    position: relative; /* Essential for positioning the plus button inside */
+    position: relative;
     overflow: hidden;
     background-color: #f0f0f0;
     display: flex;
@@ -147,27 +166,39 @@
   /* Styles for the plus button overlay */
   .plus-button {
     position: absolute;
-    top: 15px; /* Distance from the top edge */
-    right: 15px; /* Distance from the right edge */
-    background-color: white; /* White background for the circle */
-    color: black; /* Plus sign color */
-    border-radius: 50%; /* Makes it a circle */
-    width: 30px; /* Width of the circle */
-    height: 30px; /* Height of the circle */
+    top: 15px;
+    right: 15px;
+    background-color: white;
+    color: black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px; /* Size of the plus sign */
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 10; /* Ensures it's above the image */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: subtle shadow for depth */
-    transition: background-color 0.2s, color 0.2s; /* Smooth transition for hover */
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, color 0.2s;
   }
 
   .plus-button:hover {
-    background-color: black; /* Background becomes black on hover */
-    color: white; /* Plus sign becomes white on hover */
+    background-color: black;
+    color: white;
+  }
+
+  /* Styles for the new overlay image */
+  .grid-overlay-image {
+    position: absolute;
+    top: 50%; /* Adjust as needed for vertical positioning */
+    left: 50%; /* Adjust as needed for horizontal positioning */
+    transform: translate(-50%, -50%); /* Centers the image */
+    max-width: 80px; /* Example size, adjust as needed */
+    height: auto;
+    z-index: 9; /* Place below plus button but above main image */
+    pointer-events: none; /* Allows clicks to pass through to the main image or button */
   }
 
   /* Responsive Design */
@@ -205,11 +236,14 @@
       gap: 10px;
     }
     .plus-button {
-      width: 25px; /* Smaller button on mobile */
+      width: 25px;
       height: 25px;
       font-size: 18px;
       top: 10px;
       right: 10px;
+    }
+    .grid-overlay-image {
+      max-width: 60px; /* Adjust size for mobile */
     }
   }
 </style>
@@ -231,8 +265,18 @@
     },
     {
       "type": "image_picker",
+      "id": "overlay_image_1",
+      "label": "Overlay Image 1 (Optional)"
+    },
+    {
+      "type": "image_picker",
       "id": "image_2",
       "label": "Image 2 (Top Middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_2",
+      "label": "Overlay Image 2 (Optional)"
     },
     {
       "type": "image_picker",
@@ -241,8 +285,18 @@
     },
     {
       "type": "image_picker",
+      "id": "overlay_image_3",
+      "label": "Overlay Image 3 (Optional)"
+    },
+    {
+      "type": "image_picker",
       "id": "image_4",
       "label": "Image 4 (Bottom Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_4",
+      "label": "Overlay Image 4 (Optional)"
     },
     {
       "type": "image_picker",
@@ -251,8 +305,18 @@
     },
     {
       "type": "image_picker",
+      "id": "overlay_image_5",
+      "label": "Overlay Image 5 (Optional)"
+    },
+    {
+      "type": "image_picker",
       "id": "image_6",
       "label": "Image 6 (Bottom Right)"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image_6",
+      "label": "Overlay Image 6 (Optional)"
     }
   ],
   "presets": [
@@ -260,7 +324,7 @@
       "name": "Image Grid Section",
       "category": "Image",
       "settings": {
-        "title": "Tisso vision in the wild"
+        "title": "Tisso vison in the wild"
       }
     }
   ]
