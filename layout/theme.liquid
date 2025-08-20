@@ -307,12 +307,13 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
-    {# REPLACED: Original header-group section with your custom-header #}
+
     {% section 'custom-header' %}
       <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-        {# This conditional check ensures the banner only appears on the HOME PAGE #}
+        
         {% if template.name == 'index' %}
           {% section 'section-custom-banner' %}
+          {% section 'image-grid-section' %}
         {% endif %}
 
         {{ content_for_layout }} {# This renders the unique content of the specific page (e.g., product page, collection page, or the rest of the homepage content) #}
