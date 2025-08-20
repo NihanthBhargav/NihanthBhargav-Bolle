@@ -83,8 +83,8 @@
   .page-width {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 50px; 
-    box-sizing: border-box; 
+    padding: 0 50px;
+    box-sizing: border-box;
   }
 
   .grid-header {
@@ -94,7 +94,7 @@
 
   .grid-title {
     width: 372px;
-    height: 43px; 
+    height: 43px;
     font-family: 'Lustria', serif;
     font-weight: 400;
     font-size: 36px;
@@ -113,7 +113,7 @@
   }
 
   .grid-item {
-    position: relative;
+    position: relative; /* Essential for positioning the plus button inside */
     overflow: hidden;
     background-color: #f0f0f0;
     display: flex;
@@ -143,32 +143,34 @@
     max-height: 50%;
     opacity: 0.5;
   }
-    
+
+  /* Styles for the plus button overlay */
   .plus-button {
     position: absolute;
-    top: 15px; 
-    right: 15px; 
-    background-color: white; 
-    color: black; 
-    border-radius: 50%; 
-    width: 30px; 
-    height: 30px; 
+    top: 15px; /* Distance from the top edge */
+    right: 15px; /* Distance from the right edge */
+    background-color: white; /* White background for the circle */
+    color: black; /* Plus sign color */
+    border-radius: 50%; /* Makes it a circle */
+    width: 30px; /* Width of the circle */
+    height: 30px; /* Height of the circle */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px; 
+    font-size: 20px; /* Size of the plus sign */
     font-weight: bold;
     cursor: pointer;
-    z-index: 10; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.2s, color 0.2s; 
+    z-index: 10; /* Ensures it's above the image */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: subtle shadow for depth */
+    transition: background-color 0.2s, color 0.2s; /* Smooth transition for hover */
   }
 
   .plus-button:hover {
-    background-color: black; 
-    color: white; 
+    background-color: black; /* Background becomes black on hover */
+    color: white; /* Plus sign becomes white on hover */
   }
 
+  /* Responsive Design */
   @media screen and (max-width: 1400px) {
     .page-width {
       padding: 0 30px;
@@ -195,15 +197,15 @@
       text-align: center;
       margin: 0 auto 30px auto;
     }
+    .grid-header {
+      padding: 0 20px;
+    }
     .image-grid-container {
       grid-template-columns: 1fr;
       gap: 10px;
     }
-    .grid-header {
-      padding: 0 20px;
-    }
     .plus-button {
-      width: 25px;
+      width: 25px; /* Smaller button on mobile */
       height: 25px;
       font-size: 18px;
       top: 10px;
@@ -258,7 +260,7 @@
       "name": "Image Grid Section",
       "category": "Image",
       "settings": {
-        "title": "Tisso vison in the wild"
+        "title": "Tisso vision in the wild"
       }
     }
   ]
