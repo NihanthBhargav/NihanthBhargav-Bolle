@@ -36,7 +36,7 @@
   }
 
   .grid-title {
-    /* Specific styles for the title */
+    /* Specific styles for the title - already applied */
     width: 372px; /* Fixed width */
     height: 43px; /* Fixed height */
     font-family: 'Lustria', serif; /* Set font family (ensure loaded in theme.liquid) */
@@ -50,9 +50,13 @@
 
   .image-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid: 3 columns on large, adapts smaller */
-    gap: 20px; /* Space between grid items */
+    /* This creates 3 columns, each designed to fit an image of approximately 433px. */
+    /* The 'gap' will simulate the spacing derived from your 'left' values. */
+    grid-template-columns: repeat(3, minmax(300px, 433px)); /* Min 300px, Max 433px per column */
+    gap: 20px; /* Adjusted gap to provide spacing between images */
     padding: 0 50px; /* Horizontal padding for the grid to align with title */
+    justify-content: center; /* Center the grid if it's narrower than the container */
+    align-items: center; /* Vertically align grid items */
   }
 
   .grid-item {
@@ -62,14 +66,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 250px; /* Minimum height for grid items */
+    width: 433px; /* Specific width for each grid item as requested */
+    height: 444px; /* Specific height for each grid item as requested */
   }
 
   .grid-image {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Make image fill its grid-item */
+    height: 100%; /* Make image fill its grid-item */
     display: block;
     object-fit: cover; /* Ensures images cover the area without distortion */
+    opacity: 1; /* As per your request, default is 1 */
+    /* angle: 0 deg is default for images */
   }
 
   .placeholder-image {
@@ -87,6 +94,18 @@
   }
 
   /* Responsive Design */
+  @media screen and (max-width: 1400px) { /* Adjust breakpoint for larger screens if 3 columns don't fit */
+    .image-grid-container {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Allow flexible columns */
+      padding: 0 30px;
+    }
+    .grid-item {
+      width: auto; /* Allow width to be flexible */
+      height: auto; /* Allow height to be flexible, maintaining aspect ratio with object-fit */
+      aspect-ratio: 433 / 444; /* Maintain aspect ratio */
+    }
+  }
+
   @media screen and (max-width: 768px) {
     .grid-title {
       width: auto; /* Remove fixed width on mobile */
@@ -100,6 +119,7 @@
     .image-grid-container {
       grid-template-columns: 1fr; /* Single column on small screens */
       padding: 0 20px; /* Adjust padding for mobile */
+      gap: 15px; /* Smaller gap on mobile */
     }
   }
 </style>
