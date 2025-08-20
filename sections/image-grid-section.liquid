@@ -27,7 +27,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_2 != blank %}
-          {{ section.settings.overlay_image_2 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+          {{ section.settings.overlay_image_2 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-2' }}
         {% endif %}
       </div>
 
@@ -40,7 +40,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_3 != blank %}
-          {{ section.settings.overlay_image_3 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+          {{ section.settings.overlay_image_3 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-3' }}
         {% endif %}
       </div>
 
@@ -53,7 +53,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_4 != blank %}
-          {{ section.settings.overlay_image_4 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+          {{ section.settings.overlay_image_4 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-4' }}
         {% endif %}
       </div>
 
@@ -66,7 +66,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_5 != blank %}
-          {{ section.settings.overlay_image_5 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+          {{ section.settings.overlay_image_5 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-5' }}
         {% endif %}
       </div>
 
@@ -79,7 +79,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_6 != blank %}
-          {{ section.settings.overlay_image_6 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+          {{ section.settings.overlay_image_6 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-6' }}
         {% endif %}
       </div>
     </div>
@@ -156,23 +156,65 @@
     opacity: 0.5;
   }
 
-  /* General styles for all overlay images */
+  
   .grid-overlay-image {
     position: absolute;
     z-index: 9;
-    pointer-events: none; /* Allows clicks to pass through to the main image */
+    pointer-events: none; 
+    background: white; 
+    border: 1.5px solid black; 
+    border-radius: 50%; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    opacity: 1; 
   }
 
-  /* Specific styles for the FIRST overlay image */
+  
   .grid-overlay-image-1 {
     width: 22px;
     height: 22px;
     top: 238px;
     left: 256.5px;
-    
   }
 
-  /* Responsive Design */
+  .grid-overlay-image-2 {
+    width: 22px;
+    height: 22px;
+    top: 222px;
+    left: 808.5px;
+  }
+
+  .grid-overlay-image-3 {
+    width: 22px;
+    height: 22px;
+    top: 82px;
+    left: 1167px;
+  }
+
+  .grid-overlay-image-4 {
+    width: 22px;
+    height: 22px;
+    top: 535px;
+    left: 301.5px;
+  }
+
+  .grid-overlay-image-5 {
+    width: 22px;
+    height: 22px;
+    top: 568px;
+    left: 665.5px;
+  }
+
+  .grid-overlay-image-6 {
+    width: 22px;
+    height: 22px;
+    top: 628px;
+    left: 1225.5px;
+  }
+
+  
+  
   @media screen and (max-width: 1400px) {
     .page-width {
       padding: 0 30px;
@@ -186,17 +228,20 @@
       height: auto;
       aspect-ratio: 433 / 444;
     }
-    /* Adjust specific overlay image positioning for responsiveness */
-    .grid-overlay-image-1 {
-      /* You will need to define how this fixed-pixel overlay adjusts on smaller screens.
-         For example, you might switch it back to a percentage or a combination of flex/grid.
-         For now, it will remain fixed. */
-      top: 15%; /* Example: adjust to a percentage */
-      left: 70%; /* Example: adjust to a percentage */
-      transform: translate(-50%, -50%); /* Re-center relative to new percentage position */
-      width: 5%; /* Example: adjust width to percentage */
-      height: auto; /* Allow height to adjust */
+    
+    .grid-overlay-image {
+        
+        width: 5%; 
+        height: auto;
+        transform: translate(-50%, -50%); 
+        
     }
+    .grid-overlay-image-1 { top: 20%; left: 70%; } 
+    .grid-overlay-image-2 { top: 18%; left: 75%; } 
+    .grid-overlay-image-3 { top: 10%; left: 80%; } 
+    .grid-overlay-image-4 { top: 60%; left: 70%; } 
+    .grid-overlay-image-5 { top: 65%; left: 75%; } 
+    .grid-overlay-image-6 { top: 70%; left: 80%; } 
   }
 
   @media screen and (max-width: 768px) {
@@ -218,13 +263,9 @@
       gap: 10px;
     }
     .grid-overlay-image {
-      max-width: 60px;
-    }
-    .grid-overlay-image-1 {
-      /* Further adjustments for very small screens */
-      top: 10%;
-      left: 80%;
-      width: 8%;
+      width: 8%; 
+      top: 15%; 
+      left: 85%;
     }
   }
 </style>
