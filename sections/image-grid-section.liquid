@@ -13,7 +13,6 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-        <div class="plus-button">+</div>
         {% if section.settings.overlay_image_1 != blank %}
           {{ section.settings.overlay_image_1 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
         {% endif %}
@@ -27,7 +26,6 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-        <div class="plus-button">+</div>
         {% if section.settings.overlay_image_2 != blank %}
           {{ section.settings.overlay_image_2 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
         {% endif %}
@@ -41,7 +39,6 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-        <div class="plus-button">+</div>
         {% if section.settings.overlay_image_3 != blank %}
           {{ section.settings.overlay_image_3 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
         {% endif %}
@@ -55,7 +52,6 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-        <div class="plus-button">+</div>
         {% if section.settings.overlay_image_4 != blank %}
           {{ section.settings.overlay_image_4 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
         {% endif %}
@@ -69,10 +65,8 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-        <div class="plus-button">+</div>
         {% if section.settings.overlay_image_5 != blank %}
           {{ section.settings.overlay_image_5 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
-        {% else %}
         {% endif %}
       </div>
 
@@ -84,7 +78,6 @@
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-        <div class="plus-button">+</div>
         {% if section.settings.overlay_image_6 != blank %}
           {{ section.settings.overlay_image_6 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
         {% endif %}
@@ -163,42 +156,16 @@
     opacity: 0.5;
   }
 
-  /* Styles for the plus button overlay */
-  .plus-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: white;
-    color: black;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s, color 0.2s;
-  }
-
-  .plus-button:hover {
-    background-color: black;
-    color: white;
-  }
-
-  /* Styles for the new overlay image */
+  /* Styles for the new overlay image (plus button removed from here) */
   .grid-overlay-image {
     position: absolute;
-    top: 50%; /* Adjust as needed for vertical positioning */
-    left: 50%; /* Adjust as needed for horizontal positioning */
-    transform: translate(-50%, -50%); /* Centers the image */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     max-width: 80px; /* Example size, adjust as needed */
     height: auto;
-    z-index: 9; /* Place below plus button but above main image */
-    pointer-events: none; /* Allows clicks to pass through to the main image or button */
+    z-index: 9; /* Place above main image */
+    pointer-events: none; /* Allows clicks to pass through to the main image */
   }
 
   /* Responsive Design */
@@ -235,15 +202,8 @@
       grid-template-columns: 1fr;
       gap: 10px;
     }
-    .plus-button {
-      width: 25px;
-      height: 25px;
-      font-size: 18px;
-      top: 10px;
-      right: 10px;
-    }
     .grid-overlay-image {
-      max-width: 60px; /* Adjust size for mobile */
+      max-width: 60px;
     }
   }
 </style>
@@ -256,7 +216,7 @@
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "Tisso vison in the wild"
+      "default": "TISSO VISON IN THE WILD"
     },
     {
       "type": "image_picker",
@@ -324,7 +284,7 @@
       "name": "Image Grid Section",
       "category": "Image",
       "settings": {
-        "title": "Tisso vison in the wild"
+        "title": "TISSO VISON IN THE WILD"
       }
     }
   ]
