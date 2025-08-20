@@ -1,6 +1,5 @@
 <div class="custom-banner-section">
   <div class="top-frame-background" style="background-image: url('{{ section.settings.top_pattern_image | image_url: width: 2000 }}');">
-    <!-- This div will hold the repeating pattern at the top -->
   </div>
   <div class="content-background-area">
     <div class="banner-content">
@@ -17,7 +16,6 @@
     {{ section.settings.conclusion_text }}
   </div>
   <div class="down-frame-background" style="background-image: url('{{ section.settings.down_pattern_image | image_url: width: 890 }}');">
-    <!-- This div will hold the frame image at the bottom right -->
   </div>
 </div>
 
@@ -25,101 +23,58 @@
   .custom-banner-section {
     position: relative;
     width: 100%;
-    min-height: 700px; /* Base height for the entire banner section */
+    min-height: 700px;
     display: flex;
-    flex-direction: column; /* Stacks children vertically */
-    justify-content: space-between; /* Pushes top-frame to top, content-area and conclusion to bottom */
-    align-items: center; /* Default for horizontal centering of main elements, adjusted inside */
-
-    background-color: white; /* Explicitly white background color */
-    overflow: hidden; /* Ensure patterns and content fit within */
-  }
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    background-color: white;     overflow: hidden;   }
 
   .top-frame-background {
     width: 100%;
-    height: 390px; /* Specific height as per your request */
-    background-size: auto 100%; /* Scale height to 100%, auto width to maintain aspect ratio */
-    background-position: center bottom; /* Position frame to show bottom part */
-    background-repeat: repeat-x; /* Repeats horizontally */
-    overflow: hidden;
+    height: 390px;     background-size: auto 100%;     background-position: center bottom;     background-repeat: repeat-x;     overflow: hidden;
     position: relative;
-    z-index: 1; /* Keep it below content if there are overlaps */
-  }
+    z-index: 1;   }
 
   .content-background-area {
     width: 100%;
-    padding-top: 50px; /* Padding above heading */
-    padding-bottom: 50px; /* Padding below button */
-    display: flex;
-    flex-direction: column; /* Stack content elements vertically */
-    justify-content: flex-end; /* Pushes content to the bottom of this area */
-    align-items: flex-start; /* Aligns content to the left of this area */
-    text-align: left; /* Aligns text within content block to the left */
-    position: relative;
-    z-index: 2; /* Ensure content area is above other elements */
-    flex-grow: 1; /* Allow content area to take available vertical space */
-    padding-left: 67px; /* Explicit left padding for content block, based on your 'left: 67px' */
-    box-sizing: border-box; /* Include padding in width */
-  }
+    padding-top: 50px;     padding-bottom: 50px;     display: flex;
+    flex-direction: column;     justify-content: flex-end;     align-items: flex-start;     text-align: left;     position: relative;
+    z-index: 2;     flex-grow: 1;     padding-left: 67px;     box-sizing: border-box;   }
 
   .banner-content {
-    max-width: 900px; /* Limit content width for better readability */
-    padding: 0;
+    max-width: 900px;     padding: 0;
   }
 
   .main-heading {
-    /* Specific styles for the title */
-    width: 459px; /* As per your request */
-    height: 70px; /* As per your request */
-    font-family: 'Jost', sans-serif;
-    font-weight: 500; /* Medium weight */
-    font-size: 70px; /* As per your request */
-    line-height: 100%; /* As per your request */
-    letter-spacing: 0px; /* As per your request */
-    color: black;
+        width: 459px;     height: 70px;     font-family: 'Jost', sans-serif;
+    font-weight: 500;     font-size: 70px;     line-height: 100%;     letter-spacing: 0px;     color: black;
     margin-bottom: 20px;
   }
 
   .subheading {
-    /* Specific styles for the subtext */
-    width: 483px; /* As per your request */
-    height: 84px; /* As per your request */
-    font-family: 'Jost', sans-serif;
-    font-weight: 400; /* Regular weight */
-    font-size: 20px; /* As per your request */
-    line-height: 140%; /* As per your request */
-    letter-spacing: 0px; /* As per your request */
-    color: black;
-    margin: 0 0 40px 0; /* Align left, specific bottom margin */
-  }
+        width: 483px;     height: 84px;     font-family: 'Jost', sans-serif;
+    font-weight: 400;     font-size: 20px;     line-height: 140%;     letter-spacing: 0px;     color: black;
+    margin: 0 0 40px 0;   }
 
   .banner-buttons {
     display: flex;
-    justify-content: flex-start; /* Align buttons to the left */
-    gap: 20px;
+    justify-content: flex-start;     gap: 20px;
   }
 
-  /* SHOP NOW Button Styles (black to yellow slide-in) */
-  .shop-now-banner-btn {
+    .shop-now-banner-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: black; /* Initial color */
-    color: white;
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Keep font consistent or define in theme settings */
-    font-size: 1em; /* Adjust as needed */
-    font-weight: 700; /* Bold */
-    letter-spacing: 1px;
+    background-color: black;     color: white;
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif;     font-size: 1em;     font-weight: 700;     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 15px 30px; /* Adjust padding */
-    border: none;
+    padding: 15px 30px;     border: none;
     cursor: pointer;
-    transition: color 0.3s ease; /* Transition for text color */
-    z-index: 1; /* Ensure text is above ::before pseudo-element */
-  }
+    transition: color 0.3s ease;     z-index: 1;   }
 
   .shop-now-banner-btn::before {
     content: "";
@@ -128,95 +83,46 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: #FFF544; /* Yellow background for hover */
-    transition: left 0.4s ease; /* Transition for the slide-in effect */
-    z-index: -1; /* Place behind button text */
-  }
+    background: #FFF544;     transition: left 0.4s ease;     z-index: -1;   }
 
   .shop-now-banner-btn:hover {
-    color: black; /* Text becomes black on hover */
-  }
+    color: black;   }
 
   .shop-now-banner-btn:hover::before {
-    left: 0; /* Slides the yellow background in */
-  }
+    left: 0;   }
 
   .shop-now-banner-btn span {
-    margin-left: 12px; /* Space between text and arrow */
-    font-size: 1.2em; /* Arrow size */
-  }
+    margin-left: 12px;     font-size: 1.2em;   }
 
   .conclusion-text {
-    /* Specific styles for the conclusion text container */
-    width: 100%; /* Full width as per request */
-    height: 34px; /* Specific height as per request */
-    padding: 10px 50px; /* Specific padding as per request */
-    background-color: #F5F5F5; /* Specific light grey background */
-    text-align: center; /* Center text within its own div */
-    font-family: 'Helvetica', Helvetica, Arial, sans-serif; /* Adjust to Figma */
-    font-size: 0.8em; /* Adjust as needed */
-    color: #555;
-    position: relative; /* Flows with the content */
-    z-index: 3;
-    box-sizing: border-box; /* Include padding in height */
-    display: flex; /* Use flexbox for vertical alignment */
-    align-items: center; /* Vertically center text if height is greater than line-height */
-    justify-content: center; /* Horizontally center text */
-  }
+        width: 100%;     height: 34px;     padding: 10px 50px;     background-color: #F5F5F5;     text-align: center;     font-family: 'Helvetica', Helvetica, Arial, sans-serif;     font-size: 0.8em;     color: #555;
+    position: relative;     z-index: 3;
+    box-sizing: border-box;     display: flex;     align-items: center;     justify-content: center;   }
 
-  /* Styles for the bottom-right frame (using a separate image) */
-  .down-frame-background {
+    .down-frame-background {
     position: absolute;
-    bottom: 0; /* Position at the bottom of the section */
-    right: 0; /* Position at the right of the section */
-    width: 890px; /* As per your request */
-    height: 402px; /* As per your request */
-    background-size: cover; /* Ensures the image covers the area, might crop */
-    background-position: center; /* Centers the background image within this div */
-    background-repeat: no-repeat; /* Ensure it does not repeat */
-    z-index: 0; /* Place behind all other content and top frame */
-    pointer-events: none; /* Allows clicks/interactions on elements behind it */
-  }
+    bottom: 0;     right: 0;     width: 890px;     height: 402px;     background-size: cover;     background-position: center;     background-repeat: no-repeat;     z-index: 0;     pointer-events: none;   }
 
 
-  /* Responsive Design */
-  @media screen and (max-width: 768px) {
+    @media screen and (max-width: 768px) {
     .main-heading {
-      font-size: 2.5em; /* Adjust font size for mobile */
-      width: auto; /* Remove fixed width for responsiveness */
-      height: auto;
+      font-size: 2.5em;       width: auto;       height: auto;
     }
     .subheading {
-      font-size: 1em; /* Adjust font size for mobile */
-      width: auto; /* Remove fixed width for responsiveness */
-      height: auto;
-      margin: 0 auto 20px auto; /* Center on mobile, adjust margin */
-    }
+      font-size: 1em;       width: auto;       height: auto;
+      margin: 0 auto 20px auto;     }
     .banner-buttons { flex-direction: column; gap: 10px; justify-content: center; }
     .top-frame-background {
-      height: 250px; /* Adjust height on smaller screens */
-    }
+      height: 250px;     }
     .down-frame-background {
-      width: 100%; /* Make it full width on small screens */
-      height: 250px; /* Adjust height on smaller screens */
-      background-size: contain; /* Contain the image on mobile if it looks better */
-      background-position: bottom right; /* Keep it at bottom right */
-    }
+      width: 100%;       height: 250px;       background-size: contain;       background-position: bottom right;     }
     .content-background-area {
-      padding-left: 20px; /* Adjust left padding for mobile */
-      padding-right: 20px; /* Add right padding for mobile */
-      text-align: center; /* Center text on mobile */
-      align-items: center; /* Center items on mobile */
-    }
+      padding-left: 20px;       padding-right: 20px;       text-align: center;       align-items: center;     }
     .custom-banner-section {
-      min-height: 500px; /* Adjust overall height on smaller screens */
-      padding-left: 0; /* Remove overall section padding on mobile if content-background-area has it */
-      padding-right: 0;
+      min-height: 500px;       padding-left: 0;       padding-right: 0;
     }
     .conclusion-text {
-      padding: 10px 20px; /* Adjust padding for mobile */
-      height: auto; /* Allow height to adjust for content on mobile */
-    }
+      padding: 10px 20px;       height: auto;     }
   }
 </style>
 
