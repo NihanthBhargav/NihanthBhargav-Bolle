@@ -4,8 +4,8 @@
       <h2 class="grid-title">{{ section.settings.title }}</h2>
     </div>
 
-    <div class="image-grid-absolute-container">
-      <div class="grid-item grid-item-1">
+    <div class="image-grid-container">
+      <div class="grid-item">
         {% if section.settings.image_1 != blank %}
           {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image' }}
         {% else %}
@@ -15,7 +15,7 @@
         {% endif %}
       </div>
 
-      <div class="grid-item grid-item-2">
+      <div class="grid-item">
         {% if section.settings.image_2 != blank %}
           {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image' }}
         {% else %}
@@ -25,7 +25,7 @@
         {% endif %}
       </div>
 
-      <div class="grid-item grid-item-3">
+      <div class="grid-item">
         {% if section.settings.image_3 != blank %}
           {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image' }}
         {% else %}
@@ -35,7 +35,7 @@
         {% endif %}
       </div>
 
-      <div class="grid-item grid-item-4">
+      <div class="grid-item">
         {% if section.settings.image_4 != blank %}
           {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image' }}
         {% else %}
@@ -45,7 +45,7 @@
         {% endif %}
       </div>
 
-      <div class="grid-item grid-item-5">
+      <div class="grid-item">
         {% if section.settings.image_5 != blank %}
           {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image' }}
         {% else %}
@@ -55,7 +55,7 @@
         {% endif %}
       </div>
 
-      <div class="grid-item grid-item-6">
+      <div class="grid-item">
         {% if section.settings.image_6 != blank %}
           {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image' }}
         {% else %}
@@ -72,18 +72,25 @@
   .image-grid-section {
     padding: 50px 0;
     background-color: white;
-    position: relative;
+  }
+
+  .page-width {
+    /* Ensure page-width itself is centered and has appropriate max-width */
+    max-width: 1400px; /* Adjust this to control overall section width */
+    margin: 0 auto;
+    padding: 0 50px; /* Consistent left and right padding for content inside page-width */
+    box-sizing: border-box; /* Include padding in element's total width */
   }
 
   .grid-header {
-    padding: 0 50px;
     margin-bottom: 40px;
     text-align: left;
   }
 
   .grid-title {
+    /* Text styles as provided */
     width: 372px;
-    height: 43px;
+    height: 43px; /* This height might conflict if text wraps due to fixed width */
     font-family: 'Lustria', serif;
     font-weight: 400;
     font-size: 36px;
@@ -93,71 +100,33 @@
     margin: 0;
   }
 
-  .image-grid-absolute-container {
-    position: relative;
-    width: 1339px;
-    height: 908px;
-    margin: 0 auto;
-    padding: 0 50px;
+  .image-grid-container {
+    display: grid;
+    /* Define 3 columns with a preferred width of 433px, but allowing flexibility */
+    grid-template-columns: repeat(3, minmax(250px, 433px));
+    /* The gap of 20px simulates the spacing from your original "left" values */
+    gap: 20px;
+    justify-content: center; /* This centers the grid within its container */
+    align-items: center; /* Vertically centers items within their grid cells */
   }
 
   .grid-item {
-    position: absolute;
+    position: relative;
     overflow: hidden;
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Placeholder background */
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Use aspect-ratio to maintain proportions instead of fixed height, for responsiveness */
+    aspect-ratio: 433 / 444; /* Maintain the desired aspect ratio (width / height) */
     opacity: 1;
-  }
-
-  .grid-item-1 {
-    width: 433px;
-    height: 444px;
-    top: 0;
-    left: 0;
-  }
-
-  .grid-item-2 {
-    width: 433px;
-    height: 444px;
-    top: 0;
-    left: 453px;
-  }
-
-  .grid-item-3 {
-    width: 433px;
-    height: 444px;
-    top: 0;
-    left: 906px;
-  }
-
-  .grid-item-4 {
-    width: 433px;
-    height: 444px;
-    top: 464px;
-    left: 0;
-  }
-
-  .grid-item-5 {
-    width: 433px;
-    height: 444px;
-    top: 464px;
-    left: 453px;
-  }
-
-  .grid-item-6 {
-    width: 433px;
-    height: 444px;
-    top: 464px;
-    left: 906px;
   }
 
   .grid-image {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: cover; /* Ensures images cover the area without distortion */
   }
 
   .placeholder-image {
@@ -174,41 +143,31 @@
     opacity: 0.5;
   }
 
+  /* Responsive Design */
   @media screen and (max-width: 1400px) {
-    .image-grid-absolute-container {
-      width: 100%;
-      height: auto;
-      padding: 0 20px;
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      box-sizing: border-box;
+    .page-width {
+      padding: 0 30px; /* Reduce padding on slightly smaller screens */
     }
-
-    .grid-item {
-      position: static;
-      width: auto;
-      height: auto;
-      aspect-ratio: 433 / 444;
-      top: auto;
-      left: auto;
+    .image-grid-container {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust columns for better fit */
+      gap: 15px;
     }
   }
 
   @media screen and (max-width: 768px) {
+    .page-width {
+      padding: 0 20px; /* Further reduce padding for mobile */
+    }
     .grid-title {
-      width: auto;
+      width: auto; /* Remove fixed width to allow text to wrap */
       height: auto;
       font-size: 28px;
-      text-align: center;
+      text-align: center; /* Center title on mobile */
+      margin: 0 auto 30px auto; /* Center title and adjust bottom margin */
     }
-    .grid-header {
-      padding: 0 20px;
-    }
-    .image-grid-absolute-container {
-      grid-template-columns: 1fr;
-      padding: 0 15px;
+    .image-grid-container {
+      grid-template-columns: 1fr; /* Single column on smallest screens */
+      gap: 10px; /* Smaller gap on mobile */
     }
   }
 </style>
@@ -221,7 +180,7 @@
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "Tisso vison in the wild"
+      "default": "TISSO VISON IN THE WILD"
     },
     {
       "type": "image_picker",
@@ -259,7 +218,7 @@
       "name": "Image Grid Section",
       "category": "Image",
       "settings": {
-        "title": "Tisso vison in the wild"
+        "title": "TISSO VISON IN THE WILD"
       }
     }
   ]
