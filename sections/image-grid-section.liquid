@@ -75,11 +75,10 @@
   }
 
   .page-width {
-    /* Ensure page-width itself is centered and has appropriate max-width */
-    max-width: 1400px; /* Adjust this to control overall section width */
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 50px; /* Consistent left and right padding for content inside page-width */
-    box-sizing: border-box; /* Include padding in element's total width */
+    padding: 0 50px; 
+    box-sizing: border-box; 
   }
 
   .grid-header {
@@ -88,9 +87,8 @@
   }
 
   .grid-title {
-    /* Text styles as provided */
     width: 372px;
-    height: 43px; /* This height might conflict if text wraps due to fixed width */
+    height: 43px; 
     font-family: 'Lustria', serif;
     font-weight: 400;
     font-size: 36px;
@@ -102,23 +100,20 @@
 
   .image-grid-container {
     display: grid;
-    /* Define 3 columns with a preferred width of 433px, but allowing flexibility */
     grid-template-columns: repeat(3, minmax(250px, 433px));
-    /* The gap of 20px simulates the spacing from your original "left" values */
     gap: 20px;
-    justify-content: center; /* This centers the grid within its container */
-    align-items: center; /* Vertically centers items within their grid cells */
+    justify-content: center;
+    align-items: center;
   }
 
   .grid-item {
     position: relative;
     overflow: hidden;
-    background-color: #f0f0f0; /* Placeholder background */
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Use aspect-ratio to maintain proportions instead of fixed height, for responsiveness */
-    aspect-ratio: 433 / 444; /* Maintain the desired aspect ratio (width / height) */
+    aspect-ratio: 433 / 444;
     opacity: 1;
   }
 
@@ -126,7 +121,7 @@
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover; /* Ensures images cover the area without distortion */
+    object-fit: cover;
   }
 
   .placeholder-image {
@@ -143,31 +138,30 @@
     opacity: 0.5;
   }
 
-  /* Responsive Design */
   @media screen and (max-width: 1400px) {
     .page-width {
-      padding: 0 30px; /* Reduce padding on slightly smaller screens */
+      padding: 0 30px;
     }
     .image-grid-container {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust columns for better fit */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 15px;
     }
   }
 
   @media screen and (max-width: 768px) {
     .page-width {
-      padding: 0 20px; /* Further reduce padding for mobile */
+      padding: 0 20px;
     }
     .grid-title {
-      width: auto; /* Remove fixed width to allow text to wrap */
+      width: auto;
       height: auto;
       font-size: 28px;
-      text-align: center; /* Center title on mobile */
-      margin: 0 auto 30px auto; /* Center title and adjust bottom margin */
+      text-align: center;
+      margin: 0 auto 30px auto;
     }
     .image-grid-container {
-      grid-template-columns: 1fr; /* Single column on smallest screens */
-      gap: 10px; /* Smaller gap on mobile */
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
   }
 </style>
