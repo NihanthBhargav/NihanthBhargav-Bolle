@@ -14,7 +14,6 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
-          {# Added grid-overlay-image-1 class for specific styling #}
           {{ section.settings.overlay_image_1 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-1' }}
         {% endif %}
       </div>
