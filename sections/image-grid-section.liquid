@@ -4,79 +4,160 @@
       <h2 class="grid-title">{{ section.settings.title }}</h2>
     </div>
 
-    <div class="image-grid-container">
-      {% for block in section.blocks %}
-        {% case block.type %}
-          {% when 'image_item' %}
-            <div class="grid-item">
-              {% if block.settings.image != blank %}
-                {{ block.settings.image | image_url: width: 600 | image_tag: class: 'grid-image' }}
-              {% else %}
-                <div class="placeholder-image">
-                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                </div>
-              {% endif %}
-            </div>
-        {% endcase %}
-      {% endfor %}
+    <div class="image-grid-absolute-container">
+      <div class="grid-item grid-item-1">
+        {% if section.settings.image_1 != blank %}
+          {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image' }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="grid-item grid-item-2">
+        {% if section.settings.image_2 != blank %}
+          {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image' }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="grid-item grid-item-3">
+        {% if section.settings.image_3 != blank %}
+          {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image' }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="grid-item grid-item-4">
+        {% if section.settings.image_4 != blank %}
+          {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image' }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="grid-item grid-item-5">
+        {% if section.settings.image_5 != blank %}
+          {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image' }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="grid-item grid-item-6">
+        {% if section.settings.image_6 != blank %}
+          {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image' }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
 
 <style>
   .image-grid-section {
-    padding: 50px 0; /* Add some vertical padding for the section */
-    background-color: white; /* Ensure a white background for the entire section */
+    padding: 50px 0;
+    background-color: white;
+    position: relative;
   }
 
   .grid-header {
-    padding: 0 50px; /* Padding to align with the left-top text positioning */
-    margin-bottom: 40px; /* Space below the title before the grid starts */
-    text-align: left; /* Align text to the left */
+    padding: 0 50px;
+    margin-bottom: 40px;
+    text-align: left;
   }
 
   .grid-title {
-    /* Specific styles for the title - already applied */
-    width: 372px; /* Fixed width */
-    height: 43px; /* Fixed height */
-    font-family: 'Lustria', serif; /* Set font family (ensure loaded in theme.liquid) */
-    font-weight: 400; /* Regular weight */
-    font-size: 36px; /* Specific font size */
-    line-height: 120%; /* Specific line height */
-    letter-spacing: 0px; /* Specific letter spacing */
-    color: black; /* Ensure text is visible */
-    margin: 0; /* Remove default margins */
+    width: 372px;
+    height: 43px;
+    font-family: 'Lustria', serif;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    color: black;
+    margin: 0;
   }
 
-  .image-grid-container {
-    display: grid;
-    /* This creates 3 columns, each designed to fit an image of approximately 433px. */
-    /* The 'gap' will simulate the spacing derived from your 'left' values. */
-    grid-template-columns: repeat(3, minmax(300px, 433px)); /* Min 300px, Max 433px per column */
-    gap: 20px; /* Adjusted gap to provide spacing between images */
-    padding: 0 50px; /* Horizontal padding for the grid to align with title */
-    justify-content: center; /* Center the grid if it's narrower than the container */
-    align-items: center; /* Vertically align grid items */
+  .image-grid-absolute-container {
+    position: relative;
+    width: 1339px;
+    height: 908px;
+    margin: 0 auto;
+    padding: 0 50px;
   }
 
   .grid-item {
-    position: relative;
+    position: absolute;
     overflow: hidden;
-    background-color: #f0f0f0; /* Placeholder background */
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 433px; /* Specific width for each grid item as requested */
-    height: 444px; /* Specific height for each grid item as requested */
+    opacity: 1;
+  }
+
+  .grid-item-1 {
+    width: 433px;
+    height: 444px;
+    top: 0;
+    left: 0;
+  }
+
+  .grid-item-2 {
+    width: 433px;
+    height: 444px;
+    top: 0;
+    left: 453px;
+  }
+
+  .grid-item-3 {
+    width: 433px;
+    height: 444px;
+    top: 0;
+    left: 906px;
+  }
+
+  .grid-item-4 {
+    width: 433px;
+    height: 444px;
+    top: 464px;
+    left: 0;
+  }
+
+  .grid-item-5 {
+    width: 433px;
+    height: 444px;
+    top: 464px;
+    left: 453px;
+  }
+
+  .grid-item-6 {
+    width: 433px;
+    height: 444px;
+    top: 464px;
+    left: 906px;
   }
 
   .grid-image {
-    width: 100%; /* Make image fill its grid-item */
-    height: 100%; /* Make image fill its grid-item */
+    width: 100%;
+    height: 100%;
     display: block;
-    object-fit: cover; /* Ensures images cover the area without distortion */
-    opacity: 1; /* As per your request, default is 1 */
-    /* angle: 0 deg is default for images */
+    object-fit: cover;
   }
 
   .placeholder-image {
@@ -93,33 +174,41 @@
     opacity: 0.5;
   }
 
-  /* Responsive Design */
-  @media screen and (max-width: 1400px) { /* Adjust breakpoint for larger screens if 3 columns don't fit */
-    .image-grid-container {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Allow flexible columns */
-      padding: 0 30px;
+  @media screen and (max-width: 1400px) {
+    .image-grid-absolute-container {
+      width: 100%;
+      height: auto;
+      padding: 0 20px;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      box-sizing: border-box;
     }
+
     .grid-item {
-      width: auto; /* Allow width to be flexible */
-      height: auto; /* Allow height to be flexible, maintaining aspect ratio with object-fit */
-      aspect-ratio: 433 / 444; /* Maintain aspect ratio */
+      position: static;
+      width: auto;
+      height: auto;
+      aspect-ratio: 433 / 444;
+      top: auto;
+      left: auto;
     }
   }
 
   @media screen and (max-width: 768px) {
     .grid-title {
-      width: auto; /* Remove fixed width on mobile */
+      width: auto;
       height: auto;
-      font-size: 28px; /* Adjust font size for mobile */
-      text-align: center; /* Center title on mobile */
+      font-size: 28px;
+      text-align: center;
     }
     .grid-header {
-      padding: 0 20px; /* Adjust padding for mobile */
+      padding: 0 20px;
     }
-    .image-grid-container {
-      grid-template-columns: 1fr; /* Single column on small screens */
-      padding: 0 20px; /* Adjust padding for mobile */
-      gap: 15px; /* Smaller gap on mobile */
+    .image-grid-absolute-container {
+      grid-template-columns: 1fr;
+      padding: 0 15px;
     }
   }
 </style>
@@ -133,32 +222,45 @@
       "id": "title",
       "label": "Section Title",
       "default": "TISSO VISON IN THE WILD"
-    }
-  ],
-  "blocks": [
+    },
     {
-      "type": "image_item",
-      "name": "Image",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        }
-      ]
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1 (Top Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2 (Top Middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3 (Top Right)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image 4 (Bottom Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image 5 (Bottom Middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Image 6 (Bottom Right)"
     }
   ],
   "presets": [
     {
       "name": "Image Grid Section",
-      "blocks": [
-        { "type": "image_item" },
-        { "type": "image_item" },
-        { "type": "image_item" },
-        { "type": "image_item" },
-        { "type": "image_item" },
-        { "type": "image_item" }
-      ]
+      "category": "Image",
+      "settings": {
+        "title": "Tisso vison in the wild"
+      }
     }
   ]
 }
