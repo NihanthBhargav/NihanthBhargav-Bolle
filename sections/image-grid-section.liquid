@@ -14,7 +14,8 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
-          {{ section.settings.overlay_image_1 | image_url: width: 200 | image_tag: class: 'grid-overlay-image' }}
+          {# Added grid-overlay-image-1 class for specific styling #}
+          {{ section.settings.overlay_image_1 | image_url: width: 200 | image_tag: class: 'grid-overlay-image grid-overlay-image-1' }}
         {% endif %}
       </div>
 
@@ -156,16 +157,23 @@
     opacity: 0.5;
   }
 
-  /* Styles for the new overlay image (plus button removed from here) */
+  /* General styles for all overlay images */
   .grid-overlay-image {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 80px; /* Example size, adjust as needed */
-    height: auto;
-    z-index: 9; /* Place above main image */
+    z-index: 9;
     pointer-events: none; /* Allows clicks to pass through to the main image */
+  }
+
+  /* Specific styles for the FIRST overlay image */
+  .grid-overlay-image-1 {
+    width: 22px;
+    height: 22px;
+    top: 238px;
+    left: 256.5px;
+    background: #F8F8F8E5; /* Hex with 8 digits includes alpha for transparency */
+    border: 1.5px solid #000000;
+    /* You might want to remove transform: translate(-50%, -50%); from this specific class
+       if it conflicts with your top/left values. I've left it out here. */
   }
 
   /* Responsive Design */
@@ -181,6 +189,17 @@
       width: auto;
       height: auto;
       aspect-ratio: 433 / 444;
+    }
+    /* Adjust specific overlay image positioning for responsiveness */
+    .grid-overlay-image-1 {
+      /* You will need to define how this fixed-pixel overlay adjusts on smaller screens.
+         For example, you might switch it back to a percentage or a combination of flex/grid.
+         For now, it will remain fixed. */
+      top: 15%; /* Example: adjust to a percentage */
+      left: 70%; /* Example: adjust to a percentage */
+      transform: translate(-50%, -50%); /* Re-center relative to new percentage position */
+      width: 5%; /* Example: adjust width to percentage */
+      height: auto; /* Allow height to adjust */
     }
   }
 
@@ -205,6 +224,12 @@
     .grid-overlay-image {
       max-width: 60px;
     }
+    .grid-overlay-image-1 {
+      /* Further adjustments for very small screens */
+      top: 10%;
+      left: 80%;
+      width: 8%;
+    }
   }
 </style>
 
@@ -216,7 +241,7 @@
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "TISSO VISON IN THE WILD"
+      "default": "Tisso vison in the wild"
     },
     {
       "type": "image_picker",
@@ -284,7 +309,7 @@
       "name": "Image Grid Section",
       "category": "Image",
       "settings": {
-        "title": "TISSO VISON IN THE WILD"
+        "title": "Tisso vison in the wild"
       }
     }
   ]
