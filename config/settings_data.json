@@ -164,11 +164,17 @@
         "settings": {
           "title": "Tisso vison in the wild",
           "image_1": "shopify://shop_images/image-822.png",
+          "overlay_image_1": "shopify://shop_images/Group-1000008190.svg",
           "image_2": "shopify://shop_images/image-823.png",
+          "overlay_image_2": "shopify://shop_images/Group-1000008185.svg",
           "image_3": "shopify://shop_images/image-824.png",
+          "overlay_image_3": "shopify://shop_images/Group-1000008186.svg",
           "image_4": "shopify://shop_images/image-825.png",
+          "overlay_image_4": "shopify://shop_images/Group-1000008188.svg",
           "image_5": "shopify://shop_images/image-826.png",
-          "image_6": "shopify://shop_images/image-827.png"
+          "overlay_image_5": "shopify://shop_images/Group-1000008189.svg",
+          "image_6": "shopify://shop_images/image-827.png",
+          "overlay_image_6": "shopify://shop_images/Group-1000008187.svg"
         }
       }
     },
