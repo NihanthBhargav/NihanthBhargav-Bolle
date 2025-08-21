@@ -156,90 +156,93 @@
     opacity: 0.5;
   }
 
-  
+
+  .grid-item:hover .grid-overlay-image {
+    transform: translate(-50%, -50%) scale(1.1); 
+  }
+
   .grid-overlay-image {
     position: absolute;
     z-index: 9;
-    pointer-events: none; 
-    background: white; 
-    border-radius: 50%; 
-    display: flex; 
+    pointer-events: none;
+    background: white;
+    border-radius: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 1; 
+    opacity: 1;
+    
+    transition: transform 0.2s ease-in-out;
   }
 
-  
-  
+
   .grid-overlay-image-1 {
     width: 22px;
     height: 22px;
-    
-    
-    
     top: 238px;
     left: 256.5px;
     right: 154.5px;
-    down: 184px;
-    transform: translate(-50%, -50%); 
+    
+    
+    transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-2 {
     width: 22px;
     height: 22px;
-    
-    top: 222px; 
+    top: 222px;
     left: 355.2px;
     right:55.5px;
-    down: 200px; 
+    
+    
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-3 {
     width: 22px;
     height: 22px;
-    
-    top: 82px; 
+    top: 82px;
     left: 261px;
     right:150px;
-    down:340px; 
+    
+    
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-4 {
     width: 22px;
     height: 22px;
-    
-    top: 71px; 
+    top: 71px;
     left: 301.5px;
     right:109.5px;
-    down:351px; 
+    
+    
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-5 {
     width: 22px;
     height: 22px;
-    
-    top: 104px; 
+    top: 104px;
     left: 212.5px;
     right:198.5px;
-    down:318px; 
+    
+    
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-6 {
     width: 22px;
     height: 22px;
-    
-    top: 164px; 
+    top: 164px;
     left: 319.5px;
     right: 91.5px;
-    down: 258px; 
+    
+    
     transform: translate(-50%, -50%);
   }
 
-  
+
   @media screen and (max-width: 1400px) {
     .page-width {
       padding: 0 30px;
@@ -274,9 +277,9 @@
       grid-template-columns: 1fr;
       gap: 10px;
     }
-    
+
     .grid-overlay-image {
-      width: 20px; 
+      width: 20px;
       height: 20px;
     }
   }
