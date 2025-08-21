@@ -157,21 +157,20 @@
   }
 
 
-  .grid-item:hover .grid-overlay-image {
-    transform: translate(-50%, -50%) scale(1.1); 
+  .grid-overlay-image:hover {
+    transform: translate(-50%, -50%) scale(1.1);
   }
 
   .grid-overlay-image {
     position: absolute;
     z-index: 9;
-    pointer-events: none;
+    pointer-events: auto;
     background: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 1;
-    
     transition: transform 0.2s ease-in-out;
   }
 
@@ -182,8 +181,6 @@
     top: 238px;
     left: 256.5px;
     right: 154.5px;
-    
-    
     transform: translate(-50%, -50%);
   }
 
@@ -193,8 +190,6 @@
     top: 222px;
     left: 355.2px;
     right:55.5px;
-    
-    
     transform: translate(-50%, -50%);
   }
 
@@ -204,8 +199,6 @@
     top: 82px;
     left: 261px;
     right:150px;
-    
-    
     transform: translate(-50%, -50%);
   }
 
@@ -215,8 +208,6 @@
     top: 71px;
     left: 301.5px;
     right:109.5px;
-    
-    
     transform: translate(-50%, -50%);
   }
 
@@ -226,8 +217,6 @@
     top: 104px;
     left: 212.5px;
     right:198.5px;
-    
-    
     transform: translate(-50%, -50%);
   }
 
@@ -237,8 +226,6 @@
     top: 164px;
     left: 319.5px;
     right: 91.5px;
-    
-    
     transform: translate(-50%, -50%);
   }
 
