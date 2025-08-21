@@ -156,91 +156,90 @@
     opacity: 0.5;
   }
 
-  /* General styles for all overlay images */
+  
   .grid-overlay-image {
     position: absolute;
     z-index: 9;
-    pointer-events: none; /* Allows clicks to pass through to the main image */
-    background: white; /* Default background for all overlays */
-    border: 1.5px solid black; /* Default border for all overlays */
-    border-radius: 50%; /* Make them circular */
-    display: flex; /* Use flexbox to center the image within if needed */
+    pointer-events: none; 
+    background: white; 
+    border-radius: 50%; 
+    display: flex; 
     justify-content: center;
     align-items: center;
-    opacity: 1; /* Explicitly set opacity as per input */
+    opacity: 1; 
   }
 
-  /* Specific styles for each overlay image, now using percentages relative to grid-item */
-  /* Calculations based on 433x444px grid-item dimensions */
+  
+  
   .grid-overlay-image-1 {
     width: 22px;
     height: 22px;
-    /* Calculated from image_f59dab.jpg: top: 238px, left: 256.5px (center of overlay) */
-    /* top: (238 / 444) * 100% = 53.60% */
-    /* left: (256.5 / 433) * 100% = 59.24% */
+    
+    
+    
     top: 238px;
     left: 256.5px;
     right: 154.5px;
     down: 184px;
-    transform: translate(-50%, -50%); /* Center the overlay image on its precise point */
+    transform: translate(-50%, -50%); 
   }
 
   .grid-overlay-image-2 {
     width: 22px;
     height: 22px;
-    /* Example values - will need fine-tuning */
-    top: 222px; /* Just example, will depend on visual */
+    
+    top: 222px; 
     left: 355.2px;
     right:55.5px;
-    down: 200px; /* Just example, will depend on visual */
+    down: 200px; 
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-3 {
     width: 22px;
     height: 22px;
-    /* Example values - will need fine-tuning */
-    top: 82px; /* Example */
+    
+    top: 82px; 
     left: 261px;
     right:150px;
-    down:340px; /* Example */
+    down:340px; 
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-4 {
     width: 22px;
     height: 22px;
-    /* Example values - will need fine-tuning */
-    top: 71px; /* Example */
+    
+    top: 71px; 
     left: 301.5px;
     right:109.5px;
-    down:351px; /* Example */
+    down:351px; 
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-5 {
     width: 22px;
     height: 22px;
-    /* Example values - will need fine-tuning */
-    top: 104px; /* Example */
+    
+    top: 104px; 
     left: 212.5px;
     right:198.5px;
-    down:318px; /* Example */
+    down:318px; 
     transform: translate(-50%, -50%);
   }
 
   .grid-overlay-image-6 {
     width: 22px;
     height: 22px;
-    /* Example values - will need fine-tuning */
-    top: 164px; /* Example */
+    
+    top: 164px; 
     left: 319.5px;
     right: 91.5px;
-    down: 258px; /* Example */
+    down: 258px; 
     transform: translate(-50%, -50%);
   }
 
-  /* Responsive Design */
+  
   @media screen and (max-width: 1400px) {
     .page-width {
       padding: 0 30px;
@@ -254,9 +253,7 @@
       height: auto;
       aspect-ratio: 433 / 444;
     }
-    /* Overlay images will automatically scale and position relative to their grid-item
-       because their 'top'/'left' are in percentages and width/height are fixed.
-       If they appear too small, increase their fixed 'width'/'height'. */
+
   }
 
   @media screen and (max-width: 768px) {
@@ -277,9 +274,9 @@
       grid-template-columns: 1fr;
       gap: 10px;
     }
-    /* You might need to adjust the fixed width/height of overlay images for very small screens if they look too big/small */
+    
     .grid-overlay-image {
-      width: 20px; /* Example: make them a bit smaller on mobile if needed */
+      width: 20px; 
       height: 20px;
     }
   }
@@ -293,7 +290,7 @@
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "TISSO VISON IN THE WILD"
+      "default": "Tisso vison in the wild"
     },
     {
       "type": "image_picker",
@@ -361,7 +358,7 @@
       "name": "Image Grid Section",
       "category": "Image",
       "settings": {
-        "title": "TISSO VISON IN THE WILD"
+        "title": "Tisso vison in the wild"
       }
     }
   ]
