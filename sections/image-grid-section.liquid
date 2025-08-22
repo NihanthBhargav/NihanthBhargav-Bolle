@@ -8,7 +8,6 @@
       {% comment %} Grid Item 1 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_1 != blank %}
-          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -16,8 +15,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
-          {# Added width and height attributes to overlay image #}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
             {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -26,16 +24,14 @@
       {% comment %} Grid Item 2 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_2 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+           {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
         {% if section.settings.overlay_image_2 != blank %}
-          {# Added width and height attributes to overlay image #}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
             {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -44,16 +40,14 @@
       {% comment %} Grid Item 3 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_3 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+           {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
         {% if section.settings.overlay_image_3 != blank %}
-          {# Added width and height attributes to overlay image #}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
             {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -62,8 +56,7 @@
       {% comment %} Grid Item 4 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_4 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+           {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -79,16 +72,14 @@
       {% comment %} Grid Item 5 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_5 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+           {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
         {% if section.settings.overlay_image_5 != blank %}
-          {# Added width and height attributes to overlay image #}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
             {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -97,16 +88,14 @@
       {% comment %} Grid Item 6 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_6 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+           {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
         {% if section.settings.overlay_image_6 != blank %}
-          {# Added width and height attributes to overlay image #}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
             {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -120,7 +109,7 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-elements-container"> {# Container for absolutely positioned elements #}
+    <div class="modal-elements-container">  
         <div class="modal-product-image-wrapper">
           <img src="" alt="Product Image" class="modal-product-image">
         </div>
@@ -129,7 +118,7 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-          {# Variant selectors will be dynamically inserted here by JavaScript #}
+           
         </div>
 
         <div class="modal-add-to-cart-form">
