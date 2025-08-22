@@ -110,8 +110,13 @@
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container"> 
-        <div class="modal-product-image-wrapper">
-          <img src="" alt="Product Image" class="modal-product-image">
+        <div class="modal-image-carousel">
+          <div class="carousel-track">
+           </div>
+          <button class="carousel-nav-button prev-button">&#10094;</button>
+          <button class="carousel-nav-button next-button">&#10095;</button>
+          <div class="carousel-dots">
+           </div>
         </div>
         <h3 class="modal-product-title"></h3>
         <p class="modal-product-price"></p>
@@ -121,7 +126,7 @@
          </div>
 
         <div class="modal-add-to-cart-form">
-           <button class="modal-add-to-cart-button">ADD TO CART →</button>
+          <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
     </div>
   </div>
@@ -179,7 +184,6 @@
     align-items: center;
     aspect-ratio: 433 / 444;
     opacity: 1;
-    /* REMOVED: cursor: pointer; or any hover effects that apply to the entire item */
   }
 
   .grid-image {
@@ -187,7 +191,6 @@
     height: 100%;
     display: block;
     object-fit: cover;
-    /* REMOVED: transition or transform for scale effect on main image */
   }
 
   .placeholder-image {
@@ -207,33 +210,32 @@
   /* Overlay button wrapper (for click event) */
   .overlay-button {
     position: absolute;
-    width: 100%; /* Keep 100% width/height so it covers the whole image for clicks */
+    width: 100%;
     height: 100%;
-    cursor: pointer; /* Cursor pointer ONLY on the overlay button */
+    cursor: pointer;
     z-index: 10;
   }
 
   /* Hover effect for the overlay button, targeting the image inside it */
   .overlay-button:hover .grid-overlay-image {
-    transform: translate(-50%, -50%) scale(1.1); /* Slightly enlarge the image */
-    transition: transform 0.2s ease-in-out; /* Smooth transition */
+    transform: translate(-50%, -50%) scale(1.1);
+    transition: transform 0.2s ease-in-out;
   }
 
   /* General styles for all overlay images */
   .grid-overlay-image {
     position: absolute;
     z-index: 9;
-    pointer-events: none; /* Allows clicks to pass through to the parent .overlay-button */
+    pointer-events: none;
     background: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 1;
-    width: 22px; /* Fixed size as per your request */
-    height: 22px; /* Fixed size as per your request */
-    transform: translate(-50%, -50%); /* Centers the image on its top/left point */
-    /* Add transition for smooth hover effect if other properties are animated */
+    width: 22px;
+    height: 22px;
+    transform: translate(-50%, -50%);
     transition: transform 0.2s ease-in-out;
   }
 
@@ -341,19 +343,25 @@
         padding: 0;
     }
 
-    .modal-product-image-wrapper {
+    .modal-image-carousel { /* Carousel adjustments for mobile */
         position: static; /* Disable absolute positioning on mobile */
         width: 100%;
         height: auto;
         margin-bottom: 15px; /* Add space below image */
-        object-fit: contain; /* Ensure image fits */
+        aspect-ratio: 120 / 140; /* Maintain aspect ratio or adjust */
+    }
+    .carousel-track img {
+      position: static;
+    }
+    .carousel-nav-button {
+      font-size: 20px;
+      padding: 5px;
+    }
+    .carousel-dots {
+      position: static;
+      margin-top: 10px;
     }
 
-    .modal-product-image {
-        position: static; /* Disable absolute positioning on mobile */
-        width: 100%;
-        height: auto;
-    }
 
     .modal-product-title,
     .modal-product-price,
@@ -382,7 +390,6 @@
       flex-direction: column;
       width: 100%;
     }
-    /* Removed .modal-quantity-selector styles as the element is gone */
     .modal-add-to-cart-button {
       width: 100%;
     }
@@ -434,7 +441,6 @@
     height: 447px;
     transform: rotate(0deg); /* Explicitly set angle */
     opacity: 1; /* Explicitly set opacity */
-    /* Removed display:flex and gap as child elements will be absolute */
     animation: fadeIn 0s ease-out;
     overflow: hidden; /* Prevent scrolling within the modal content */
   }
@@ -462,106 +468,160 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* No padding here, elements position relative to content box edge */
     overflow: hidden; /* Prevent scrolling within this container */
   }
 
-  .modal-product-image-wrapper {
+  /* --- Carousel Styles --- */
+  .modal-image-carousel {
     position: absolute;
-    width: 120px; /* From your specified properties */
-    height: 140px; /* From your specified properties */
-    top: 36px; /* From your specified properties */
-    left: 17px; /* From your specified properties */
-    transform: rotate(0deg); /* From your specified properties */
-    opacity: 1; /* From your specified properties */
-    overflow: hidden; /* In case image doesn't perfectly fit */
-    border-radius: 0; /* Sharp borders */
+    width: 120px;
+    height: 140px;
+    top: 36px;
+    left: 17px;
+    overflow: hidden; /* Hide overflowing images */
+    border-radius: 0;
   }
 
-  .modal-product-image {
+  .carousel-track {
+    display: flex; /* Arrange images in a row */
+    height: 100%;
+    transition: transform 0.3s ease-in-out; /* Smooth sliding transition */
+  }
+
+  .carousel-track img {
+    flex-shrink: 0; /* Prevent images from shrinking */
     width: 100%;
-    height: 100%; /* Fill the wrapper */
-    display: block;
-    border-radius: 0; /* Sharp borders */
-    object-fit: cover; /* Crop image to fill the 120x140 space */
+    height: 100%;
+    object-fit: cover; /* Cover the container */
+    border-radius: 0;
   }
 
+  .carousel-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 10;
+    border-radius: 50%; /* Make them round */
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  .carousel-nav-button:hover {
+    opacity: 1;
+  }
+
+  .prev-button {
+    left: 5px;
+  }
+
+  .next-button {
+    right: 5px;
+  }
+
+  .carousel-dots {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .dot.active {
+    background-color: white;
+    transform: scale(1.2);
+  }
 
   /* TEXT CONTEXTS - ABSOLUTELY POSITIONED */
   .modal-product-title { /* Orange Wide Leg */
     position: absolute;
-    width: 136px; /* From your specified properties */
-    height: 19px; /* From your specified properties */
-    top: 49px; /* From your specified properties */
-    left: 145px; /* From your specified properties */
-    font-family: 'Jost', sans-serif; /* From your specified properties */
-    font-weight: 300; /* From your specified properties (Light) */
-    font-size: 16px; /* From your specified properties */
-    line-height: 120%; /* From your specified properties */
-    letter-spacing: 0px; /* From your specified properties */
-    text-align: left; /* Default text alignment */
-    color: black; /* Assuming default text color */
-    overflow: hidden; /* Hide if text overflows fixed height */
-    white-space: nowrap; /* Prevent wrapping if text is long for fixed width */
-    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
-    z-index: 2; /* Ensure text is above image if overlapping */
+    width: 136px;
+    height: 19px;
+    top: 49px;
+    left: 145px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    z-index: 2;
   }
 
   .modal-product-price { /* 980,00€ */
     position: absolute;
-    width: 64px; /* From your specified properties */
-    height: 19px; /* From your specified properties */
-    top: 88px; /* From your specified properties */
-    left: 145px; /* From your specified properties */
-    font-family: 'Lustria', serif; /* From your specified properties */
-    font-weight: 400; /* From your specified properties (Regular) */
-    font-size: 16px; /* From your specified properties */
-    line-height: 120%; /* From your specified properties */
-    letter-spacing: 0px; /* From your specified properties */
-    text-align: left; /* Default text alignment */
-    color: #333; /* Assuming default price color */
+    width: 64px;
+    height: 19px;
+    top: 88px;
+    left: 145px;
+    font-family: 'Lustria', serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #333;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    z-index: 2; /* Ensure text is above image if overlapping */
+    z-index: 2;
   }
 
   .modal-product-description { /* This one-piece swimsuit... */
     position: absolute;
-    width: 146px; /* From your specified properties */
-    height: 60px; /* From your specified properties */
-    top: 119px; /* From your specified properties */
-    left: 145px; /* From your specified properties */
-    font-family: 'Jost', sans-serif; /* From your specified properties */
-    font-weight: 300; /* From your specified properties (Light) */
-    font-size: 14px; /* From your specified properties */
-    line-height: 110%; /* From your specified properties (adjusted from 110.00000000000001% to 110%) */
-    letter-spacing: -1%; /* From your specified properties */
-    text-align: left; /* Default text alignment */
-    color: #666; /* Assuming default description color */
-    overflow-y: hidden; /* Prevent scrolling for description */
-    z-index: 2; /* Ensure text is above image if overlapping */
+    width: 146px;
+    height: 60px;
+    top: 119px;
+    left: 145px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 110%;
+    letter-spacing: -1%;
+    text-align: left;
+    color: #666;
+    overflow-y: hidden;
+    z-index: 2;
   }
 
   .modal-variant-options {
     position: absolute;
-    /* NEW: Positioned below the description. Description top 119px + height 60px + margin. */
-    top: 190px; /* Calculated: 119 (desc top) + 60 (desc height) + ~11px (spacing) */
-    left: 17px; /* Aligned with image left */
-    width: calc(100% - 34px); /* Full width minus left/right padding */
-    height: 130px; /* Giving it a fixed height for absolute positioning flow */
-    overflow-y: hidden; /* Prevent scrolling if many variants */
-    display: block; /* Ensures block layout for variant groups */
-    z-index: 2; /* Ensure variants are above image if overlapping */
+    top: 190px;
+    left: 17px;
+    width: calc(100% - 34px);
+    height: 130px;
+    overflow-y: hidden;
+    display: block;
+    z-index: 2;
   }
 
   .variant-option-group {
-    margin-bottom: 10px; /* Space between each option group */
+    margin-bottom: 10px;
     width: 100%;
     height: auto;
-    display: flex; /* Keep internal flex for label/input */
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align to top */
+    justify-content: flex-start;
   }
 
   .variant-option-group label {
@@ -581,7 +641,7 @@
   .variant-option-value-pill {
     padding: 6px 10px;
     border: 1px solid #ccc;
-    border-radius: 0; /* Sharp borders */
+    border-radius: 0;
     cursor: pointer;
     font-size: 0.8em;
     background-color: white;
@@ -601,12 +661,12 @@
 
   /* Custom dropdown styles */
   .custom-dropdown-container {
-    position: relative; /* Position relative to its parent .variant-option-group */
-    width: 100%; /* Adjusted to be 100% of its parent group for absolute layout */
+    position: relative;
+    width: 100%;
     border: 1px solid #ccc;
     cursor: pointer;
     font-family: 'Jost', sans-serif;
-    border-radius: 0; /* Sharp borders */
+    border-radius: 0;
   }
 
   .custom-dropdown-header {
@@ -652,7 +712,7 @@
     border: 1px solid #ccc;
     border-top: none;
     font-family: 'Jost', sans-serif;
-    border-radius: 0; /* Sharp borders */
+    border-radius: 0;
   }
 
   .custom-dropdown-list div {
@@ -676,25 +736,22 @@
 
   .modal-add-to-cart-form {
     position: absolute;
-    /* NEW: Positioned below variants. Variant top 190px + height 130px + spacing. */
-    top: 330px; /* Calculated: 190 (variant top) + 130 (variant height) + ~10px (spacing) */
-    left: 17px; /* Align with other left-aligned elements */
-    width: calc(100% - 34px); /* Fill width minus left/right offset */
+    top: 330px;
+    left: 17px;
+    width: calc(100% - 34px);
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-    z-index: 2; /* Ensure button is above image if overlapping */
+    z-index: 2;
   }
-
-  /* REMOVED: .modal-quantity-selector styles */
 
   .modal-add-to-cart-button {
     background-color: black;
     color: white;
     padding: 10px 18px;
     border: none;
-    border-radius: 0; /* Sharp borders */
+    border-radius: 0;
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
@@ -704,7 +761,7 @@
     justify-content: center;
     gap: 6px;
     flex-grow: 1;
-    width: 100%; /* Make button take full width since quantity is gone */
+    width: 100%;
   }
 
   .modal-add-to-cart-button:hover {
@@ -731,7 +788,7 @@
   .color-box {
     position: relative;
     display: flex;
-    width: 271px; /* Fixed width as per your design */
+    width: 271px;
     height: 40.4413px;
     border: 0.5px solid #000;
     box-sizing: border-box;
@@ -748,7 +805,7 @@
     background: #000;
     transition: transform 0.4s ease;
     z-index: 1;
-    display: none; /* Initially hidden, shown on selection */
+    display: none;
   }
 
   .color-box .slider.right {
@@ -765,9 +822,9 @@
     text-transform: capitalize;
     position: relative;
     cursor: pointer;
-    z-index: 2; /* on top of slider */
+    z-index: 2;
     transition: color 0.4s ease;
-    color: #000; /* default black text */
+    color: #000;
   }
 
   /* Swatch styles */
@@ -803,20 +860,25 @@
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
     const modalOverlay = quickViewModal.querySelector('.modal-overlay');
-    const modalProductImage = quickViewModal.querySelector('.modal-product-image');
     const modalProductTitle = quickViewModal.querySelector('.modal-product-title');
     const modalProductPrice = quickViewModal.querySelector('.modal-product-price');
     const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
-    // Removed: const modalQuantitySelector = quickViewModal.querySelector('.modal-quantity-selector');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
 
-    let currentProductData = null; // Store fetched product data globally for variant selection
+    // Carousel elements
+    const modalImageCarousel = quickViewModal.querySelector('.modal-image-carousel');
+    const carouselTrack = modalImageCarousel.querySelector('.carousel-track');
+    const prevButton = modalImageCarousel.querySelector('.prev-button');
+    const nextButton = modalImageCarousel.querySelector('.next-button');
+    const carouselDotsContainer = modalImageCarousel.querySelector('.carousel-dots');
+
+    let currentProductData = null;
+    let currentImageIndex = 0;
 
     // Helper to format money
     const formatMoney = (cents) => {
       if (typeof Shopify === 'undefined' || !Shopify.currency) {
-        // Fallback if Shopify object is not available
         return `$${(cents / 100).toFixed(2)}`;
       }
       return new Intl.NumberFormat(Shopify.currency.active, {
@@ -825,56 +887,87 @@
       }).format(cents / 100);
     };
 
+    // --- Carousel Functions ---
+    const showImage = (index) => {
+      const images = carouselTrack.querySelectorAll('img');
+      const dots = carouselDotsContainer.querySelectorAll('.dot');
+
+      if (images.length === 0) return;
+
+      // Handle wrapping around for carousel
+      if (index >= images.length) {
+        currentImageIndex = 0;
+      } else if (index < 0) {
+        currentImageIndex = images.length - 1;
+      } else {
+        currentImageIndex = index;
+      }
+
+      const offset = -currentImageIndex * 100; // Each image takes 100% width
+      carouselTrack.style.transform = `translateX(${offset}%)`;
+
+      // Update active dot
+      dots.forEach((dot, i) => {
+        if (i === currentImageIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    };
+
+    const nextImage = () => {
+      showImage(currentImageIndex + 1);
+    };
+
+    const prevImage = () => {
+      showImage(currentImageIndex - 1);
+    };
+
     // Function to update modal content based on selected variant
     const updateVariantInfo = () => {
       if (!currentProductData) return;
 
       const selectedOptions = {};
-      let allOptionsSelected = true; // Flag to check if all necessary options have a valid selection
+      let allOptionsSelected = true;
 
       modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
         const optionName = group.dataset.optionName;
 
         if (optionName.toLowerCase() === 'size') {
-            // Check for custom dropdown selection (Size)
             const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
             if (customDropdownSelectedSpan) {
                 const selectedText = customDropdownSelectedSpan.textContent;
-                // Only consider it a valid selection if it's not the default "Choose your size"
                 if (selectedText && selectedText !== "Choose your size") {
                     selectedOptions[optionName] = selectedText;
                 } else {
-                    allOptionsSelected = false; // A custom dropdown option is not yet chosen
+                    allOptionsSelected = false;
                 }
             } else {
-                allOptionsSelected = false; // Size dropdown element not found or incorrectly structured
+                allOptionsSelected = false;
             }
         } else if (optionName.toLowerCase() === 'color') {
-            // Check for custom color selector selection (Color)
             const activeColorOption = group.querySelector('.color-option.active');
             if (activeColorOption) {
                 selectedOptions[optionName] = activeColorOption.dataset.value;
             } else {
-                allOptionsSelected = false; // A color option is not yet chosen
+                allOptionsSelected = false;
             }
-        }
-         else {
-            // Check for pill selection (other variants)
+        } else {
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
             } else {
-                allOptionsSelected = false; // A pill option is not yet chosen
+                allOptionsSelected = false;
             }
         }
       });
 
       let selectedVariant = null;
-      if (allOptionsSelected) { // Only try to find a variant if all options have been selected by the user
+      if (allOptionsSelected) {
           selectedVariant = currentProductData.variants.find(variant => {
             return Object.keys(selectedOptions).every(optionName => {
               const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
-              // Ensure optionIndex is valid before accessing variant.options
               if (optionIndex === -1) return false;
               return variant.options[optionIndex] === selectedOptions[optionName];
             });
@@ -887,41 +980,29 @@
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
         modalAddToCartButton.disabled = selectedVariant.available ? false : true;
         modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
-        // Removed: modalQuantitySelector.disabled = !selectedVariant.available;
+
+        // --- Update carousel image based on selected variant ---
+        if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
+            const imageId = selectedVariant.featured_image.id;
+            const targetImageElement = carouselTrack.querySelector(`img[data-image-id="${imageId}"]`);
+            if (targetImageElement) {
+                const targetIndex = Array.from(carouselTrack.children).indexOf(targetImageElement);
+                if (targetIndex !== -1) {
+                    showImage(targetIndex); // Show the variant's featured image
+                }
+            }
+        } else {
+            // If variant has no specific image, revert to the first product image
+            showImage(0);
+        }
 
       } else {
-        // If not all options are selected, or no matching variant is found
-        modalProductPrice.textContent = ''; // Clear price
+        modalProductPrice.textContent = '';
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Prompt user to select options
-        // Removed: modalQuantitySelector.disabled = true;
-      }
-
-      // Update modal image based on selected variant (or default if no variant selected)
-      if (selectedVariant && selectedVariant.featured_image && selectedVariant.featured_image.src) {
-          modalProductImage.src = selectedVariant.featured_image.src;
-          if (selectedVariant.featured_image.width && selectedVariant.featured_image.height) {
-              modalProductImage.setAttribute('width', selectedVariant.featured_image.width);
-              modalProductImage.setAttribute('height', selectedVariant.featured_image.height);
-          } else {
-              modalProductImage.removeAttribute('width');
-              modalProductImage.removeAttribute('height');
-          }
-      } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-          // Fallback to main product image if variant doesn't have one or no variant selected
-          modalProductImage.src = currentProductData.featured_image.src;
-          if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
-              modalProductImage.setAttribute('width', currentProductData.featured_image.width);
-              modalProductImage.setAttribute('height', currentProductData.featured_image.height);
-          } else {
-              modalProductImage.removeAttribute('width');
-              modalProductImage.removeAttribute('height');
-          }
-      } else {
-          modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-          modalProductImage.removeAttribute('width');
-          modalProductImage.removeAttribute('height');
+        modalAddToCartButton.textContent = 'SELECT OPTIONS';
+        // Always show the first image if no variant is selected or found
+        showImage(0);
       }
     };
 
@@ -937,7 +1018,7 @@
         label.textContent = option.name;
         optionGroup.appendChild(label);
 
-        if (option.name.toLowerCase() === 'size') { // Use custom dropdown for "Size"
+        if (option.name.toLowerCase() === 'size') {
           const dropdownContainer = document.createElement('div');
           dropdownContainer.classList.add('custom-dropdown-container');
 
@@ -946,12 +1027,12 @@
           dropdownContainer.appendChild(dropdownHeader);
 
           const selectedSpan = document.createElement('span');
-          selectedSpan.classList.add('selected-value'); // Class for easy querying
-          selectedSpan.textContent = "Choose your size"; // Initial text
+          selectedSpan.classList.add('selected-value');
+          selectedSpan.textContent = "Choose your size";
           dropdownHeader.appendChild(selectedSpan);
 
           const lineDiv = document.createElement('div');
-          lineDiv.classList.add('custom-line'); // This is the vertical line
+          lineDiv.classList.add('custom-line');
           dropdownHeader.appendChild(lineDiv);
 
           const arrowI = document.createElement('i');
@@ -965,27 +1046,26 @@
           option.values.forEach(value => {
             const listItem = document.createElement('div');
             listItem.textContent = value;
-            listItem.dataset.value = value; // Store value for selection
+            listItem.dataset.value = value;
             dropdownList.appendChild(listItem);
           });
 
           optionGroup.appendChild(dropdownContainer);
           modalVariantOptions.appendChild(optionGroup);
 
-          // Attach custom dropdown specific event listeners
           dropdownHeader.addEventListener("click", (e) => {
-            e.stopPropagation(); // Prevent modal close from immediate click
+            e.stopPropagation();
             dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
             arrowI.classList.toggle("up");
           });
 
           dropdownList.querySelectorAll("div").forEach(item => {
             item.addEventListener("click", (e) => {
-                e.stopPropagation(); // Stop click from bubbling to header or container
+                e.stopPropagation();
                 selectedSpan.innerText = item.innerText;
                 dropdownList.style.display = "none";
                 arrowI.classList.remove("up");
-                updateVariantInfo(); // Trigger variant info update on selection
+                updateVariantInfo();
             });
           });
 
@@ -995,12 +1075,12 @@
               arrowI.classList.remove("up");
             }
           };
-          dropdownContainer._globalClickListener = handleGlobalClick; // Store reference
+          dropdownContainer._globalClickListener = handleGlobalClick;
           document.addEventListener("click", dropdownContainer._globalClickListener);
 
-        } else if (option.name.toLowerCase() === 'color') { // Use custom color selector for "Color"
+        } else if (option.name.toLowerCase() === 'color') {
             const fieldset = document.createElement('fieldset');
-            fieldset.classList.add('color-container'); // Use this class from your styles
+            fieldset.classList.add('color-container');
 
             const legend = document.createElement('legend');
             legend.textContent = option.name;
@@ -1014,14 +1094,13 @@
             slider.classList.add('slider');
             colorBox.appendChild(slider);
 
-            // Dynamically create color options based on available values for 'White' and 'Black'
             const whiteValue = option.values.find(v => v.toLowerCase() === 'white');
             const blackValue = option.values.find(v => v.toLowerCase() === 'black');
 
             if (whiteValue) {
                 const whiteOption = document.createElement('div');
                 whiteOption.classList.add('color-option');
-                whiteOption.dataset.value = whiteValue; // Store the actual variant value
+                whiteOption.dataset.value = whiteValue;
                 whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
                 colorBox.appendChild(whiteOption);
             }
@@ -1029,7 +1108,7 @@
             if (blackValue) {
                 const blackOption = document.createElement('div');
                 blackOption.classList.add('color-option');
-                blackOption.dataset.value = blackValue; // Store the actual variant value
+                blackOption.dataset.value = blackValue;
                 blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
                 colorBox.appendChild(blackOption);
             }
@@ -1037,37 +1116,34 @@
             optionGroup.appendChild(fieldset);
             modalVariantOptions.appendChild(optionGroup);
 
-            // Attach event listeners for the custom color selector
             const whiteBox = optionGroup.querySelector(".color-option[data-value='White']");
             const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
-            const colorSlider = optionGroup.querySelector(".color-box .slider"); // Specific to this color box
+            const colorSlider = optionGroup.querySelector(".color-box .slider");
 
-            // Event listener for White
             if (whiteBox) {
                 whiteBox.addEventListener("click", () => {
-                    if (colorSlider) { // Ensure slider exists
+                    if (colorSlider) {
                         colorSlider.style.display = "block";
                         colorSlider.classList.remove("right");
                     }
                     whiteBox.classList.add("active");
-                    if (blackBox) blackBox.classList.remove("active"); // Remove active from black
+                    if (blackBox) blackBox.classList.remove("active");
                     updateVariantInfo();
                 });
             }
 
-            // Event listener for Black
             if (blackBox) {
                 blackBox.addEventListener("click", () => {
-                    if (colorSlider) { // Ensure slider exists
+                    if (colorSlider) {
                         colorSlider.style.display = "block";
                         colorSlider.classList.add("right");
                     }
                     blackBox.classList.add("active");
-                    if (whiteBox) whiteBox.classList.remove("active"); // Remove active from white
+                    if (whiteBox) whiteBox.classList.remove("active");
                     updateVariantInfo();
                 });
             }
-        } else { // Use pills for other options (if any other custom variant is added later)
+        } else {
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -1078,19 +1154,15 @@
             pill.dataset.value = value;
             valuesContainer.appendChild(pill);
 
-            // Add click listener to pills
             pill.addEventListener('click', () => {
-              // Remove 'selected' from all other pills in this group
               valuesContainer.querySelectorAll('.variant-option-value-pill').forEach(p => p.classList.remove('selected'));
-              // Add 'selected' to the clicked pill
               pill.classList.add('selected');
-              updateVariantInfo(); // Update info based on new selection
+              updateVariantInfo();
             });
           });
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
 
-            // For pill options, automatically select the first value for convenience
             const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
             if (firstPill) {
                 firstPill.classList.add('selected');
@@ -1098,7 +1170,6 @@
         }
       });
 
-      // Initial update after generating all selectors
       updateVariantInfo();
     };
 
@@ -1110,28 +1181,60 @@
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        currentProductData = await response.json(); // Store fetched data
+        currentProductData = await response.json();
 
-        // Populate modal with product data - ensure .src is accessed
-        modalProductImage.src = (currentProductData.featured_image && currentProductData.featured_image.src) ? currentProductData.featured_image.src : 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-        modalProductImage.alt = currentProductData.title;
+        // Clear previous carousel content
+        carouselTrack.innerHTML = '';
+        carouselDotsContainer.innerHTML = '';
+        currentImageIndex = 0; // Reset image index
 
-        // Set width and height attributes if available in product data
-        if (currentProductData.featured_image && currentProductData.featured_image.width && currentProductData.featured_image.height) {
-            modalProductImage.setAttribute('width', currentProductData.featured_image.width);
-            modalProductImage.setAttribute('height', currentProductData.featured_image.height);
+        // Populate carousel with product images
+        if (currentProductData.images && currentProductData.images.length > 0) {
+          currentProductData.images.forEach((image, index) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image.src || 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            imgElement.alt = currentProductData.title + ' image ' + (index + 1);
+            imgElement.setAttribute('width', image.width || '400');
+            imgElement.setAttribute('height', image.height || '400');
+            imgElement.dataset.imageId = image.id; // Store image ID for variant matching
+            carouselTrack.appendChild(imgElement);
+
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.dataset.index = index;
+            dot.addEventListener('click', () => showImage(index));
+            carouselDotsContainer.appendChild(dot);
+          });
+          // Show the first image and hide nav if only one image
+          showImage(0);
+          if (currentProductData.images.length <= 1) {
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            carouselDotsContainer.style.display = 'none';
+          } else {
+            prevButton.style.display = 'block';
+            nextButton.style.display = 'block';
+            carouselDotsContainer.style.display = 'flex';
+          }
         } else {
-            modalProductImage.removeAttribute('width');
-            modalProductImage.removeAttribute('height');
+            // No images available, show a generic placeholder
+            const imgElement = document.createElement('img');
+            imgElement.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            imgElement.alt = 'No image available';
+            imgElement.setAttribute('width', '400');
+            imgElement.setAttribute('height', '400');
+            carouselTrack.appendChild(imgElement);
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            carouselDotsContainer.style.display = 'none';
         }
 
 
-        // Set text content for absolutely positioned elements
         modalProductTitle.textContent = currentProductData.title;
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        generateVariantSelectors(currentProductData); // Generate and set initial state of variants
+        generateVariantSelectors(currentProductData);
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -1146,25 +1249,21 @@
     const closeModal = () => {
       quickViewModal.style.display = 'none';
       document.body.style.overflow = '';
-      modalProductImage.src = '';
-      modalProductImage.removeAttribute('width'); // Clear width attribute
-      modalProductImage.removeAttribute('height'); // Clear height attribute
+      carouselTrack.innerHTML = ''; // Clear carousel images
+      carouselDotsContainer.innerHTML = ''; // Clear dots
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
-      modalVariantOptions.innerHTML = ''; // Clear variant options on close
-      // Removed: modalQuantitySelector.value = 1;
+      modalVariantOptions.innerHTML = '';
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
-      modalAddToCartButton.textContent = 'ADD TO CART →'; // Reset button text
-      currentProductData = null; // Clear product data
+      modalAddToCartButton.textContent = 'ADD TO CART →';
+      currentProductData = null;
 
-      // Remove the global click listener for the custom dropdown when modal closes
-      // This is crucial to prevent multiple listeners accumulating
       modalVariantOptions.querySelectorAll('.custom-dropdown-container').forEach(container => {
         if (container._globalClickListener) {
           document.removeEventListener("click", container._globalClickListener);
-          delete container._globalClickListener; // Clean up reference
+          delete container._globalClickListener;
         }
       });
     };
@@ -1186,14 +1285,20 @@
     modalCloseButton.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
 
+    // Carousel navigation event listeners
+    prevButton.addEventListener('click', prevImage);
+    nextButton.addEventListener('click', nextImage);
+
+
     // Add to Cart functionality
     modalAddToCartButton.addEventListener('click', async () => {
       const variantId = modalAddToCartButton.dataset.variantId;
-      const quantity = 1; // Quantity is now fixed at 1 as per request
+      const quantity = 1;
 
-      if (!variantId) { // No need to check quantity anymore
+      if (!variantId) {
         console.error('Invalid variant ID.');
-        alert('Please select all required options.'); // Update alert message
+        // Using custom modal for alerts instead of browser alert()
+        alert('Please select all required options.');
         return;
       }
 
@@ -1220,15 +1325,79 @@
 
         const cartData = await response.json();
         console.log('Product added to cart:', cartData);
-        // Optionally, close the modal and provide user feedback (e.g., small success message, update cart icon)
         closeModal();
-        alert('Product added to cart successfully!'); // Using alert for simplicity, consider custom UI
+        // Using custom modal for alerts instead of browser alert()
+        alert('Product added to cart successfully!');
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        alert('Failed to add product to cart. Please try again.'); // Using alert for simplicity, consider custom UI
+        // Using custom modal for alerts instead of browser alert()
+        alert('Failed to add product to cart. Please try again.');
       }
     });
+
+    // Simple custom alert for demonstration (replace with a proper modal in production)
+    function alert(message) {
+      const existingAlert = document.getElementById('custom-alert');
+      if (existingAlert) {
+        existingAlert.remove();
+      }
+
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'custom-alert';
+      alertDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4CAF50; /* Green */
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-family: 'Jost', sans-serif;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.5s forwards, fadeOut 3s forwards 2s;
+      `;
+      alertDiv.innerHTML = `
+        <span>${message}</span>
+        <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
+      `;
+
+      document.body.appendChild(alertDiv);
+
+      alertDiv.querySelector('button').addEventListener('click', () => {
+        alertDiv.remove();
+      });
+
+      // Keyframes for animations
+      const styleSheet = document.createElement("style");
+      styleSheet.type = "text/css";
+      styleSheet.innerText = `
+        @keyframes slideIn {
+          from { top: -50px; opacity: 0; }
+          to { top: 20px; opacity: 1; }
+        }
+        @keyframes fadeOut {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+
+      setTimeout(() => {
+        if (document.body.contains(alertDiv)) {
+          alertDiv.remove();
+        }
+        if (document.head.contains(styleSheet)) {
+            styleSheet.remove();
+        }
+      }, 5000); // Remove after 5 seconds
+    }
 
   });
 </script>
