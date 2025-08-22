@@ -774,11 +774,12 @@
     // Helper to format money
     const formatMoney = (cents) => {
       if (typeof Shopify === 'undefined' || !Shopify.currency) {
+        // Fallback for environments without Shopify object
         return `$${(cents / 100).toFixed(2)}`;
       }
       return new Intl.NumberFormat(Shopify.currency.active, {
           style: 'currency',
-          currency: Shopify.currency.active || 'USD'
+          currency: Shopify.currency.active || 'EUR' // Default to EUR as per user request
       }).format(cents / 100);
     };
 
@@ -796,7 +797,8 @@
             const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
             if (customDropdownSelectedSpan) {
                 const selectedText = customDropdownSelectedSpan.textContent;
-                if (selectedText && selectedText !== "Choose your size") {
+                // Check if a size has actually been selected, not just the placeholder
+                if (selectedText && customDropdownSelectedSpan.dataset.value !== "") {
                     selectedOptions[optionName] = selectedText;
                 } else {
                     allOptionsSelected = false;
@@ -851,7 +853,7 @@
         }
 
       } else {
-        // If no specific variant is selected (e.g., dropdown not picked), show the base product price
+        // If no specific variant is selected, show the base product price
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
@@ -882,6 +884,7 @@
           const selectedSpan = document.createElement('span');
           selectedSpan.classList.add('selected-value');
           selectedSpan.textContent = "Choose your size";
+          selectedSpan.dataset.value = ""; // Add data-value for easier check
           dropdownHeader.appendChild(selectedSpan);
 
           const lineDiv = document.createElement('div');
@@ -916,6 +919,7 @@
             item.addEventListener("click", (e) => {
                 e.stopPropagation();
                 selectedSpan.innerText = item.innerText;
+                selectedSpan.dataset.value = item.dataset.value; // Update data-value
                 dropdownList.style.display = "none";
                 arrowI.classList.remove("up");
                 updateVariantInfo();
@@ -1050,6 +1054,7 @@
               errorMessage += ` - ${errorBody.message}`;
             }
           } catch (e) {
+            console.error('Error parsing error response:', e);
           }
           throw new Error(errorMessage);
         }
@@ -1069,8 +1074,8 @@
         }
 
         modalProductTitle.textContent = currentProductData.title;
-        // Always set the base product price when opening the modal
-        modalProductPrice.textContent = formatMoney(currentProductData.price);
+        // Always set the base product price when opening the modal, using '0' if price is not a valid number
+        modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
         modalProductDescription.innerHTML = currentProductData.description;
 
         generateVariantSelectors(currentProductData);
