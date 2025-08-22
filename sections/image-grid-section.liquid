@@ -113,9 +113,9 @@
         <div class="modal-product-image-wrapper">
           <img src="" alt="Product Image" class="modal-product-image">
         </div>
-        <h3 class="modal-product-title"></h3>
-        <p class="modal-product-price"></p>
-        <div class="modal-product-description"></div>
+        <h3 class="modal-product-title">Orange Wide Leg</h3>
+        <p class="modal-product-price">980,00€</p>
+        <div class="modal-product-description">This one-piece swimsuit is<br>crafted from jersey<br>featuring an allover micro<br>Monogram motif in relief.</div>
 
         <div class="modal-variant-options">
         </div>
@@ -477,8 +477,7 @@
     transform: rotate(0deg); /* From your specified properties */
     opacity: 1; /* From your specified properties */
     overflow: hidden; /* In case image doesn't perfectly fit */
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
   }
 
   .modal-product-image {
@@ -507,6 +506,7 @@
     overflow: hidden; /* Hide if text overflows fixed height */
     white-space: nowrap; /* Prevent wrapping if text is long for fixed width */
     text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    z-index: 2; /* Ensure text is above image if overlapping */
   }
 
   .modal-product-price { /* 980,00€ */
@@ -525,6 +525,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    z-index: 2; /* Ensure text is above image if overlapping */
   }
 
   .modal-product-description { /* This one-piece swimsuit... */
@@ -541,18 +542,19 @@
     text-align: left; /* Default text alignment */
     color: #666; /* Assuming default description color */
     overflow-y: auto; /* Allow scrolling for description if it overflows its fixed height */
+    z-index: 2; /* Ensure text is above image if overlapping */
   }
 
   .modal-variant-options {
     position: absolute;
-    top: 198px; /* Estimated position based on previous element's bottom + spacing */
+    /* NEW: Positioned below the description. Description top 119px + height 60px + margin. */
+    top: 190px; /* Calculated: 119 (desc top) + 60 (desc height) + ~11px (spacing) */
     left: 17px; /* Aligned with image left */
     width: calc(100% - 34px); /* Full width minus left/right padding */
-    margin-bottom: 0; /* No margin as it's absolute */
-    padding-bottom: 15px; /* Add internal padding for scrolling */
-    height: auto; /* Let content define height */
-    display: block; /* Change from flex to block for absolute flow */
+    height: 130px; /* Giving it a fixed height for absolute positioning flow */
     overflow-y: auto; /* Allow scrolling if many variants */
+    display: block; /* Ensures block layout for variant groups */
+    z-index: 2; /* Ensure variants are above image if overlapping */
   }
 
   .variant-option-group {
@@ -676,13 +678,15 @@
 
   .modal-add-to-cart-form {
     position: absolute;
-    bottom: 30px; /* Position from bottom of modal */
+    /* NEW: Positioned below variants. Variant top 190px + height 130px + spacing. */
+    top: 330px; /* Calculated: 190 (variant top) + 130 (variant height) + ~10px (spacing) */
     left: 17px; /* Align with other left-aligned elements */
     width: calc(100% - 34px); /* Fill width minus left/right offset */
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
+    z-index: 2; /* Ensure button is above image if overlapping */
   }
 
   .modal-quantity-selector {
@@ -979,18 +983,15 @@
             modalProductImage.setAttribute('width', currentProductData.featured_image.width);
             modalProductImage.setAttribute('height', currentProductData.featured_image.height);
         } else {
-            // Fallback for cases where image dimensions are not available
             modalProductImage.removeAttribute('width');
             modalProductImage.removeAttribute('height');
         }
 
 
         // Set text content for absolutely positioned elements
-        // The values like "Orange Wide Leg" are illustrative from your design,
-        // The actual product title and description will come from Shopify data.
-        modalProductTitle.textContent = currentProductData.title; // This will be the actual product title
-        modalProductPrice.textContent = formatMoney(currentProductData.price); // Initial price
-        modalProductDescription.innerHTML = currentProductData.description; // Product description
+        modalProductTitle.textContent = currentProductData.title;
+        modalProductPrice.textContent = formatMoney(currentProductData.price);
+        modalProductDescription.innerHTML = currentProductData.description;
 
         generateVariantSelectors(currentProductData); // Generate and select default variants
 
@@ -1055,7 +1056,6 @@
       if (!variantId || isNaN(quantity) || quantity <= 0) {
         console.error('Invalid variant ID or quantity.');
         // Using alert for simplicity, consider a custom modal UI for better UX
-        // You should implement a custom message box as per instructions.
         alert('Please select all required options and ensure quantity is valid.');
         return;
       }
