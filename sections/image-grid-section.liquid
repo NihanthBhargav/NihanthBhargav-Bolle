@@ -849,7 +849,8 @@
             }
           };
           // Remove previous listener if exists (e.g., from prior modal opens)
-          dropdownContainer._globalClickListener = handleGlobalClick; // Store reference to remove later
+          // Store a unique reference to avoid removing other dropdown's listeners
+          dropdownContainer._globalClickListener = handleGlobalClick; // Store reference
           document.addEventListener("click", dropdownContainer._globalClickListener);
 
         } else { // Use pills for other options (like Color)
