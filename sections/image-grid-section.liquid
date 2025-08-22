@@ -5,115 +5,67 @@
     </div>
 
     <div class="image-grid-container">
-      {% comment %} Grid Item 1 {% endcomment %}
       <div class="grid-item">
-        {% if section.settings.image_1 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% else %}
-          <div class="placeholder-image">
-            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
+        {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% if section.settings.overlay_image_1 != blank %}
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_1 }}"
-            data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
+            data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}">
             {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
-      {% comment %} Grid Item 2 {% endcomment %}
       <div class="grid-item">
-        {% if section.settings.image_2 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% else %}
-          <div class="placeholder-image">
-            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
+        {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% if section.settings.overlay_image_2 != blank %}
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_2 }}"
-            data-grid-image-url="{{ section.settings.image_2 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
+            data-grid-image-url="{{ section.settings.image_2 | image_url: width: 400 }}">
             {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
-      {% comment %} Grid Item 3 {% endcomment %}
       <div class="grid-item">
-        {% if section.settings.image_3 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% else %}
-          <div class="placeholder-image">
-            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
+        {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% if section.settings.overlay_image_3 != blank %}
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_3 }}"
-            data-grid-image-url="{{ section.settings.image_3 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
+            data-grid-image-url="{{ section.settings.image_3 | image_url: width: 400 }}">
             {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
-      {% comment %} Grid Item 4 {% endcomment %}
       <div class="grid-item">
-        {% if section.settings.image_4 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% else %}
-          <div class="placeholder-image">
-            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
+        {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% if section.settings.overlay_image_4 != blank %}
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_4 }}"
-            data-grid-image-url="{{ section.settings.image_4 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
+            data-grid-image-url="{{ section.settings.image_4 | image_url: width: 400 }}">
             {{ section.settings.overlay_image_4 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-4', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
-      {% comment %} Grid Item 5 {% endcomment %}
       <div class="grid-item">
-        {% if section.settings.image_5 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% else %}
-          <div class="placeholder-image">
-            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
+        {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% if section.settings.overlay_image_5 != blank %}
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_5 }}"
-            data-grid-image-url="{{ section.settings.image_5 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
+            data-grid-image-url="{{ section.settings.image_5 | image_url: width: 400 }}">
             {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
-      {% comment %} Grid Item 6 {% endcomment %}
       <div class="grid-item">
-        {% if section.settings.image_6 != blank %}
-          {# Added width and height attributes to prevent CLS #}
-          {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% else %}
-          <div class="placeholder-image">
-            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
+        {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% if section.settings.overlay_image_6 != blank %}
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_6 }}"
-            data-grid-image-url="{{ section.settings.image_6 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
+            data-grid-image-url="{{ section.settings.image_6 | image_url: width: 400 }}">
             {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -127,8 +79,7 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-elements-container"> {# Container for absolutely positioned elements #}
-        {# Replaced carousel with a single image container #}
+    <div class="modal-elements-container">
         <div class="modal-single-image">
             <img id="modal-main-product-image" src="" alt="Product Image" width="120" height="140">
         </div>
@@ -138,7 +89,6 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-          {# Variant selectors will be dynamically inserted here by JavaScript #}
         </div>
 
         <div class="modal-add-to-cart-form">
@@ -151,7 +101,7 @@
 <style>
   /* Base font for the theme */
   body {
-    font-family: 'Jost', sans-serif; /* Your specified font from the dropdown code */
+    font-family: 'Jost', sans-serif;
   }
 
   .image-grid-section {
@@ -429,7 +379,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it's on top of everything */
+    z-index: 1000;
   }
 
   .modal-overlay {
@@ -438,22 +388,22 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    background-color: rgba(0, 0, 0, 0.7);
   }
 
   .modal-content {
     background-color: white;
-    padding: 0; /* Remove padding as elements will be absolutely positioned inside */
-    border-radius: 0; /* Sharp borders */
+    padding: 0;
+    border-radius: 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative; /* Crucial for absolute positioning of children */
+    position: relative;
     z-index: 1001;
     width: 311px;
     height: 447px;
-    transform: rotate(0deg); /* Explicitly set angle */
-    opacity: 1; /* Explicitly set opacity */
+    transform: rotate(0deg);
+    opacity: 1;
     animation: fadeIn 0s ease-out;
-    overflow: hidden; /* Prevent scrolling within the modal content */
+    overflow: hidden;
   }
 
   @keyframes fadeIn {
@@ -470,16 +420,16 @@
     font-size: 24px;
     cursor: pointer;
     color: #333;
-    z-index: 1003; /* Ensure close button is always on top */
+    z-index: 1003;
   }
 
-  .modal-elements-container { /* New wrapper for all absolutely positioned elements */
+  .modal-elements-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Prevent scrolling within this container */
+    overflow: hidden;
   }
 
   /* --- Single Image Styles --- */
@@ -489,29 +439,29 @@
     height: 140px;
     top: 36px;
     left: 17px;
-    overflow: hidden; /* Ensure image doesn't overflow its container */
+    overflow: hidden;
     border-radius: 0;
   }
 
   .modal-single-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cover the container */
+    object-fit: cover;
     border-radius: 0;
   }
 
   /* TEXT CONTEXTS - ABSOLUTELY POSITIONED */
-  .modal-product-title { /* Orange Wide Leg */
+  .modal-product-title {
     position: absolute;
     width: 136px;
     height: 19px;
     top: 49px;
     left: 145px;
     font-family: 'Jost', sans-serif;
-    font-weight: 300; /* Updated font-weight */
-    font-size: 16px; /* Updated font-size */
-    line-height: 120%; /* Updated line-height */
-    letter-spacing: 0px; /* Updated letter-spacing */
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0px;
     text-align: left;
     color: black;
     overflow: hidden;
@@ -520,7 +470,7 @@
     z-index: 2;
   }
 
-  .modal-product-price { /* 980,00€ */
+  .modal-product-price {
     position: absolute;
     width: 64px;
     height: 19px;
@@ -528,18 +478,19 @@
     left: 145px;
     font-family: 'Lustria', serif;
     font-weight: 400;
-    font-size: 16px;
-    line-height: 120%;
-    letter-spacing: 0px;
+    font-size: 16px; /* Updated font-size */
+    line-height: 120%; /* Updated line-height */
+    letter-spacing: 0px; /* Updated letter-spacing */
+    background: #000000; /* Updated background */
     text-align: left;
-    color: #333;
+    color: #333; /* Current text color, consider changing for readability on black background */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     z-index: 2;
   }
 
-  .modal-product-description { /* This one-piece swimsuit... */
+  .modal-product-description {
     position: absolute;
     width: 146px;
     height: 60px;
@@ -775,7 +726,7 @@
     position: relative;
     cursor: pointer;
     z-index: 2;
-    color: #000; /* Removed transition for instant color change */
+    color: #000;
   }
 
   /* Swatch styles */
@@ -816,7 +767,7 @@
     const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
-    const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image'); // Reference to the single image
+    const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
 
     let currentProductData = null;
 
@@ -892,11 +843,9 @@
             modalMainProductImage.src = selectedVariant.featured_image.src;
             modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            // Fallback to the first product image if variant has no specific image
             modalMainProductImage.src = currentProductData.images[0].src;
             modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
         } else {
-            // Fallback to a placeholder if no images available
             modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
             modalMainProductImage.alt = 'No image available';
         }
@@ -906,14 +855,12 @@
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
         modalAddToCartButton.textContent = 'SELECT OPTIONS';
-        // If no variant is selected, revert to the initial image (either grid image or first product image)
-        // This will be handled by the openModal initial image setting.
       }
     };
 
     // Function to generate variant selectors
     const generateVariantSelectors = (productData) => {
-      modalVariantOptions.innerHTML = ''; // Clear previous options
+      modalVariantOptions.innerHTML = '';
       productData.options.forEach((option, optionIndex) => {
         const optionGroup = document.createElement('div');
         optionGroup.classList.add('variant-option-group');
@@ -1094,7 +1041,6 @@
               errorMessage += ` - ${errorBody.message}`;
             }
           } catch (e) {
-            // Couldn't parse JSON, just use the status
           }
           throw new Error(errorMessage);
         }
@@ -1132,7 +1078,7 @@
     const closeModal = () => {
       quickViewModal.style.display = 'none';
       document.body.style.overflow = '';
-      modalMainProductImage.src = ''; // Clear the image
+      modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
@@ -1156,7 +1102,7 @@
       button.addEventListener('click', (event) => {
         event.preventDefault();
         const productHandle = button.dataset.productHandle;
-        const gridImageUrl = button.dataset.gridImageUrl; // Get the grid image URL
+        const gridImageUrl = button.dataset.gridImageUrl;
         if (productHandle) {
           openModal(productHandle, gridImageUrl);
         } else {
@@ -1170,8 +1116,6 @@
     modalCloseButton.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
 
-    // No carousel navigation event listeners needed anymore.
-
 
     // Add to Cart functionality
     modalAddToCartButton.addEventListener('click', async () => {
@@ -1180,7 +1124,6 @@
 
       if (!variantId) {
         console.error('Invalid variant ID.');
-        // Using custom modal for alerts instead of browser alert()
         alert('Please select all required options.');
         return;
       }
@@ -1209,12 +1152,10 @@
         const cartData = await response.json();
         console.log('Product added to cart:', cartData);
         closeModal();
-        // Using custom modal for alerts instead of browser alert()
         alert('Product added to cart successfully!');
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        // Using custom modal for alerts instead of browser alert()
         alert('Failed to add product to cart. Please try again.');
       }
     });
@@ -1233,7 +1174,7 @@
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #f44336; /* Red for error */
+        background-color: #f44336;
         color: white;
         padding: 15px;
         border-radius: 5px;
@@ -1257,7 +1198,6 @@
         alertDiv.remove();
       });
 
-      // Keyframes for animations
       const styleSheet = document.createElement("style");
       styleSheet.type = "text/css";
       styleSheet.innerText = `
@@ -1279,7 +1219,7 @@
         if (document.head.contains(styleSheet)) {
             styleSheet.remove();
         }
-      }, 5000); // Remove after 5 seconds
+      }, 5000);
     }
 
   });
