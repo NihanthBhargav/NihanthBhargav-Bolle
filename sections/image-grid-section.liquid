@@ -482,7 +482,7 @@
     line-height: 120%;
     letter-spacing: 0px;
     background: #000000;
-    color: #FFFFFF; /* Changed text color to white for visibility on black background */
+    color: #FFFFFF; /* Ensures text is visible on black background */
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
@@ -851,7 +851,8 @@
         }
 
       } else {
-        modalProductPrice.textContent = '';
+        // If no specific variant is selected (e.g., dropdown not picked), show the base product price
+        modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
         modalAddToCartButton.textContent = 'SELECT OPTIONS';
@@ -972,6 +973,13 @@
             const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
             const colorSlider = optionGroup.querySelector(".color-box .slider");
 
+            // Auto-select the first color if available
+            if (whiteBox) {
+                whiteBox.click(); // Simulate a click to select white by default
+            } else if (blackBox) {
+                blackBox.click(); // Simulate a click to select black by default
+            }
+
             if (whiteBox) {
                 whiteBox.addEventListener("click", () => {
                     if (colorSlider) {
@@ -1015,6 +1023,7 @@
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
 
+            // Auto-select the first pill if available
             const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
             if (firstPill) {
                 firstPill.classList.add('selected');
@@ -1060,6 +1069,7 @@
         }
 
         modalProductTitle.textContent = currentProductData.title;
+        // Always set the base product price when opening the modal
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
