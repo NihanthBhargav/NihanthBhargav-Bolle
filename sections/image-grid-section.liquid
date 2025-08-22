@@ -8,14 +8,14 @@
       {% comment %} Grid Item 1 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_1 != blank %}
-          {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+           {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
-           <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
+          <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
             {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -31,7 +31,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_2 != blank %}
-           <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
+          <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
             {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -47,7 +47,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_3 != blank %}
-           <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
+          <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
             {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -79,7 +79,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_5 != blank %}
-           <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
+          <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
             {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -95,7 +95,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_6 != blank %}
-           <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
+          <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
             {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -109,7 +109,7 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-elements-container">  
+    <div class="modal-elements-container"> 
         <div class="modal-product-image-wrapper">
           <img src="" alt="Product Image" class="modal-product-image">
         </div>
@@ -118,12 +118,10 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-           
-        </div>
+         </div>
 
         <div class="modal-add-to-cart-form">
-          <input type="number" class="modal-quantity-selector" value="1" min="1">
-          <button class="modal-add-to-cart-button">ADD TO CART →</button>
+           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
     </div>
   </div>
@@ -181,6 +179,7 @@
     align-items: center;
     aspect-ratio: 433 / 444;
     opacity: 1;
+    /* REMOVED: cursor: pointer; or any hover effects that apply to the entire item */
   }
 
   .grid-image {
@@ -188,7 +187,7 @@
     height: 100%;
     display: block;
     object-fit: cover;
-    /* Removed: transition for scale effect on main image */
+    /* REMOVED: transition or transform for scale effect on main image */
   }
 
   .placeholder-image {
@@ -208,9 +207,9 @@
   /* Overlay button wrapper (for click event) */
   .overlay-button {
     position: absolute;
-    width: 100%;
+    width: 100%; /* Keep 100% width/height so it covers the whole image for clicks */
     height: 100%;
-    cursor: pointer;
+    cursor: pointer; /* Cursor pointer ONLY on the overlay button */
     z-index: 10;
   }
 
@@ -383,9 +382,7 @@
       flex-direction: column;
       width: 100%;
     }
-    .modal-quantity-selector {
-      width: 100%;
-    }
+    /* Removed .modal-quantity-selector styles as the element is gone */
     .modal-add-to-cart-button {
       width: 100%;
     }
@@ -439,7 +436,7 @@
     opacity: 1; /* Explicitly set opacity */
     /* Removed display:flex and gap as child elements will be absolute */
     animation: fadeIn 0s ease-out;
-    overflow: hidden; /* Hide overflow from absolutely positioned elements if they go outside */
+    overflow: hidden; /* Prevent scrolling within the modal content */
   }
 
   @keyframes fadeIn {
@@ -466,7 +463,7 @@
     width: 100%;
     height: 100%;
     /* No padding here, elements position relative to content box edge */
-    /* overflow-y: auto; */ /* Enable scrolling if content exceeds height, but complex with absolute children */
+    overflow: hidden; /* Prevent scrolling within this container */
   }
 
   .modal-product-image-wrapper {
@@ -542,7 +539,7 @@
     letter-spacing: -1%; /* From your specified properties */
     text-align: left; /* Default text alignment */
     color: #666; /* Assuming default description color */
-    overflow-y: auto; /* Allow scrolling for description if it overflows its fixed height */
+    overflow-y: hidden; /* Prevent scrolling for description */
     z-index: 2; /* Ensure text is above image if overlapping */
   }
 
@@ -553,7 +550,7 @@
     left: 17px; /* Aligned with image left */
     width: calc(100% - 34px); /* Full width minus left/right padding */
     height: 130px; /* Giving it a fixed height for absolute positioning flow */
-    overflow-y: auto; /* Allow scrolling if many variants */
+    overflow-y: hidden; /* Prevent scrolling if many variants */
     display: block; /* Ensures block layout for variant groups */
     z-index: 2; /* Ensure variants are above image if overlapping */
   }
@@ -690,14 +687,7 @@
     z-index: 2; /* Ensure button is above image if overlapping */
   }
 
-  .modal-quantity-selector {
-    width: 70px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 0; /* Sharp borders */
-    text-align: center;
-    font-size: 0.9em;
-  }
+  /* REMOVED: .modal-quantity-selector styles */
 
   .modal-add-to-cart-button {
     background-color: black;
@@ -714,6 +704,7 @@
     justify-content: center;
     gap: 6px;
     flex-grow: 1;
+    width: 100%; /* Make button take full width since quantity is gone */
   }
 
   .modal-add-to-cart-button:hover {
@@ -721,17 +712,15 @@
   }
 
   /* --- CUSTOM COLOR SELECTOR STYLES --- */
-  /* These styles are taken directly from your provided HTML snippet */
-
-  fieldset.color-container { /* Renamed from original for better specificity/avoiding global conflicts */
+  fieldset.color-container {
     border: none;
     padding: 0;
     margin: 0;
     min-width: 0;
-    width: 100%; /* Ensure it takes full width of variant option group */
+    width: 100%;
   }
 
-  fieldset.color-container legend { /* Renamed for specificity */
+  fieldset.color-container legend {
     font-size: 14px;
     font-weight: 400;
     margin-bottom: 5px;
@@ -750,7 +739,7 @@
   }
 
   /* Sliding background */
-  .color-box .slider { /* Added .color-box for specificity */
+  .color-box .slider {
     position: absolute;
     top: 0;
     left: 0;
@@ -803,7 +792,7 @@
   }
 
   /* Active state */
-  .color-option.active { /* Added .color-option for specificity */
+  .color-option.active {
     color: #fff !important;
   }
 
@@ -819,7 +808,7 @@
     const modalProductPrice = quickViewModal.querySelector('.modal-product-price');
     const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
-    const modalQuantitySelector = quickViewModal.querySelector('.modal-quantity-selector');
+    // Removed: const modalQuantitySelector = quickViewModal.querySelector('.modal-quantity-selector');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
 
     let currentProductData = null; // Store fetched product data globally for variant selection
@@ -898,33 +887,7 @@
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
         modalAddToCartButton.disabled = selectedVariant.available ? false : true;
         modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
-        modalQuantitySelector.disabled = !selectedVariant.available;
-
-        // Update modal image if variant has a different featured image
-        if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
-            modalProductImage.src = selectedVariant.featured_image.src;
-            if (selectedVariant.featured_image.width && selectedVariant.featured_image.height) {
-                modalProductImage.setAttribute('width', selectedVariant.featured_image.width);
-                modalProductImage.setAttribute('height', selectedVariant.featured_image.height);
-            } else {
-                modalProductImage.removeAttribute('width');
-                modalProductImage.removeAttribute('height');
-            }
-        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            // Fallback to main product image if variant doesn't have one
-            modalProductImage.src = currentProductData.featured_image.src;
-            if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
-                modalProductImage.setAttribute('width', currentProductData.featured_image.width);
-                modalProductImage.setAttribute('height', currentProductData.featured_image.height);
-            } else {
-                modalProductImage.removeAttribute('width');
-                modalProductImage.removeAttribute('height');
-            }
-        } else {
-            modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-            modalProductImage.removeAttribute('width');
-            modalProductImage.removeAttribute('height');
-        }
+        // Removed: modalQuantitySelector.disabled = !selectedVariant.available;
 
       } else {
         // If not all options are selected, or no matching variant is found
@@ -932,22 +895,33 @@
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
         modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Prompt user to select options
-        modalQuantitySelector.disabled = true;
-        // Keep the main product image if no variant is specifically selected
-        if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            modalProductImage.src = currentProductData.featured_image.src;
-            if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
-                modalProductImage.setAttribute('width', currentProductData.featured_image.width);
-                modalProductImage.setAttribute('height', currentProductData.featured_image.height);
-            } else {
-                modalProductImage.removeAttribute('width');
-                modalProductImage.removeAttribute('height');
-            }
-        } else {
-            modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-            modalProductImage.removeAttribute('width');
-            modalProductImage.removeAttribute('height');
-        }
+        // Removed: modalQuantitySelector.disabled = true;
+      }
+
+      // Update modal image based on selected variant (or default if no variant selected)
+      if (selectedVariant && selectedVariant.featured_image && selectedVariant.featured_image.src) {
+          modalProductImage.src = selectedVariant.featured_image.src;
+          if (selectedVariant.featured_image.width && selectedVariant.featured_image.height) {
+              modalProductImage.setAttribute('width', selectedVariant.featured_image.width);
+              modalProductImage.setAttribute('height', selectedVariant.featured_image.height);
+          } else {
+              modalProductImage.removeAttribute('width');
+              modalProductImage.removeAttribute('height');
+          }
+      } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+          // Fallback to main product image if variant doesn't have one or no variant selected
+          modalProductImage.src = currentProductData.featured_image.src;
+          if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
+              modalProductImage.setAttribute('width', currentProductData.featured_image.width);
+              modalProductImage.setAttribute('height', currentProductData.featured_image.height);
+          } else {
+              modalProductImage.removeAttribute('width');
+              modalProductImage.removeAttribute('height');
+          }
+      } else {
+          modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+          modalProductImage.removeAttribute('width');
+          modalProductImage.removeAttribute('height');
       }
     };
 
@@ -1093,10 +1067,6 @@
                     updateVariantInfo();
                 });
             }
-
-            // *** IMPORTANT: REMOVED INITIAL CLICK TO ENSURE NO DEFAULT SELECTION ***
-            // This ensures both boxes start white with black text.
-
         } else { // Use pills for other options (if any other custom variant is added later)
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
@@ -1128,8 +1098,7 @@
         }
       });
 
-      // Initial update after generating all selectors (excluding the removed default color click)
-      // This will ensure "SELECT OPTIONS" is shown if no variants are pre-selected.
+      // Initial update after generating all selectors
       updateVariantInfo();
     };
 
@@ -1184,7 +1153,7 @@
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
       modalVariantOptions.innerHTML = ''; // Clear variant options on close
-      modalQuantitySelector.value = 1;
+      // Removed: modalQuantitySelector.value = 1;
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →'; // Reset button text
@@ -1220,12 +1189,11 @@
     // Add to Cart functionality
     modalAddToCartButton.addEventListener('click', async () => {
       const variantId = modalAddToCartButton.dataset.variantId;
-      const quantity = parseInt(modalQuantitySelector.value, 10);
+      const quantity = 1; // Quantity is now fixed at 1 as per request
 
-      if (!variantId || isNaN(quantity) || quantity <= 0) {
-        console.error('Invalid variant ID or quantity.');
-        // Using alert for simplicity, consider a custom modal UI for better UX
-        alert('Please select all required options and ensure quantity is valid.');
+      if (!variantId) { // No need to check quantity anymore
+        console.error('Invalid variant ID.');
+        alert('Please select all required options.'); // Update alert message
         return;
       }
 
