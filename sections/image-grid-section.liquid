@@ -15,7 +15,9 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
+          <div class="overlay-button"
+            data-product-handle="{{ section.settings.product_1 }}"
+            data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}">  
             {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -31,7 +33,9 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_2 != blank %}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
+          <div class="overlay-button"
+            data-product-handle="{{ section.settings.product_2 }}"
+            data-grid-image-url="{{ section.settings.image_2 | image_url: width: 400 }}">  
             {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -47,7 +51,9 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_3 != blank %}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
+          <div class="overlay-button"
+            data-product-handle="{{ section.settings.product_3 }}"
+            data-grid-image-url="{{ section.settings.image_3 | image_url: width: 400 }}">  
             {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -63,7 +69,9 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_4 != blank %}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_4 }}">
+          <div class="overlay-button"
+            data-product-handle="{{ section.settings.product_4 }}"
+            data-grid-image-url="{{ section.settings.image_4 | image_url: width: 400 }}">  
             {{ section.settings.overlay_image_4 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-4', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -79,7 +87,9 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_5 != blank %}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
+          <div class="overlay-button"
+            data-product-handle="{{ section.settings.product_5 }}"
+            data-grid-image-url="{{ section.settings.image_5 | image_url: width: 400 }}">  
             {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -95,7 +105,9 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_6 != blank %}
-          <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
+          <div class="overlay-button"
+            data-product-handle="{{ section.settings.product_6 }}"
+            data-grid-image-url="{{ section.settings.image_6 | image_url: width: 400 }}">  
             {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -109,7 +121,7 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-elements-container"> 
+    <div class="modal-elements-container">  
         <div class="modal-image-carousel">
           <div class="carousel-track">
            </div>
@@ -1175,7 +1187,7 @@
 
 
     // Function to open the modal
-    const openModal = async (productHandle) => {
+    const openModal = async (productHandle, gridImageUrl) => {
       try {
         const response = await fetch(`/products/${productHandle}.js`);
         if (!response.ok) {
@@ -1188,11 +1200,18 @@
         carouselDotsContainer.innerHTML = '';
         currentImageIndex = 0; // Reset image index
 
-        // Populate carousel with product images
+        // Determine images to display: product images or fallback to grid image
+        let imagesToDisplay = [];
         if (currentProductData.images && currentProductData.images.length > 0) {
-          currentProductData.images.forEach((image, index) => {
+          imagesToDisplay = currentProductData.images;
+        } else if (gridImageUrl) { // Fallback to grid image if product has no images
+          imagesToDisplay.push({ src: gridImageUrl, id: 'grid_fallback_image', width: 400, height: 400 });
+        }
+
+        if (imagesToDisplay.length > 0) {
+          imagesToDisplay.forEach((image, index) => {
             const imgElement = document.createElement('img');
-            imgElement.src = image.src || 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            imgElement.src = image.src;
             imgElement.alt = currentProductData.title + ' image ' + (index + 1);
             imgElement.setAttribute('width', image.width || '400');
             imgElement.setAttribute('height', image.height || '400');
@@ -1207,7 +1226,7 @@
           });
           // Show the first image and hide nav if only one image
           showImage(0);
-          if (currentProductData.images.length <= 1) {
+          if (imagesToDisplay.length <= 1) {
             prevButton.style.display = 'none';
             nextButton.style.display = 'none';
             carouselDotsContainer.style.display = 'none';
@@ -1217,7 +1236,7 @@
             carouselDotsContainer.style.display = 'flex';
           }
         } else {
-            // No images available, show a generic placeholder
+            // No images available from product or grid, show a generic placeholder
             const imgElement = document.createElement('img');
             imgElement.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
             imgElement.alt = 'No image available';
@@ -1273,8 +1292,9 @@
       button.addEventListener('click', (event) => {
         event.preventDefault();
         const productHandle = button.dataset.productHandle;
+        const gridImageUrl = button.dataset.gridImageUrl; // Get the grid image URL
         if (productHandle) {
-          openModal(productHandle);
+          openModal(productHandle, gridImageUrl);
         } else {
           console.warn('Overlay button clicked but no product handle found.');
         }
