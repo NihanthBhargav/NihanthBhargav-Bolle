@@ -120,13 +120,11 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-body">
-      <div class="modal-product-image-wrapper">
-        <img src="" alt="Product Image" class="modal-product-image">
-        {# Placeholder for the new image you want to add #}
-        <!-- <img src="YOUR_IMAGE_URL_HERE" alt="Decorative Image" class="additional-modal-image"> -->
-      </div>
-      <div class="modal-product-details">
+    {# Removed modal-body and modal-product-details wrappers to allow absolute positioning of children directly within modal-content #}
+    <div class="modal-elements-container"> {# New container for absolutely positioned elements #}
+        <div class="modal-product-image-wrapper">
+          <img src="" alt="Product Image" class="modal-product-image">
+        </div>
         <h3 class="modal-product-title"></h3>
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
@@ -139,7 +137,6 @@
           <input type="number" class="modal-quantity-selector" value="1" min="1">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
-      </div>
     </div>
   </div>
 </div>
@@ -340,10 +337,71 @@
       height: 20px;
     }
 
-    /* Modal Responsive Styling Adjustments */
-    .modal-variant-options {
-      margin-top: 15px; /* Add some space above variants on mobile */
+    /* Modal Responsive Styling Adjustments - Re-enable flexible layout for mobile */
+    .modal-content {
+      width: 90%;
+      height: auto;
+      padding: 15px;
+      flex-direction: column; /* Stack vertically on mobile */
+      align-items: flex-start; /* Align content to start */
     }
+
+    .modal-elements-container {
+        position: static; /* Disable absolute positioning on mobile */
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        padding: 0;
+    }
+
+    .modal-product-image-wrapper {
+        position: static; /* Disable absolute positioning on mobile */
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px; /* Add space below image */
+        object-fit: contain; /* Ensure image fits */
+    }
+
+    .modal-product-image {
+        position: static; /* Disable absolute positioning on mobile */
+        width: 100%;
+        height: auto;
+    }
+
+    .modal-product-title,
+    .modal-product-price,
+    .modal-product-description,
+    .modal-variant-options,
+    .modal-add-to-cart-form {
+        position: static; /* Disable absolute positioning on mobile */
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        margin-top: 0;
+        padding: 0; /* Remove fixed padding */
+    }
+
+    .modal-product-title {
+        font-size: 1.5em; /* Restore larger mobile font size */
+    }
+    .modal-product-price {
+        font-size: 1.2em;
+    }
+    .modal-product-description {
+        font-size: 0.9em;
+    }
+
+    .modal-add-to-cart-form {
+      flex-direction: column;
+      width: 100%;
+    }
+    .modal-quantity-selector {
+      width: 100%;
+    }
+    .modal-add-to-cart-button {
+      width: 100%;
+    }
+
     .variant-option-group {
       margin-bottom: 10px; /* Smaller margin between variant groups on mobile */
     }
@@ -352,6 +410,9 @@
     }
     .variant-option-values {
       gap: 5px; /* Smaller gap for pills on mobile */
+    }
+    .custom-dropdown-container {
+      width: 100%;
     }
   }
 
@@ -379,20 +440,18 @@
 
   .modal-content {
     background-color: white;
-    padding: 30px;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    padding: 0; /* Remove padding as elements will be absolutely positioned inside */
+    border-radius: 0; /* Sharp borders */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
+    position: relative; /* Crucial for absolute positioning of children */
     z-index: 1001;
     width: 311px;
     height: 447px;
     transform: rotate(0deg); /* Explicitly set angle */
     opacity: 1; /* Explicitly set opacity */
-    display: flex;
-    gap: 15px; /* Reduced gap to accommodate smaller size */
-    flex-direction: column; /* Stack image and details vertically for better fit */
+    /* Removed display:flex and gap as child elements will be absolute */
     animation: fadeIn 0s ease-out;
+    overflow: hidden; /* Hide overflow from absolutely positioned elements if they go outside */
   }
 
   @keyframes fadeIn {
@@ -409,117 +468,135 @@
     font-size: 24px;
     cursor: pointer;
     color: #333;
+    z-index: 1003; /* Ensure close button is always on top */
   }
 
-  .modal-body {
-    display: flex;
-    flex-direction: column; /* Ensure vertical stacking for fixed small size */
+  .modal-elements-container { /* New wrapper for all absolutely positioned elements */
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%; /* Take full height of modal-content */
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    height: 100%;
+    /* No padding here, elements position relative to content box edge */
+    /* overflow-y: auto; */ /* Enable scrolling if content exceeds height, but complex with absolute children */
   }
 
   .modal-product-image-wrapper {
-    flex: 0 0 auto; /* Allow image to take natural height */
-    width: 100%; /* Take full width */
-    max-height: 50%; /* Limit image height to prevent dominance */
-    overflow: hidden; /* Hide overflow if image is too large */
-    position: relative; /* Needed for positioning absolute children */
+    position: absolute;
+    width: 120px; /* From your specified properties */
+    height: 140px; /* From your specified properties */
+    top: 36px; /* From your specified properties */
+    left: 17px; /* From your specified properties */
+    transform: rotate(0deg); /* From your specified properties */
+    opacity: 1; /* From your specified properties */
+    overflow: hidden; /* In case image doesn't perfectly fit */
+    /* Sharp borders: no border-radius */
+    border-radius: 0;
   }
 
   .modal-product-image {
     width: 100%;
-    height: auto;
+    height: 100%; /* Fill the wrapper */
     display: block;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
-    object-fit: contain; /* Ensure image fits within wrapper */
+    border-radius: 0; /* Sharp borders */
+    object-fit: cover; /* Crop image to fill the 120x140 space */
   }
 
-  /* Styles for the new additional image */
-  .additional-modal-image {
-    position: absolute; /* Position relative to .modal-product-image-wrapper */
-    /* width: 120px;
-    height: 140px; */
-    top: 36px;
-    left: 17px;
-    right:174;
-    down:271;
-    transform: rotate(0deg);
-    opacity: 1;
-    z-index: 1002; /* Ensure it's above other modal content */
-    object-fit: cover; /* How the image will fit in its dimensions */
-    pointer-events: none; /* Prevent it from interfering with clicks */
+
+  /* TEXT CONTEXTS - ABSOLUTELY POSITIONED */
+  .modal-product-title { /* Orange Wide Leg */
+    position: absolute;
+    width: 136px; /* From your specified properties */
+    height: 19px; /* From your specified properties */
+    top: 49px; /* From your specified properties */
+    left: 145px; /* From your specified properties */
+    font-family: 'Jost', sans-serif; /* From your specified properties */
+    font-weight: 300; /* From your specified properties (Light) */
+    font-size: 16px; /* From your specified properties */
+    line-height: 120%; /* From your specified properties */
+    letter-spacing: 0px; /* From your specified properties */
+    text-align: left; /* Default text alignment */
+    color: black; /* Assuming default text color */
+    overflow: hidden; /* Hide if text overflows fixed height */
+    white-space: nowrap; /* Prevent wrapping if text is long for fixed width */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
   }
 
-  .modal-product-details {
-    flex: 1; /* Details take remaining height */
-    padding-left: 0; /* Remove padding as it's now column */
-    padding-top: 10px; /* Add some space between image and details */
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto; /* Enable scrolling for long descriptions/variants */
+  .modal-product-price { /* 980,00€ */
+    position: absolute;
+    width: 64px; /* From your specified properties */
+    height: 19px; /* From your specified properties */
+    top: 88px; /* From your specified properties */
+    left: 145px; /* From your specified properties */
+    font-family: 'Lustria', serif; /* From your specified properties */
+    font-weight: 400; /* From your specified properties (Regular) */
+    font-size: 16px; /* From your specified properties */
+    line-height: 120%; /* From your specified properties */
+    letter-spacing: 0px; /* From your specified properties */
+    text-align: left; /* Default text alignment */
+    color: #333; /* Assuming default price color */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  .modal-product-title {
-    font-size: 1.5em; /* Adjusted font size for smaller modal */
-    font-weight: bold;
-    margin-bottom: 8px; /* Reduced margin */
-    color: black;
-  }
-
-  .modal-product-price {
-    font-size: 1.2em; /* Adjusted font size for smaller modal */
-    color: #333;
-    margin-bottom: 15px; /* Reduced margin */
-  }
-
-  .modal-product-description {
-    font-size: 0.8em; /* Adjusted font size for smaller modal */
-    color: #666;
-    line-height: 1.5; /* Slightly reduced line height */
-    margin-bottom: 15px; /* Reduced margin */
-    flex-grow: 1; /* Allows description to take available height */
-    overflow-y: auto; /* Enable scrolling for long descriptions */
+  .modal-product-description { /* This one-piece swimsuit... */
+    position: absolute;
+    width: 146px; /* From your specified properties */
+    height: 60px; /* From your specified properties */
+    top: 119px; /* From your specified properties */
+    left: 145px; /* From your specified properties */
+    font-family: 'Jost', sans-serif; /* From your specified properties */
+    font-weight: 300; /* From your specified properties (Light) */
+    font-size: 14px; /* From your specified properties */
+    line-height: 110%; /* From your specified properties (adjusted from 110.00000000000001% to 110%) */
+    letter-spacing: -1%; /* From your specified properties */
+    text-align: left; /* Default text alignment */
+    color: #666; /* Assuming default description color */
+    overflow-y: auto; /* Allow scrolling for description if it overflows its fixed height */
   }
 
   .modal-variant-options {
-    margin-bottom: 15px; /* Reduced margin */
-    display: flex;
-    flex-wrap: wrap; /* Allows options to wrap */
-    gap: 8px; /* Reduced space between option groups */
+    position: absolute;
+    top: 198px; /* Estimated position based on previous element's bottom + spacing */
+    left: 17px; /* Aligned with image left */
+    width: calc(100% - 34px); /* Full width minus left/right padding */
+    margin-bottom: 0; /* No margin as it's absolute */
+    padding-bottom: 15px; /* Add internal padding for scrolling */
+    height: auto; /* Let content define height */
+    display: block; /* Change from flex to block for absolute flow */
+    overflow-y: auto; /* Allow scrolling if many variants */
   }
 
   .variant-option-group {
-    margin-bottom: 10px; /* Reduced space below each option group */
-    width: 100%; /* Ensure each group takes full width */
-    height: auto; /* Let height be natural for content */
-    display: flex; /* Make group a flex container */
-    flex-direction: column; /* Stack label and input/dropdown vertically */
-    justify-content: space-between; /* Space out label and input */
+    margin-bottom: 10px; /* Space between each option group */
+    width: 100%;
+    height: auto;
+    display: flex; /* Keep internal flex for label/input */
+    flex-direction: column;
+    justify-content: flex-start; /* Align to top */
   }
 
   .variant-option-group label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px; /* Reduced margin */
-    font-size: 0.8em; /* Adjusted font size */
+    margin-bottom: 5px;
+    font-size: 0.8em;
     color: #333;
   }
 
   .variant-option-values {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px; /* Reduced space between pills */
+    gap: 6px;
   }
 
   .variant-option-value-pill {
-    padding: 6px 10px; /* Reduced padding */
+    padding: 6px 10px;
     border: 1px solid #ccc;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
     cursor: pointer;
-    font-size: 0.8em; /* Adjusted font size */
+    font-size: 0.8em;
     background-color: white;
     color: #333;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
@@ -535,29 +612,28 @@
     background-color: #eee;
   }
 
-  /* Custom dropdown styles from your Component 213 code */
+  /* Custom dropdown styles */
   .custom-dropdown-container {
-    position: relative;
-    width: 100%; /* Make it responsive to the smaller modal width */
+    position: relative; /* Position relative to its parent .variant-option-group */
+    width: 100%; /* Adjusted to be 100% of its parent group for absolute layout */
     border: 1px solid #ccc;
     cursor: pointer;
     font-family: 'Jost', sans-serif;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
   }
 
   .custom-dropdown-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 35px; /* Slightly reduced height for smaller modal */
+    height: 35px;
   }
 
   .custom-dropdown-header span {
-    font-size: 14px; /* Slightly reduced font size */
+    font-size: 14px;
     flex: 1;
-    padding: 0 8px; /* Reduced padding */
-    line-height: 35px; /* Match height */
+    padding: 0 8px;
+    line-height: 35px;
   }
 
   /* Vertical line separator */
@@ -570,10 +646,10 @@
     border: solid black;
     border-width: 0 2px 2px 0;
     display: inline-block;
-    padding: 3px; /* Reduced padding */
-    margin: 0 8px; /* Reduced margin */
+    padding: 3px;
+    margin: 0 8px;
     transform: rotate(45deg);
-    transition: transform 300ms ease-out; /* smooth arrow rotation */
+    transition: transform 300ms ease-out;
   }
 
   .custom-arrow.up {
@@ -589,16 +665,15 @@
     border: 1px solid #ccc;
     border-top: none;
     font-family: 'Jost', sans-serif;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
   }
 
   .custom-dropdown-list div {
-    padding: 10px; /* Reduced padding */
+    padding: 10px;
     text-align: center;
     cursor: pointer;
     border-top: 1px solid #ccc;
-    transition: all 300ms ease-out; /* 👈 smooth hover animation */
+    transition: all 300ms ease-out;
   }
 
   .custom-dropdown-list div:last-child {
@@ -613,76 +688,44 @@
 
 
   .modal-add-to-cart-form {
+    position: absolute;
+    bottom: 30px; /* Position from bottom of modal */
+    left: 17px; /* Align with other left-aligned elements */
+    width: calc(100% - 34px); /* Fill width minus left/right offset */
     display: flex;
-    gap: 10px; /* Reduced gap */
+    gap: 10px;
     align-items: center;
-    margin-top: auto; /* Pushes form to bottom of details section */
-    flex-wrap: wrap; /* Allow wrapping on very small screens */
+    flex-wrap: wrap;
   }
 
   .modal-quantity-selector {
-    width: 70px; /* Reduced width */
-    padding: 8px; /* Reduced padding */
+    width: 70px;
+    padding: 8px;
     border: 1px solid #ccc;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
     text-align: center;
-    font-size: 0.9em; /* Adjusted font size */
+    font-size: 0.9em;
   }
 
   .modal-add-to-cart-button {
     background-color: black;
     color: white;
-    padding: 10px 18px; /* Reduced padding */
+    padding: 10px 18px;
     border: none;
-    /* Sharp borders: no border-radius */
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
     cursor: pointer;
-    font-size: 1em; /* Adjusted font size */
+    font-size: 1em;
     font-weight: bold;
     transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px; /* Reduced space for arrow */
-    flex-grow: 1; /* Allow button to grow */
+    gap: 6px;
+    flex-grow: 1;
   }
 
   .modal-add-to-cart-button:hover {
     background-color: #333;
-  }
-
-  /* Responsive styles for modal */
-  @media screen and (max-width: 768px) {
-    .modal-content {
-      width: 90%; /* On mobile, override fixed width to be more responsive */
-      height: auto; /* On mobile, let height adjust to content */
-      padding: 15px; /* Reduced padding */
-    }
-    .modal-product-image-wrapper,
-    .modal-product-details {
-      flex: none; /* Remove flex sizing */
-      max-width: 100%;
-      padding-left: 0;
-    }
-    .modal-product-details {
-      padding-top: 15px; /* Add space between image and details on mobile */
-    }
-    .modal-add-to-cart-form {
-      flex-direction: column;
-      width: 100%;
-    }
-    .modal-quantity-selector {
-      width: 100%;
-    }
-    .modal-add-to-cart-button {
-      width: 100%;
-    }
-
-    /* Adjust dropdown width on smaller screens */
-    .custom-dropdown-container {
-      width: 100%;
-    }
   }
 </style>
 
@@ -955,8 +998,12 @@
         }
 
 
-        modalProductTitle.textContent = currentProductData.title;
-        modalProductDescription.innerHTML = currentProductData.description;
+        // Set text content for absolutely positioned elements
+        // The values like "Orange Wide Leg" are illustrative from your design,
+        // The actual product title and description will come from Shopify data.
+        modalProductTitle.textContent = currentProductData.title; // This will be the actual product title
+        modalProductPrice.textContent = formatMoney(currentProductData.price); // Initial price
+        modalProductDescription.innerHTML = currentProductData.description; // Product description
 
         generateVariantSelectors(currentProductData); // Generate and select default variants
 
