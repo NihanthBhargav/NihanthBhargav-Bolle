@@ -1058,7 +1058,6 @@
             if (whiteValue) {
                 const whiteOption = document.createElement('div');
                 whiteOption.classList.add('color-option');
-                whiteOption.id = 'whiteBox'; // Assign ID for direct targeting
                 whiteOption.dataset.value = whiteValue; // Store the actual variant value
                 whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
                 colorBox.appendChild(whiteOption);
@@ -1067,7 +1066,6 @@
             if (blackValue) {
                 const blackOption = document.createElement('div');
                 blackOption.classList.add('color-option');
-                blackOption.id = 'blackBox'; // Assign ID for direct targeting
                 blackOption.dataset.value = blackValue; // Store the actual variant value
                 blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
                 colorBox.appendChild(blackOption);
@@ -1077,8 +1075,8 @@
             modalVariantOptions.appendChild(optionGroup);
 
             // Attach event listeners for the custom color selector
-            const whiteBox = optionGroup.querySelector("#whiteBox");
-            const blackBox = optionGroup.querySelector("#blackBox");
+            const whiteBox = optionGroup.querySelector(".color-option[data-value='White']");
+            const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
             const colorSlider = optionGroup.querySelector(".color-box .slider"); // Specific to this color box
 
             // Event listener for White
@@ -1089,7 +1087,7 @@
                         colorSlider.classList.remove("right");
                     }
                     whiteBox.classList.add("active");
-                    if (blackBox) blackBox.classList.remove("active");
+                    if (blackBox) blackBox.classList.remove("active"); // Remove active from black
                     updateVariantInfo();
                 });
             }
@@ -1102,18 +1100,13 @@
                         colorSlider.classList.add("right");
                     }
                     blackBox.classList.add("active");
-                    if (whiteBox) whiteBox.classList.remove("active");
+                    if (whiteBox) whiteBox.classList.remove("active"); // Remove active from white
                     updateVariantInfo();
                 });
             }
 
-            // Initial selection for color
-            // If white is available, select it by default and trigger click
-            if (whiteBox) {
-                whiteBox.click(); // Programmatically click to activate and set slider
-            } else if (blackBox) {
-                blackBox.click(); // If only black is available, select it
-            }
+            // *** IMPORTANT: REMOVED INITIAL CLICK TO ENSURE NO DEFAULT SELECTION ***
+            // This ensures both boxes start white with black text.
 
         } else { // Use pills for other options (if any other custom variant is added later)
           const valuesContainer = document.createElement('div');
@@ -1146,8 +1139,8 @@
         }
       });
 
-      // Initial update after generating all selectors (including custom ones)
-      // This ensures that default selected values (first pill or clicked color) are reflected.
+      // Initial update after generating all selectors (excluding the removed default color click)
+      // This will ensure "SELECT OPTIONS" is shown if no variants are pre-selected.
       updateVariantInfo();
     };
 
@@ -1180,7 +1173,7 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        generateVariantSelectors(currentProductData); // Generate and select default variants
+        generateVariantSelectors(currentProductData); // Generate and set initial state of variants
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
