@@ -143,6 +143,11 @@
 </div>
 
 <style>
+  /* Base font for the theme */
+  body {
+    font-family: 'Jost', sans-serif; /* Your specified font from the dropdown code */
+  }
+
   .image-grid-section {
     padding: 50px 0;
     background-color: white;
@@ -498,25 +503,78 @@
     background-color: #eee;
   }
 
-  /* NEW: Styling for the dropdown selector (Component 213 properties) */
-  .variant-option-dropdown {
-    width: 271px; /* Apply width from Component 213 */
-    max-width: 100%; /* Ensure responsiveness */
-    padding: 8px 15px;
+  /* Custom dropdown styles from your Component 213 code */
+  .custom-dropdown-container {
+    position: relative;
+    width: 271px; /* Matches your specified width for component 213 */
     border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white;
-    color: #333;
-    font-size: 0.85em;
-    appearance: none; /* Remove default system arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom arrow */
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 16px;
     cursor: pointer;
+    font-family: 'Jost', sans-serif;
   }
+
+  .custom-dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px; /* Maintain height as per your code */
+  }
+
+  .custom-dropdown-header span {
+    font-size: 16px;
+    flex: 1;
+    padding: 0 10px;
+    line-height: 40px;
+  }
+
+  /* Vertical line separator */
+  .custom-line {
+    border-left: 0.5px solid #000;
+    height: 100%;
+  }
+
+  .custom-arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 4px;
+    margin: 0 10px;
+    transform: rotate(45deg);
+    transition: transform 300ms ease-out; /* smooth arrow rotation */
+  }
+
+  .custom-arrow.up {
+    transform: rotate(-135deg);
+  }
+
+  .custom-dropdown-list {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    z-index: 100;
+    border: 1px solid #ccc;
+    border-top: none;
+    font-family: 'Jost', sans-serif;
+  }
+
+  .custom-dropdown-list div {
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    border-top: 1px solid #ccc;
+    transition: all 300ms ease-out; /* 👈 smooth hover animation */
+  }
+
+  .custom-dropdown-list div:last-child {
+    border-bottom: 1px solid #ccc;
+  }
+
+  /* Hover effect */
+  .custom-dropdown-list div:hover {
+    background: #000;
+    color: #fff;
+  }
+
 
   .modal-add-to-cart-form {
     display: flex;
@@ -582,7 +640,7 @@
     }
 
     /* Adjust dropdown width on smaller screens */
-    .variant-option-dropdown {
+    .custom-dropdown-container {
       width: 100%;
     }
   }
@@ -622,12 +680,22 @@
       const selectedOptions = {};
       modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
         const optionName = group.dataset.optionName;
-        const selectedPill = group.querySelector('.variant-option-value-pill.selected');
-        const selectedDropdown = group.querySelector('select'); // Check for dropdown
-        if (selectedPill) {
-          selectedOptions[optionName] = selectedPill.dataset.value;
-        } else if (selectedDropdown && selectedDropdown.value) {
-          selectedOptions[optionName] = selectedDropdown.value;
+
+        // Check for custom dropdown selection
+        const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
+        if (customDropdownSelectedSpan) {
+            // If it's the initial "Choose your size" state, don't set a value yet.
+            // Otherwise, get the text content.
+            const selectedText = customDropdownSelectedSpan.textContent;
+            if (selectedText !== "Choose your size") { // Your initial text for dropdown
+                selectedOptions[optionName] = selectedText;
+            }
+        } else {
+            // Fallback for pill selection
+            const selectedPill = group.querySelector('.variant-option-value-pill.selected');
+            if (selectedPill) {
+                selectedOptions[optionName] = selectedPill.dataset.value;
+            }
         }
       });
 
@@ -692,19 +760,82 @@
         label.textContent = option.name;
         optionGroup.appendChild(label);
 
-        // Determine if it should be pills or a dropdown
-        if (option.values.length > 3 || option.name.toLowerCase() === 'size' ) { // Heuristic: more than 3 options or "Size" implies dropdown
-          const select = document.createElement('select');
-          select.classList.add('variant-option-dropdown');
+        // Determine if it should be custom dropdown or pills
+        if (option.name.toLowerCase() === 'size') { // Use custom dropdown for "Size"
+          const dropdownContainer = document.createElement('div');
+          dropdownContainer.classList.add('custom-dropdown-container');
+
+          const dropdownHeader = document.createElement('div');
+          dropdownHeader.classList.add('custom-dropdown-header');
+          dropdownContainer.appendChild(dropdownHeader);
+
+          const selectedSpan = document.createElement('span');
+          selectedSpan.id = `selected-${option.name.replace(/\s/g, '-')}`; // Unique ID for selected text
+          selectedSpan.classList.add('selected-value'); // Class for easy querying
+          selectedSpan.textContent = "Choose your size"; // Initial text
+          dropdownHeader.appendChild(selectedSpan);
+
+          const lineDiv = document.createElement('div');
+          lineDiv.classList.add('custom-line');
+          dropdownHeader.appendChild(lineDiv);
+
+          const arrowI = document.createElement('i');
+          arrowI.id = `arrow-${option.name.replace(/\s/g, '-')}`; // Unique ID for arrow
+          arrowI.classList.add('custom-arrow');
+          dropdownHeader.appendChild(arrowI);
+
+          const dropdownList = document.createElement('div');
+          dropdownList.id = `dropdown-list-${option.name.replace(/\s/g, '-')}`; // Unique ID for list
+          dropdownList.classList.add('custom-dropdown-list');
+          dropdownContainer.appendChild(dropdownList);
+
           option.values.forEach(value => {
-            const opt = document.createElement('option');
-            opt.value = value;
-            opt.textContent = value;
-            select.appendChild(opt);
+            const listItem = document.createElement('div');
+            listItem.textContent = value;
+            dropdownList.appendChild(listItem);
           });
-          select.addEventListener('change', updateVariantInfo);
-          optionGroup.appendChild(select);
-        } else {
+
+          optionGroup.appendChild(dropdownContainer);
+          modalVariantOptions.appendChild(optionGroup);
+
+          // Attach custom dropdown specific event listeners
+          // IMPORTANT: These event listeners must be attached AFTER the elements are added to the DOM.
+          const currentDropdown = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] .custom-dropdown-container`);
+          const currentArrow = currentDropdown.querySelector('.custom-arrow');
+          const currentList = currentDropdown.querySelector('.custom-dropdown-list');
+          const currentSelectedSpan = currentDropdown.querySelector('span.selected-value');
+
+
+          currentDropdown.addEventListener("click", (e) => {
+            // Prevent event from bubbling up to window click listener immediately
+            e.stopPropagation();
+            currentList.style.display = currentList.style.display === "block" ? "none" : "block";
+            currentArrow.classList.toggle("up");
+          });
+
+          currentList.querySelectorAll("div").forEach(item => {
+            item.addEventListener("click", (e) => {
+                e.stopPropagation(); // Stop click from bubbling to header or container
+                currentSelectedSpan.innerText = item.innerText;
+                currentList.style.display = "none";
+                currentArrow.classList.remove("up");
+                updateVariantInfo(); // Trigger variant info update on selection
+            });
+          });
+
+          // Global click listener to close dropdowns when clicking outside
+          // This should only be added once globally, and ideally should check if the click target is within *any* active dropdown.
+          // For simplicity and given only one quick-view modal, we'll let existing general modal close handle this.
+          // Or specifically add a listener to the document for custom dropdowns only:
+          document.addEventListener("click", (e) => {
+                if (!currentDropdown.contains(e.target) && currentList.style.display === "block") {
+                    currentList.style.display = "none";
+                    currentArrow.classList.remove("up");
+                }
+            });
+
+
+        } else { // Use pills for other options (like Color)
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -725,22 +856,22 @@
             });
           });
           optionGroup.appendChild(valuesContainer);
+          modalVariantOptions.appendChild(optionGroup);
         }
-
-        modalVariantOptions.appendChild(optionGroup);
       });
 
       // Automatically select the first available variant options if any
-      // This ensures a default state on popup open
       productData.options.forEach((option, optionIndex) => {
-        const select = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] select`);
-        if (select) {
-          select.value = option.values[0]; // Select the first option
+        if (option.name.toLowerCase() === 'size') {
+            const selectedSpan = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] span.selected-value`);
+            if (selectedSpan && option.values.length > 0) {
+                selectedSpan.textContent = option.values[0]; // Set initial selection to first value
+            }
         } else {
-          const firstPill = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] .variant-option-value-pill`);
-          if (firstPill) {
-            firstPill.classList.add('selected');
-          }
+            const firstPill = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] .variant-option-value-pill`);
+            if (firstPill) {
+                firstPill.classList.add('selected');
+            }
         }
       });
       updateVariantInfo(); // Initial update after generating and selecting defaults
@@ -855,11 +986,15 @@
         console.log('Product added to cart:', cartData);
         // Optionally, close the modal and provide user feedback (e.g., small success message, update cart icon)
         closeModal();
-        alert('Product added to cart successfully!'); // Using alert for simplicity, consider custom UI
+        // Using alert for simplicity, consider a custom modal UI for better UX
+        // You should implement a custom message box as per instructions.
+        alert('Product added to cart successfully!');
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        alert('Failed to add product to cart. Please try again.'); // Using alert for simplicity, consider custom UI
+        // Using alert for simplicity, consider a custom modal UI for better UX
+        // You should implement a custom message box as per instructions.
+        alert('Failed to add product to cart. Please try again.');
       }
     });
 
