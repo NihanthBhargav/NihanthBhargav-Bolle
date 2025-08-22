@@ -19,7 +19,7 @@
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_1 }}"
             data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}"> {# Pass grid image URL for fallback #}
-            {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
+            {{ section.settings.image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
@@ -890,8 +890,8 @@
     // Carousel elements
     const modalImageCarousel = quickViewModal.querySelector('.modal-image-carousel');
     const carouselTrack = modalImageCarousel.querySelector('.carousel-track');
-    const prevButton = modalImageCarousel.querySelector('.prev-nav-button'); // Corrected class name
-    const nextButton = modalImageCarousel.querySelector('.next-nav-button'); // Corrected class name
+    const prevButton = quickViewModal.querySelector('.prev-button'); // Corrected selector
+    const nextButton = quickViewModal.querySelector('.next-button'); // Corrected selector
     const carouselDotsContainer = modalImageCarousel.querySelector('.carousel-dots');
 
     let currentProductData = null;
@@ -1203,7 +1203,17 @@
 
         const response = await fetch(`/products/${productHandle}.js`);
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          // If response is not OK, try to get more details from the response
+          let errorMessage = `HTTP error! status: ${response.status}`;
+          try {
+            const errorBody = await response.json();
+            if (errorBody && errorBody.message) {
+              errorMessage += ` - ${errorBody.message}`;
+            }
+          } catch (e) {
+            // Couldn't parse JSON, just use the status
+          }
+          throw new Error(errorMessage);
         }
         currentProductData = await response.json();
         console.log('Fetched product data:', currentProductData);
@@ -1292,7 +1302,7 @@
         document.body.style.overflow = 'hidden';
       } catch (error) {
         console.error('Error fetching product data:', error);
-        alert('Could not load product details. Please check the product handle and network connection, or if the product exists.');
+        alert(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`);
         quickViewModal.style.display = 'none';
       }
     };
@@ -1404,7 +1414,7 @@
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #4CAF50; /* Green */
+        background-color: #f44336; /* Red for error */
         color: white;
         padding: 15px;
         border-radius: 5px;
@@ -1568,4 +1578,3 @@
   ]
 }
 {% endschema %}
- 
