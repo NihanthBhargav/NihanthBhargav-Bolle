@@ -18,7 +18,7 @@
           <div class="overlay-button"
             data-product-handle="{{ section.settings.product_1 }}"
             data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}">  
-            {{ section.settings.image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
+            {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
@@ -497,7 +497,7 @@
   .carousel-track {
     display: flex; /* Arrange images in a row */
     height: 100%;
-    transition: transform 0.3s ease-in-out; /* Smooth sliding transition */
+    /* Removed transition for instant image change */
   }
 
   .carousel-track img {
@@ -835,8 +835,7 @@
     position: relative;
     cursor: pointer;
     z-index: 2;
-    transition: color 0.4s ease;
-    color: #000;
+    color: #000; /* Removed transition for instant color change */
   }
 
   /* Swatch styles */
@@ -881,8 +880,8 @@
     // Carousel elements
     const modalImageCarousel = quickViewModal.querySelector('.modal-image-carousel');
     const carouselTrack = modalImageCarousel.querySelector('.carousel-track');
-    const prevButton = quickViewModal.querySelector('.prev-button'); // Corrected selector
-    const nextButton = quickViewModal.querySelector('.next-button'); // Corrected selector
+    const prevButton = quickViewModal.querySelector('.prev-button');
+    const nextButton = quickViewModal.querySelector('.next-button');
     const carouselDotsContainer = modalImageCarousel.querySelector('.carousel-dots');
 
     let currentProductData = null;
