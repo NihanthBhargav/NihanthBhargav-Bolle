@@ -201,6 +201,7 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    /* Removed: transition for scale effect on main image */
   }
 
   .placeholder-image {
@@ -678,33 +679,42 @@
       if (!currentProductData) return;
 
       const selectedOptions = {};
+      let allOptionsSelected = true; // Flag to check if all necessary options have a valid selection
+
       modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
         const optionName = group.dataset.optionName;
 
-        // Check for custom dropdown selection
+        // Check for custom dropdown selection (Size)
         const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
         if (customDropdownSelectedSpan) {
-            // If it's the initial "Choose your size" state, don't set a value yet.
-            // Otherwise, get the text content.
             const selectedText = customDropdownSelectedSpan.textContent;
-            if (selectedText !== "Choose your size") { // Your initial text for dropdown
+            // Only consider it a valid selection if it's not the default "Choose your size"
+            if (selectedText && selectedText !== "Choose your size") {
                 selectedOptions[optionName] = selectedText;
+            } else {
+                allOptionsSelected = false; // A custom dropdown option is not yet chosen
             }
         } else {
-            // Fallback for pill selection
+            // Check for pill selection (other variants like Color)
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
+            } else {
+                allOptionsSelected = false; // A pill option is not yet chosen
             }
         }
       });
 
-      const selectedVariant = currentProductData.variants.find(variant => {
-        return Object.keys(selectedOptions).every(optionName => {
-          const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
-          return variant.options[optionIndex] === selectedOptions[optionName];
-        });
-      });
+      let selectedVariant = null;
+      if (allOptionsSelected) { // Only try to find a variant if all options have been selected by the user
+          selectedVariant = currentProductData.variants.find(variant => {
+            return Object.keys(selectedOptions).every(optionName => {
+              const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
+              return variant.options[optionIndex] === selectedOptions[optionName];
+            });
+          });
+      }
+
 
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
@@ -740,11 +750,27 @@
         }
 
       } else {
-        modalProductPrice.textContent = 'Unavailable';
+        // If not all options are selected, or no matching variant is found
+        modalProductPrice.textContent = ''; // Clear price
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'UNAVAILABLE';
+        modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Prompt user to select options
         modalQuantitySelector.disabled = true;
+        // Keep the main product image if no variant is specifically selected
+        if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            modalProductImage.src = currentProductData.featured_image.src;
+            if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
+                modalProductImage.setAttribute('width', currentProductData.featured_image.width);
+                modalProductImage.setAttribute('height', currentProductData.featured_image.height);
+            } else {
+                modalProductImage.removeAttribute('width');
+                modalProductImage.removeAttribute('height');
+            }
+        } else {
+            modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            modalProductImage.removeAttribute('width');
+            modalProductImage.removeAttribute('height');
+        }
       }
     };
 
@@ -770,28 +796,26 @@
           dropdownContainer.appendChild(dropdownHeader);
 
           const selectedSpan = document.createElement('span');
-          selectedSpan.id = `selected-${option.name.replace(/\s/g, '-')}`; // Unique ID for selected text
           selectedSpan.classList.add('selected-value'); // Class for easy querying
           selectedSpan.textContent = "Choose your size"; // Initial text
           dropdownHeader.appendChild(selectedSpan);
 
           const lineDiv = document.createElement('div');
-          lineDiv.classList.add('custom-line');
+          lineDiv.classList.add('custom-line'); // This is the vertical line
           dropdownHeader.appendChild(lineDiv);
 
           const arrowI = document.createElement('i');
-          arrowI.id = `arrow-${option.name.replace(/\s/g, '-')}`; // Unique ID for arrow
           arrowI.classList.add('custom-arrow');
           dropdownHeader.appendChild(arrowI);
 
           const dropdownList = document.createElement('div');
-          dropdownList.id = `dropdown-list-${option.name.replace(/\s/g, '-')}`; // Unique ID for list
           dropdownList.classList.add('custom-dropdown-list');
           dropdownContainer.appendChild(dropdownList);
 
           option.values.forEach(value => {
             const listItem = document.createElement('div');
             listItem.textContent = value;
+            listItem.dataset.value = value; // Store value for selection
             dropdownList.appendChild(listItem);
           });
 
@@ -799,41 +823,34 @@
           modalVariantOptions.appendChild(optionGroup);
 
           // Attach custom dropdown specific event listeners
-          // IMPORTANT: These event listeners must be attached AFTER the elements are added to the DOM.
-          const currentDropdown = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] .custom-dropdown-container`);
-          const currentArrow = currentDropdown.querySelector('.custom-arrow');
-          const currentList = currentDropdown.querySelector('.custom-dropdown-list');
-          const currentSelectedSpan = currentDropdown.querySelector('span.selected-value');
-
-
-          currentDropdown.addEventListener("click", (e) => {
-            // Prevent event from bubbling up to window click listener immediately
-            e.stopPropagation();
-            currentList.style.display = currentList.style.display === "block" ? "none" : "block";
-            currentArrow.classList.toggle("up");
+          // Use event delegation or ensure listeners are attached to the correct elements
+          dropdownHeader.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent modal close from immediate click
+            dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
+            arrowI.classList.toggle("up");
           });
 
-          currentList.querySelectorAll("div").forEach(item => {
+          dropdownList.querySelectorAll("div").forEach(item => {
             item.addEventListener("click", (e) => {
                 e.stopPropagation(); // Stop click from bubbling to header or container
-                currentSelectedSpan.innerText = item.innerText;
-                currentList.style.display = "none";
-                currentArrow.classList.remove("up");
+                selectedSpan.innerText = item.innerText;
+                dropdownList.style.display = "none";
+                arrowI.classList.remove("up");
                 updateVariantInfo(); // Trigger variant info update on selection
             });
           });
 
-          // Global click listener to close dropdowns when clicking outside
-          // This should only be added once globally, and ideally should check if the click target is within *any* active dropdown.
-          // For simplicity and given only one quick-view modal, we'll let existing general modal close handle this.
-          // Or specifically add a listener to the document for custom dropdowns only:
-          document.addEventListener("click", (e) => {
-                if (!currentDropdown.contains(e.target) && currentList.style.display === "block") {
-                    currentList.style.display = "none";
-                    currentArrow.classList.remove("up");
-                }
-            });
-
+          // A global click listener to close dropdowns when clicking outside should be handled carefully
+          // This one should be applied only once and specifically target this dropdown instance
+          const handleGlobalClick = (e) => {
+            if (!dropdownContainer.contains(e.target) && dropdownList.style.display === "block") {
+              dropdownList.style.display = "none";
+              arrowI.classList.remove("up");
+            }
+          };
+          // Remove previous listener if exists (e.g., from prior modal opens)
+          dropdownContainer._globalClickListener = handleGlobalClick; // Store reference to remove later
+          document.addEventListener("click", dropdownContainer._globalClickListener);
 
         } else { // Use pills for other options (like Color)
           const valuesContainer = document.createElement('div');
@@ -860,21 +877,17 @@
         }
       });
 
-      // Automatically select the first available variant options if any
+      // No automatic selection for size dropdown: it should default to "Choose your size"
+      // For pill options, automatically select the first value for convenience
       productData.options.forEach((option, optionIndex) => {
-        if (option.name.toLowerCase() === 'size') {
-            const selectedSpan = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] span.selected-value`);
-            if (selectedSpan && option.values.length > 0) {
-                selectedSpan.textContent = option.values[0]; // Set initial selection to first value
-            }
-        } else {
+        if (option.name.toLowerCase() !== 'size') {
             const firstPill = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] .variant-option-value-pill`);
             if (firstPill) {
                 firstPill.classList.add('selected');
             }
         }
       });
-      updateVariantInfo(); // Initial update after generating and selecting defaults
+      updateVariantInfo(); // Initial update after generating
     };
 
 
@@ -930,7 +943,17 @@
       modalQuantitySelector.value = 1;
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
+      modalAddToCartButton.textContent = 'ADD TO CART →'; // Reset button text
       currentProductData = null; // Clear product data
+
+      // Remove the global click listener for the custom dropdown when modal closes
+      // This is crucial to prevent multiple listeners accumulating
+      modalVariantOptions.querySelectorAll('.custom-dropdown-container').forEach(container => {
+        if (container._globalClickListener) {
+          document.removeEventListener("click", container._globalClickListener);
+          delete container._globalClickListener; // Clean up reference
+        }
+      });
     };
 
     // Event listeners for opening modal (all overlays)
@@ -957,7 +980,9 @@
 
       if (!variantId || isNaN(quantity) || quantity <= 0) {
         console.error('Invalid variant ID or quantity.');
-        // Optionally show a user-friendly message in the modal
+        // Using alert for simplicity, consider a custom modal UI for better UX
+        // You should implement a custom message box as per instructions.
+        alert('Please select all required options and ensure quantity is valid.');
         return;
       }
 
@@ -986,15 +1011,11 @@
         console.log('Product added to cart:', cartData);
         // Optionally, close the modal and provide user feedback (e.g., small success message, update cart icon)
         closeModal();
-        // Using alert for simplicity, consider a custom modal UI for better UX
-        // You should implement a custom message box as per instructions.
-        alert('Product added to cart successfully!');
+        alert('Product added to cart successfully!'); // Using alert for simplicity, consider custom UI
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        // Using alert for simplicity, consider a custom modal UI for better UX
-        // You should implement a custom message box as per instructions.
-        alert('Failed to add product to cart. Please try again.');
+        alert('Failed to add product to cart. Please try again.'); // Using alert for simplicity, consider custom UI
       }
     });
 
