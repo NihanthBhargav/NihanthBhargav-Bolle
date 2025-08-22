@@ -773,14 +773,17 @@
 
     // Helper to format money
     const formatMoney = (cents) => {
+      // Ensure cents is a number, default to 0 if not
+      const numericCents = parseFloat(cents) || 0;
+
       if (typeof Shopify === 'undefined' || !Shopify.currency) {
         // Fallback for environments without Shopify object
-        return `$${(cents / 100).toFixed(2)}`;
+        return `$${(numericCents / 100).toFixed(2)}`;
       }
       return new Intl.NumberFormat(Shopify.currency.active, {
           style: 'currency',
           currency: Shopify.currency.active || 'EUR' // Default to EUR as per user request
-      }).format(cents / 100);
+      }).format(numericCents / 100);
     };
 
     // Function to update modal content based on selected variant
@@ -854,7 +857,7 @@
 
       } else {
         // If no specific variant is selected, show the base product price
-        modalProductPrice.textContent = formatMoney(currentProductData.price);
+        modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Use 0 as fallback if base price is also problematic
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
         modalAddToCartButton.textContent = 'SELECT OPTIONS';
@@ -1075,7 +1078,8 @@
 
         modalProductTitle.textContent = currentProductData.title;
         // Always set the base product price when opening the modal, using '0' if price is not a valid number
-        modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
+        // Now, formatMoney function handles invalid input by defaulting to 0.
+        modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
         generateVariantSelectors(currentProductData);
@@ -1313,7 +1317,7 @@
     {
       "type": "image_picker",
       "id": "image_5",
-      "label": "Image 5 (Bottom Middle)"
+      "label": "Image 5"
     },
     {
       "type": "image_picker",
