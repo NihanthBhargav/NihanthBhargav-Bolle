@@ -8,6 +8,7 @@
       {% comment %} Grid Item 1 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_1 != blank %}
+          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -15,6 +16,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
+          {# Added width and height attributes to overlay image #}
           <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
             {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
@@ -24,6 +26,7 @@
       {% comment %} Grid Item 2 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_2 != blank %}
+          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -31,6 +34,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_2 != blank %}
+          {# Added width and height attributes to overlay image #}
           <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
             {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
           </div>
@@ -40,6 +44,7 @@
       {% comment %} Grid Item 3 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_3 != blank %}
+          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -47,6 +52,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_3 != blank %}
+          {# Added width and height attributes to overlay image #}
           <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
             {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
           </div>
@@ -56,6 +62,7 @@
       {% comment %} Grid Item 4 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_4 != blank %}
+          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -72,6 +79,7 @@
       {% comment %} Grid Item 5 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_5 != blank %}
+          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -79,6 +87,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_5 != blank %}
+          {# Added width and height attributes to overlay image #}
           <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
             {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
           </div>
@@ -88,6 +97,7 @@
       {% comment %} Grid Item 6 {% endcomment %}
       <div class="grid-item">
         {% if section.settings.image_6 != blank %}
+          {# Added width and height attributes to prevent CLS #}
           {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
         {% else %}
           <div class="placeholder-image">
@@ -95,6 +105,7 @@
           </div>
         {% endif %}
         {% if section.settings.overlay_image_6 != blank %}
+          {# Added width and height attributes to overlay image #}
           <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
             {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
           </div>
@@ -109,15 +120,16 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-elements-container"> 
+    <div class="modal-elements-container"> {# Container for absolutely positioned elements #}
         <div class="modal-product-image-wrapper">
           <img src="" alt="Product Image" class="modal-product-image">
         </div>
-        <h3 class="modal-product-title">Orange Wide Leg</h3>
-        <p class="modal-product-price">980,00€</p>
-        <div class="modal-product-description">This one-piece swimsuit is<br>crafted from jersey<br>featuring an allover micro<br>Monogram motif in relief.</div>
+        <h3 class="modal-product-title"></h3>
+        <p class="modal-product-price"></p>
+        <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
+          {# Variant selectors will be dynamically inserted here by JavaScript #}
         </div>
 
         <div class="modal-add-to-cart-form">
@@ -718,6 +730,94 @@
   .modal-add-to-cart-button:hover {
     background-color: #333;
   }
+
+  /* --- CUSTOM COLOR SELECTOR STYLES --- */
+  /* These styles are taken directly from your provided HTML snippet */
+
+  fieldset.color-container { /* Renamed from original for better specificity/avoiding global conflicts */
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+    width: 100%; /* Ensure it takes full width of variant option group */
+  }
+
+  fieldset.color-container legend { /* Renamed for specificity */
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    padding: 0;
+  }
+
+  /* Outer container */
+  .color-box {
+    position: relative;
+    display: flex;
+    width: 271px; /* Fixed width as per your design */
+    height: 40.4413px;
+    border: 0.5px solid #000;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Sliding background */
+  .color-box .slider { /* Added .color-box for specificity */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: #000;
+    transition: transform 0.4s ease;
+    z-index: 1;
+    display: none; /* Initially hidden, shown on selection */
+  }
+
+  .color-box .slider.right {
+    transform: translateX(100%);
+  }
+
+  /* Each option */
+  .color-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    text-transform: capitalize;
+    position: relative;
+    cursor: pointer;
+    z-index: 2; /* on top of slider */
+    transition: color 0.4s ease;
+    color: #000; /* default black text */
+  }
+
+  /* Swatch styles */
+  .color-swatch {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-right: 0.5px solid #000;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .white-swatch {
+    width: 5.8071px;
+    background: #fff;
+  }
+
+  .black-swatch {
+    width: 4.8392px;
+    background: #000;
+  }
+
+  /* Active state */
+  .color-option.active { /* Added .color-option for specificity */
+    color: #fff !important;
+  }
+
 </style>
 
 <script>
@@ -757,18 +857,31 @@
       modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
         const optionName = group.dataset.optionName;
 
-        // Check for custom dropdown selection (Size)
-        const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
-        if (customDropdownSelectedSpan) {
-            const selectedText = customDropdownSelectedSpan.textContent;
-            // Only consider it a valid selection if it's not the default "Choose your size"
-            if (selectedText && selectedText !== "Choose your size") {
-                selectedOptions[optionName] = selectedText;
+        if (optionName.toLowerCase() === 'size') {
+            // Check for custom dropdown selection (Size)
+            const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
+            if (customDropdownSelectedSpan) {
+                const selectedText = customDropdownSelectedSpan.textContent;
+                // Only consider it a valid selection if it's not the default "Choose your size"
+                if (selectedText && selectedText !== "Choose your size") {
+                    selectedOptions[optionName] = selectedText;
+                } else {
+                    allOptionsSelected = false; // A custom dropdown option is not yet chosen
+                }
             } else {
-                allOptionsSelected = false; // A custom dropdown option is not yet chosen
+                allOptionsSelected = false; // Size dropdown element not found or incorrectly structured
             }
-        } else {
-            // Check for pill selection (other variants like Color)
+        } else if (optionName.toLowerCase() === 'color') {
+            // Check for custom color selector selection (Color)
+            const activeColorOption = group.querySelector('.color-option.active');
+            if (activeColorOption) {
+                selectedOptions[optionName] = activeColorOption.dataset.value;
+            } else {
+                allOptionsSelected = false; // A color option is not yet chosen
+            }
+        }
+         else {
+            // Check for pill selection (other variants)
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
@@ -783,6 +896,8 @@
           selectedVariant = currentProductData.variants.find(variant => {
             return Object.keys(selectedOptions).every(optionName => {
               const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
+              // Ensure optionIndex is valid before accessing variant.options
+              if (optionIndex === -1) return false;
               return variant.options[optionIndex] === selectedOptions[optionName];
             });
           });
@@ -859,7 +974,6 @@
         label.textContent = option.name;
         optionGroup.appendChild(label);
 
-        // Determine if it should be custom dropdown or pills
         if (option.name.toLowerCase() === 'size') { // Use custom dropdown for "Size"
           const dropdownContainer = document.createElement('div');
           dropdownContainer.classList.add('custom-dropdown-container');
@@ -896,7 +1010,6 @@
           modalVariantOptions.appendChild(optionGroup);
 
           // Attach custom dropdown specific event listeners
-          // Use event delegation or ensure listeners are attached to the correct elements
           dropdownHeader.addEventListener("click", (e) => {
             e.stopPropagation(); // Prevent modal close from immediate click
             dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
@@ -913,20 +1026,96 @@
             });
           });
 
-          // A global click listener to close dropdowns when clicking outside should be handled carefully
-          // This one should be applied only once and specifically target this dropdown instance
           const handleGlobalClick = (e) => {
             if (!dropdownContainer.contains(e.target) && dropdownList.style.display === "block") {
               dropdownList.style.display = "none";
               arrowI.classList.remove("up");
             }
           };
-          // Remove previous listener if exists (e.g., from prior modal opens)
-          // Store a unique reference to avoid removing other dropdown's listeners
           dropdownContainer._globalClickListener = handleGlobalClick; // Store reference
           document.addEventListener("click", dropdownContainer._globalClickListener);
 
-        } else { // Use pills for other options (like Color)
+        } else if (option.name.toLowerCase() === 'color') { // Use custom color selector for "Color"
+            const fieldset = document.createElement('fieldset');
+            fieldset.classList.add('color-container'); // Use this class from your styles
+
+            const legend = document.createElement('legend');
+            legend.textContent = option.name;
+            fieldset.appendChild(legend);
+
+            const colorBox = document.createElement('div');
+            colorBox.classList.add('color-box');
+            fieldset.appendChild(colorBox);
+
+            const slider = document.createElement('div');
+            slider.classList.add('slider');
+            colorBox.appendChild(slider);
+
+            // Dynamically create color options based on available values for 'White' and 'Black'
+            const whiteValue = option.values.find(v => v.toLowerCase() === 'white');
+            const blackValue = option.values.find(v => v.toLowerCase() === 'black');
+
+            if (whiteValue) {
+                const whiteOption = document.createElement('div');
+                whiteOption.classList.add('color-option');
+                whiteOption.id = 'whiteBox'; // Assign ID for direct targeting
+                whiteOption.dataset.value = whiteValue; // Store the actual variant value
+                whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
+                colorBox.appendChild(whiteOption);
+            }
+
+            if (blackValue) {
+                const blackOption = document.createElement('div');
+                blackOption.classList.add('color-option');
+                blackOption.id = 'blackBox'; // Assign ID for direct targeting
+                blackOption.dataset.value = blackValue; // Store the actual variant value
+                blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
+                colorBox.appendChild(blackOption);
+            }
+
+            optionGroup.appendChild(fieldset);
+            modalVariantOptions.appendChild(optionGroup);
+
+            // Attach event listeners for the custom color selector
+            const whiteBox = optionGroup.querySelector("#whiteBox");
+            const blackBox = optionGroup.querySelector("#blackBox");
+            const colorSlider = optionGroup.querySelector(".color-box .slider"); // Specific to this color box
+
+            // Event listener for White
+            if (whiteBox) {
+                whiteBox.addEventListener("click", () => {
+                    if (colorSlider) { // Ensure slider exists
+                        colorSlider.style.display = "block";
+                        colorSlider.classList.remove("right");
+                    }
+                    whiteBox.classList.add("active");
+                    if (blackBox) blackBox.classList.remove("active");
+                    updateVariantInfo();
+                });
+            }
+
+            // Event listener for Black
+            if (blackBox) {
+                blackBox.addEventListener("click", () => {
+                    if (colorSlider) { // Ensure slider exists
+                        colorSlider.style.display = "block";
+                        colorSlider.classList.add("right");
+                    }
+                    blackBox.classList.add("active");
+                    if (whiteBox) whiteBox.classList.remove("active");
+                    updateVariantInfo();
+                });
+            }
+
+            // Initial selection for color
+            // If white is available, select it by default and trigger click
+            if (whiteBox) {
+                whiteBox.click(); // Programmatically click to activate and set slider
+            } else if (blackBox) {
+                blackBox.click(); // If only black is available, select it
+            }
+
+        } else { // Use pills for other options (if any other custom variant is added later)
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -948,20 +1137,18 @@
           });
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
-        }
-      });
 
-      // No automatic selection for size dropdown: it should default to "Choose your size"
-      // For pill options, automatically select the first value for convenience
-      productData.options.forEach((option, optionIndex) => {
-        if (option.name.toLowerCase() !== 'size') {
-            const firstPill = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${option.name}"] .variant-option-value-pill`);
+            // For pill options, automatically select the first value for convenience
+            const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
             if (firstPill) {
                 firstPill.classList.add('selected');
             }
         }
       });
-      updateVariantInfo(); // Initial update after generating
+
+      // Initial update after generating all selectors (including custom ones)
+      // This ensures that default selected values (first pill or clicked color) are reflected.
+      updateVariantInfo();
     };
 
 
