@@ -890,8 +890,8 @@
     // Carousel elements
     const modalImageCarousel = quickViewModal.querySelector('.modal-image-carousel');
     const carouselTrack = modalImageCarousel.querySelector('.carousel-track');
-    const prevButton = modalImageCarousel.querySelector('.prev-button');
-    const nextButton = modalImageCarousel.querySelector('.next-button');
+    const prevButton = modalImageCarousel.querySelector('.prev-nav-button'); // Corrected class name
+    const nextButton = modalImageCarousel.querySelector('.next-nav-button'); // Corrected class name
     const carouselDotsContainer = modalImageCarousel.querySelector('.carousel-dots');
 
     let currentProductData = null;
@@ -1198,30 +1198,54 @@
     // Function to open the modal
     const openModal = async (productHandle, gridImageUrl) => {
       try {
+        console.log('Opening modal for product handle:', productHandle);
+        console.log('Grid image URL provided:', gridImageUrl);
+
         const response = await fetch(`/products/${productHandle}.js`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         currentProductData = await response.json();
+        console.log('Fetched product data:', currentProductData);
+
 
         // Clear previous carousel content
         carouselTrack.innerHTML = '';
         carouselDotsContainer.innerHTML = '';
         currentImageIndex = 0; // Reset image index
 
-        // Determine images to display: product images or fallback to grid image
+        // Determine images to display: Grid image first, then product images
         let imagesToDisplay = [];
-        if (currentProductData.images && currentProductData.images.length > 0) {
-          imagesToDisplay = currentProductData.images;
-        } else if (gridImageUrl) { // Fallback to grid image if product has no images
+
+        // Always add the grid image first if it's provided, as a primary visual
+        if (gridImageUrl) {
           imagesToDisplay.push({ src: gridImageUrl, id: 'grid_fallback_image', width: 400, height: 400 });
+        }
+
+        // Then, add actual product images if they exist.
+        // This will append them after the grid image if gridImageUrl was present,
+        // or be the sole images if gridImageUrl was not present.
+        if (currentProductData.images && currentProductData.images.length > 0) {
+          currentProductData.images.forEach(productImage => {
+              // Avoid adding the same image again if gridImageUrl was already a product image
+              if (!imagesToDisplay.some(img => img.src === productImage.src)) {
+                  imagesToDisplay.push(productImage);
+              }
+          });
+        }
+
+        console.log('Images to display in carousel:', imagesToDisplay);
+
+        // If after all this, imagesToDisplay is still empty, add a generic placeholder
+        if (imagesToDisplay.length === 0) {
+            imagesToDisplay.push({ src: 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image', alt: 'No image available', id: 'generic_placeholder', width: 400, height: 400 });
         }
 
         if (imagesToDisplay.length > 0) {
           imagesToDisplay.forEach((image, index) => {
             const imgElement = document.createElement('img');
             imgElement.src = image.src;
-            imgElement.alt = currentProductData.title + ' image ' + (index + 1);
+            imgElement.alt = image.alt || (currentProductData.title + ' image ' + (index + 1));
             imgElement.setAttribute('width', image.width || '400');
             imgElement.setAttribute('height', image.height || '400');
             imgElement.dataset.imageId = image.id; // Store image ID for variant matching
@@ -1245,7 +1269,7 @@
             carouselDotsContainer.style.display = 'flex';
           }
         } else {
-            // No images available from product or grid, show a generic placeholder
+            // This case should ideally not be reached with the new logic if gridImageUrl is present
             const imgElement = document.createElement('img');
             imgElement.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
             imgElement.alt = 'No image available';
@@ -1268,7 +1292,7 @@
         document.body.style.overflow = 'hidden';
       } catch (error) {
         console.error('Error fetching product data:', error);
-        console.log('Could not load product details. Please check the product handle and network connection.');
+        alert('Could not load product details. Please check the product handle and network connection, or if the product exists.');
         quickViewModal.style.display = 'none';
       }
     };
@@ -1306,6 +1330,7 @@
           openModal(productHandle, gridImageUrl);
         } else {
           console.warn('Overlay button clicked but no product handle found.');
+          alert('No product linked to this overlay.');
         }
       });
     });
@@ -1543,3 +1568,4 @@
   ]
 }
 {% endschema %}
+ 
