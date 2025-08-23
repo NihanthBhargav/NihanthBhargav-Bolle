@@ -88,7 +88,8 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-         <button class="modal-size-chart-button">Size Chart</button>
+        {# ADDED SIZE CHART BUTTON HERE #}
+        <button class="modal-size-chart-button">Size Chart</button>
 
         <div class="modal-variant-options">
         </div>
@@ -107,9 +108,11 @@
     <button class="modal-close-button">&times;</button>
     <h3 class="size-chart-title">Product Size Chart</h3>
     <div class="size-chart-image-container">
-       <img src="https://placehold.co/400x300/e0e0e0/333333?text=Your+Size+Chart+Here" alt="Size Chart" style="max-width: 100%; height: auto; display: block;">
+      {# Replace this with your actual size chart image or table content #}
+      <img src="https://placehold.co/400x300/e0e0e0/333333?text=Your+Size+Chart+Here" alt="Size Chart" style="max-width: 100%; height: auto; display: block;">
     </div>
-     <table class="size-table">
+    {# You can also add a table here for the size chart #}
+    <table class="size-table">
         <thead>
             <tr>
                 <th>Size</th>
@@ -127,9 +130,6 @@
             </tr>
             <tr>
                 <td>L</td>
-            </tr>
-            <tr>
-                <td>XL</td>
             </tr>
         </tbody>
     </table>
@@ -408,9 +408,9 @@
     .variant-option-values {
       gap: 5px;
     }
-    .custom-dropdown-container {
-      width: 100%;
-    }
+    /* .custom-dropdown-container { /* This will be overridden by your .dropdown styles below */
+      /* width: 100%; */
+    /* } */
 
     /* Size Chart Modal Responsive */
     .size-chart-modal .modal-content {
@@ -648,51 +648,50 @@
     background-color: #eee;
   }
 
-  /* Custom dropdown styles */
-  .custom-dropdown-container {
+  /* YOUR CUSTOM SIZE DROPDOWN STYLES */
+  .dropdown {
     position: relative;
-    width: 100%;
+    width: 250px;
     border: 1px solid #ccc;
     cursor: pointer;
     font-family: 'Jost', sans-serif;
-    border-radius: 0;
   }
 
-  .custom-dropdown-header {
+  .dropdown-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 35px;
+    height: 40px;
   }
 
-  .custom-dropdown-header span {
-    font-size: 14px;
+  .dropdown-header span {
+    font-size: 16px;
     flex: 1;
-    padding: 0 8px;
-    line-height: 35px;
+    padding: 0 10px;
+    line-height: 40px;
   }
 
   /* Vertical line separator */
-  .custom-line {
+  .line {
     border-left: 0.5px solid #000;
     height: 100%;
   }
 
-  .custom-arrow {
+  .arrow {
     border: solid black;
     border-width: 0 2px 2px 0;
     display: inline-block;
-    padding: 3px;
-    margin: 0 8px;
+    padding: 4px;
+    margin: 0 10px;
     transform: rotate(45deg);
-    transition: transform 300ms ease-out;
+    transition: transform 300ms ease-out; /* smooth arrow rotation */
   }
 
-  .custom-arrow.up {
+  .arrow.up {
     transform: rotate(-135deg);
   }
 
-  .custom-dropdown-list {
+  .dropdown-list {
     display: none;
     position: absolute;
     width: 100%;
@@ -701,26 +700,26 @@
     border: 1px solid #ccc;
     border-top: none;
     font-family: 'Jost', sans-serif;
-    border-radius: 0;
   }
 
-  .custom-dropdown-list div {
-    padding: 10px;
+  .dropdown-list div {
+    padding: 12px;
     text-align: center;
     cursor: pointer;
     border-top: 1px solid #ccc;
-    transition: all 300ms ease-out;
+    transition: all 300ms ease-out; /* 👈 smooth hover animation */
   }
 
-  .custom-dropdown-list div:last-child {
+  .dropdown-list div:last-child {
     border-bottom: 1px solid #ccc;
   }
 
   /* Hover effect */
-  .custom-dropdown-list div:hover {
+  .dropdown-list div:hover {
     background: #000;
     color: #fff;
   }
+  /* END OF YOUR CUSTOM SIZE DROPDOWN STYLES */
 
 
   .modal-add-to-cart-form {
@@ -944,11 +943,11 @@
         const optionName = group.dataset.optionName;
 
         if (optionName.toLowerCase() === 'size') {
-            const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
-            if (customDropdownSelectedSpan) {
-                const selectedText = customDropdownSelectedSpan.textContent;
+            const dropdownSelectedSpan = group.querySelector('.dropdown-header .selected');
+            if (dropdownSelectedSpan) {
+                const selectedText = dropdownSelectedSpan.textContent;
                 // Check if a size has actually been selected, not just the placeholder
-                if (selectedText && customDropdownSelectedSpan.dataset.value !== "") {
+                if (selectedText && selectedText !== "Choose your size") {
                     selectedOptions[optionName] = selectedText;
                 } else {
                     allOptionsSelected = false;
@@ -1024,66 +1023,68 @@
         optionGroup.appendChild(label);
 
         if (option.name.toLowerCase() === 'size') {
-          const dropdownContainer = document.createElement('div');
-          dropdownContainer.classList.add('custom-dropdown-container');
+            // Replicating user's provided HTML structure for size dropdown
+            const dropdownContainer = document.createElement('div');
+            dropdownContainer.classList.add('dropdown'); // Using user's class name
 
-          const dropdownHeader = document.createElement('div');
-          dropdownHeader.classList.add('custom-dropdown-header');
-          dropdownContainer.appendChild(dropdownHeader);
+            const dropdownHeader = document.createElement('div');
+            dropdownHeader.classList.add('dropdown-header');
+            dropdownContainer.appendChild(dropdownHeader);
 
-          const selectedSpan = document.createElement('span');
-          selectedSpan.classList.add('selected-value');
-          selectedSpan.textContent = "Choose your size";
-          selectedSpan.dataset.value = ""; // Add data-value for easier check
-          dropdownHeader.appendChild(selectedSpan);
+            const selectedSpan = document.createElement('span');
+            selectedSpan.classList.add('selected'); // Using user's class name
+            selectedSpan.textContent = "Choose your size";
+            dropdownHeader.appendChild(selectedSpan);
 
-          const lineDiv = document.createElement('div');
-          lineDiv.classList.add('custom-line');
-          dropdownHeader.appendChild(lineDiv);
+            const lineDiv = document.createElement('div');
+            lineDiv.classList.add('line'); // Using user's class name
+            dropdownHeader.appendChild(lineDiv);
 
-          const arrowI = document.createElement('i');
-          arrowI.classList.add('custom-arrow');
-          dropdownHeader.appendChild(arrowI);
+            const arrowI = document.createElement('i');
+            arrowI.classList.add('arrow'); // Using user's class name
+            dropdownHeader.appendChild(arrowI);
 
-          const dropdownList = document.createElement('div');
-          dropdownList.classList.add('custom-dropdown-list');
-          dropdownContainer.appendChild(dropdownList);
+            const dropdownList = document.createElement('div');
+            dropdownList.classList.add('dropdown-list'); // Using user's class name
+            dropdownContainer.appendChild(dropdownList);
 
-          option.values.forEach(value => {
-            const listItem = document.createElement('div');
-            listItem.textContent = value;
-            listItem.dataset.value = value;
-            dropdownList.appendChild(listItem);
-          });
+            option.values.forEach(value => {
+              const listItem = document.createElement('div');
+              listItem.textContent = value;
+              listItem.dataset.value = value;
+              dropdownList.appendChild(listItem);
+            });
 
-          optionGroup.appendChild(dropdownContainer);
-          modalVariantOptions.appendChild(optionGroup);
+            optionGroup.appendChild(dropdownContainer);
+            modalVariantOptions.appendChild(optionGroup);
 
-          dropdownHeader.addEventListener("click", (e) => {
-            e.stopPropagation();
-            dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
-            arrowI.classList.toggle("up");
-          });
+            // Adapting user's JS event listeners for this dynamically created dropdown
+            dropdownContainer.addEventListener("click", (e) => {
+              e.stopPropagation(); // Prevent modal closing if clicked inside dropdown
+              dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
+              arrowI.classList.toggle("up");
+            });
 
-          dropdownList.querySelectorAll("div").forEach(item => {
-            item.addEventListener("click", (e) => {
+            dropdownList.querySelectorAll("div").forEach(item => {
+              item.addEventListener("click", (e) => {
                 e.stopPropagation();
                 selectedSpan.innerText = item.innerText;
-                selectedSpan.dataset.value = item.dataset.value; // Update data-value
                 dropdownList.style.display = "none";
                 arrowI.classList.remove("up");
-                updateVariantInfo();
+                updateVariantInfo(); // Update variant info after selection
+              });
             });
-          });
 
-          const handleGlobalClick = (e) => {
-            if (!dropdownContainer.contains(e.target) && dropdownList.style.display === "block") {
-              dropdownList.style.display = "none";
-              arrowI.classList.remove("up");
-            }
-          };
-          dropdownContainer._globalClickListener = handleGlobalClick;
-          document.addEventListener("click", dropdownContainer._globalClickListener);
+            // Global click listener for closing dropdowns when clicking outside
+            const handleGlobalClick = (e) => {
+              if (!dropdownContainer.contains(e.target) && dropdownList.style.display === "block") {
+                dropdownList.style.display = "none";
+                arrowI.classList.remove("up");
+              }
+            };
+            // Store the listener reference to remove it later
+            dropdownContainer._globalClickListener = handleGlobalClick;
+            document.addEventListener("click", dropdownContainer._globalClickListener);
 
         } else if (option.name.toLowerCase() === 'color') {
             const fieldset = document.createElement('fieldset');
@@ -1255,7 +1256,8 @@
       modalAddToCartButton.textContent = 'ADD TO CART →';
       currentProductData = null;
 
-      modalVariantOptions.querySelectorAll('.custom-dropdown-container').forEach(container => {
+      // Clean up global click listeners from custom dropdowns
+      modalVariantOptions.querySelectorAll('.dropdown').forEach(container => {
         if (container._globalClickListener) {
           document.removeEventListener("click", container._globalClickListener);
           delete container._globalClickListener;
