@@ -825,12 +825,11 @@
           });
       }
 
-      // --- LOGGING FOR IMAGE DEBUGGING ---
       console.log('--- updateVariantInfo started ---');
       console.log('Current Product Data:', currentProductData);
       console.log('All options selected:', allOptionsSelected);
       console.log('Selected Variant:', selectedVariant);
-      // --- END LOGGING ---
+
 
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
@@ -841,21 +840,24 @@
         let imageUrlToSet = '';
         let imageAltToSet = currentProductData.title;
 
+        // Prioritize variant image if available
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
             imageUrlToSet = selectedVariant.featured_image.src;
             imageAltToSet = selectedVariant.featured_image.alt || currentProductData.title;
             console.log("Image source from selected variant:", imageUrlToSet);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            // Fallback to product featured image
             imageUrlToSet = currentProductData.featured_image.src;
             imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
             console.log("Image source from product featured image (fallback):", imageUrlToSet);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
+            // Fallback to the first product image if no variant image
             imageUrlToSet = currentProductData.images[0].src;
             imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
             console.log("Image source from first product image (fallback):", imageUrlToSet);
         } else {
             console.warn("No valid image source found for selected variant or product, using placeholder.");
-            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image';
             imageAltToSet = 'No image available';
         }
         modalMainProductImage.src = imageUrlToSet;
@@ -870,8 +872,11 @@
         let imageUrlToSet = '';
         let imageAltToSet = currentProductData.title;
 
-        // When no variant is selected, fallback to the initial grid image or product featured image
-        if (currentProductData.featured_image && currentProductData.featured_image.src) {
+        // When no variant is selected, revert to the initial image passed from the grid or product featured image
+        if (modalMainProductImage.dataset.initialGridImageUrl && modalMainProductImage.dataset.initialGridImageUrl !== 'undefined') { // Check if gridImageUrl was set initially
+            imageUrlToSet = modalMainProductImage.dataset.initialGridImageUrl;
+            console.log("Image source (no variant selected) from initial grid image:", imageUrlToSet);
+        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
             imageUrlToSet = currentProductData.featured_image.src;
             imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
             console.log("Image source (no variant selected) from product featured image:", imageUrlToSet);
@@ -881,12 +886,13 @@
             console.log("Image source (no variant selected) from first product image:", imageUrlToSet);
         } else {
             console.warn("No valid image source found for product (no variant selected), using placeholder.");
-            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image';
             imageAltToSet = 'No image available';
         }
         modalMainProductImage.src = imageUrlToSet;
         modalMainProductImage.alt = imageAltToSet;
       }
+      console.log('Final modal image src:', modalMainProductImage.src);
       console.log('--- updateVariantInfo finished ---');
     };
 
@@ -1090,9 +1096,12 @@
         let initialImageUrl = '';
         let initialImageAlt = currentProductData.title;
 
-        if (gridImageUrl) {
+        // NEW: Store the gridImageUrl in a dataset for potential fallback during variant selection
+        modalMainProductImage.dataset.initialGridImageUrl = gridImageUrl;
+
+        if (gridImageUrl && gridImageUrl !== 'undefined' && gridImageUrl !== null && gridImageUrl.trim() !== '') {
             initialImageUrl = gridImageUrl;
-            console.log("Initial modal image (from gridImageUrl):", initialImageUrl);
+            console.log("Initial modal image (prioritized from gridImageUrl):", initialImageUrl);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
             initialImageUrl = currentProductData.featured_image.src;
             initialImageAlt = currentProductData.featured_image.alt || currentProductData.title;
@@ -1103,7 +1112,7 @@
             console.log("Initial modal image (from first product image):", initialImageUrl);
         } else {
             console.warn("No initial image source found for product, using placeholder.");
-            initialImageUrl = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            initialImageUrl = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image';
             initialImageAlt = 'No image available';
         }
         modalMainProductImage.src = initialImageUrl;
@@ -1131,6 +1140,7 @@
       document.body.style.overflow = '';
       modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
+      modalMainProductImage.dataset.initialGridImageUrl = ''; // Clear stored initial URL
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
