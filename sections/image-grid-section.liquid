@@ -389,17 +389,18 @@
 
   .modal-content {
     background-color: white;
-    padding: 0;
+    padding: 20px; /* Added padding to create space */
     border-radius: 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 1001;
-    width: 311px;
-    height: 447px;
-    transform: rotate(0deg);
-    opacity: 1;
-    animation: fadeIn 0s ease-out;
-    overflow: hidden;
+    width: 350px; /* Increased width for better content flow */
+    max-height: 90vh; /* Allow vertical scrolling if content is very long */
+    overflow-y: auto; /* Enable vertical scroll for content */
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack children vertically */
+    gap: 15px; /* Add space between main sections */
+    animation: fadeIn 0.3s ease-out;
   }
 
   @keyframes fadeIn {
@@ -409,8 +410,8 @@
 
   .modal-close-button {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 10px;
     background: none;
     border: none;
     font-size: 24px;
@@ -420,23 +421,21 @@
   }
 
   .modal-elements-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack children vertically */
+    gap: 15px; /* Add space between elements */
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: auto; /* Allow height to adjust */
+    overflow: visible; /* Let content overflow if needed, modal will scroll */
   }
 
   /* --- Single Image Styles --- */
   .modal-single-image {
-    position: absolute;
-    width: 120px;
-    height: 140px;
-    top: 36px;
-    left: 17px;
+    width: 100%; /* Full width of its container */
+    height: 200px; /* Fixed height for consistency, adjust as needed */
     overflow: hidden;
     border-radius: 0;
+    margin-bottom: 10px;
   }
 
   .modal-single-image img {
@@ -446,13 +445,10 @@
     border-radius: 0;
   }
 
-  /* TEXT CONTEXTS - ABSOLUTELY POSITIONED */
+  /* TEXT CONTEXTS - NOW FLOW-BASED */
   .modal-product-title {
-    position: absolute;
-    width: 136px;
-    height: 19px;
-    top: 49px;
-    left: 145px;
+    width: 100%;
+    height: auto; /* Auto height */
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     font-size: 16px;
@@ -461,42 +457,38 @@
     text-align: left;
     color: black;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: normal; /* Allow text to wrap */
     z-index: 2;
   }
 
   .modal-product-price {
-    position: absolute;
-    width: 64px;
-    height: 19px;
-    top: 88px;
-    left: 145px;
+    width: auto; /* Adjust width based on content */
+    height: auto; /* Auto height */
+    padding: 5px 8px; /* Added padding for background */
     font-family: 'Lustria', serif;
     font-weight: 400;
     font-size: 16px;
     line-height: 120%;
     letter-spacing: 0px;
     background: #000000;
-    color: #FFFFFF; /* Ensures text is visible on black background */
+    color: #FFFFFF;
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     z-index: 2;
+    align-self: flex-start; /* Align to start in flex container */
   }
 
   .modal-product-description {
-    position: absolute;
-    width: 146px;
-    height: 60px;
-    top: 119px;
-    left: 145px;
+    width: 100%;
+    height: auto; /* Auto height */
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     font-size: 14px;
-    line-height: 110%; /* Updated line-height */
-    letter-spacing: -1%; /* Updated letter-spacing */
+    line-height: 110%;
+    letter-spacing: -1%;
     text-align: left;
     color: #666;
     overflow-y: hidden;
@@ -504,18 +496,17 @@
   }
 
   .modal-variant-options {
-    position: absolute;
-    top: 186px;
-    left: 20px;
-    width: calc(100% - 40px);
-    height: 130px; /* Keep this height or adjust if needed for more options */
-    overflow-y: hidden;
-    display: block;
+    width: 100%;
+    height: auto; /* Allow height to adjust based on content */
+    overflow-y: visible; /* Changed to visible as modal handles scroll */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Spacing between variant groups */
     z-index: 2;
   }
 
   .variant-option-group {
-    margin-bottom: 10px;
+    margin-bottom: 0; /* Removed fixed margin, now using gap from parent */
     width: 100%;
     height: auto;
     display: flex;
@@ -560,15 +551,13 @@
   }
 
   .modal-add-to-cart-form {
-    position: absolute;
-    top: 380px;
-    left: 17px;
-    width: calc(100% - 34px);
+    width: 100%;
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
     z-index: 2;
+    margin-top: 15px; /* Add some space above the button */
   }
 
   .modal-add-to-cart-button {
@@ -613,7 +602,7 @@
   .color-box {
     position: relative;
     display: flex;
-    width: 271px;
+    width: 100%; /* Full width of its container */
     height: 40.4413px;
     border: 0.5px solid #000;
     box-sizing: border-box;
@@ -687,7 +676,7 @@
   /* CUSTOM DROPDOWN CSS */
   .dropdown {
     position: relative;
-    width: 250px; /* Adjust width as needed for your layout */
+    width: 100%; /* Full width of its container */
     border: 1px solid #ccc;
     cursor: pointer;
     font-family: 'Jost', sans-serif;
