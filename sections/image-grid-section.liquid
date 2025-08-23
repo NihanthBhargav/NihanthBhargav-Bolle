@@ -389,12 +389,12 @@
 
   .modal-content {
     background-color: white;
-    padding: 20px; /* Added padding to create space */
+    padding: 20px; /* Added padding to create space around content */
     border-radius: 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 1001;
-    width: 350px; /* Increased width for better content flow */
+    width: 350px; /* Set a reasonable width for the modal */
     max-height: 90vh; /* Allow vertical scrolling if content is very long */
     overflow-y: auto; /* Enable vertical scroll for content */
     display: flex; /* Use flexbox for internal layout */
@@ -425,7 +425,7 @@
     flex-direction: column; /* Stack children vertically */
     gap: 15px; /* Add space between elements */
     width: 100%;
-    height: auto; /* Allow height to adjust */
+    height: auto; /* Allow height to adjust based on content */
     overflow: visible; /* Let content overflow if needed, modal will scroll */
   }
 
@@ -435,7 +435,7 @@
     height: 200px; /* Fixed height for consistency, adjust as needed */
     overflow: hidden;
     border-radius: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0; /* Managed by parent gap */
   }
 
   .modal-single-image img {
@@ -557,7 +557,7 @@
     align-items: center;
     flex-wrap: wrap;
     z-index: 2;
-    margin-top: 15px; /* Add some space above the button */
+    margin-top: 5px; /* Add some space above the button */
   }
 
   .modal-add-to-cart-button {
