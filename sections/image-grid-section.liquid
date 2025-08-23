@@ -88,11 +88,10 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-        {# ADDED SIZE CHART BUTTON HERE #}
-        <button class="modal-size-chart-button">Size Chart</button>
+        {# The size chart button has been removed completely #}
 
         <div class="modal-variant-options">
-          {# Shopify's default size options will render here as pills or selects. #}
+          {# All variant options will now be rendered here, using Shopify's default behavior (e.g., pill selectors). #}
         </div>
 
         <div class="modal-add-to-cart-form">
@@ -102,19 +101,7 @@
   </div>
 </div>
 
-{% comment %} Dedicated Size Chart Modal HTML (now empty of custom dropdown code) {% endcomment %}
-<div id="size-chart-modal" class="size-chart-modal" style="display: none;">
-  <div class="modal-overlay"></div>
-  <div class="modal-content size-chart-content">
-    <button class="modal-close-button">&times;</button>
-    <h3 class="size-chart-title">Product Size Chart</h3>
-    {# Placeholder for Shopify's default size chart content (e.g., a table or content from a page).
-       This area will now be empty of the custom dropdown.
-       You would typically load a Shopify page content here or dynamically populate a table.
-    #}
-    <p>Please refer to the product description or a dedicated size chart page for sizing information.</p>
-  </div>
-</div>
+{% comment %} The dedicated size chart modal has been completely removed {% endcomment %}
 
 
 <style>
@@ -365,11 +352,6 @@
     .modal-product-description {
         font-size: 0.9em;
     }
-    .modal-size-chart-button { /* Responsive for button */
-      position: static;
-      width: 100%;
-      margin-bottom: 15px;
-    }
 
     .modal-add-to-cart-form {
       flex-direction: column;
@@ -385,19 +367,10 @@
     .variant-option-group label {
       margin-bottom: 5px;
     }
-
-    /* Size Chart Modal Responsive */
-    .size-chart-modal .modal-content {
-      width: 95%;
-      height: auto;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px;
-    }
   }
 
   /* Styles for Product Quick View Modal */
-  .product-quick-view-modal, .size-chart-modal {
+  .product-quick-view-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -534,29 +507,7 @@
     z-index: 2;
   }
 
-  /* Size Chart Button */
-  .modal-size-chart-button {
-    position: absolute;
-    width: 100px;
-    height: 25px;
-    top: 185px;
-    left: 145px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    font-family: 'Jost', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    z-index: 2;
-  }
-
-  .modal-size-chart-button:hover {
-    background-color: #e0e0e0;
-    color: #000;
-  }
+  /* The size chart button is removed */
 
   .modal-variant-options {
     position: absolute;
@@ -731,35 +682,6 @@
   .color-option.active {
     color: #fff !important;
   }
-
-  /* Size Chart Modal Specific Styles */
-  .size-chart-modal .modal-content {
-    /* Retaining previous dimensions as requested */
-    width: 311px;
-    height: 447px;
-    transform: rotate(0deg);
-    opacity: 1;
-
-    max-height: 90vh; /* Max height to prevent overflow on small screens */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto; /* Enable scrolling if content is too tall */
-    background-color: white; /* Ensure background is white for visibility */
-    border-radius: 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1001;
-  }
-
-  .size-chart-title {
-    font-family: 'Lustria', serif;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: black;
-    text-align: center;
-  }
 </style>
 
 <script>
@@ -774,11 +696,7 @@
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
 
-    // Size Chart elements
-    const sizeChartButton = quickViewModal.querySelector('.modal-size-chart-button');
-    const sizeChartModal = document.getElementById('size-chart-modal');
-    const sizeChartCloseButton = sizeChartModal.querySelector('.modal-close-button');
-    const sizeChartOverlay = sizeChartModal.querySelector('.modal-overlay');
+    // No size chart related elements or listeners here anymore.
 
     let currentProductData = null;
 
@@ -813,7 +731,7 @@
                 allOptionsSelected = false;
             }
         } else {
-            // For all other variants (including Size now), use the pill selection
+            // For all other variants (including Size), use the pill selection
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
@@ -944,7 +862,7 @@
                 });
             }
         } else {
-          // For all other variants (including Size now), use the pill selection
+          // For all other variants (including Size), use the pill selection
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -1039,21 +957,6 @@
       currentProductData = null;
     };
 
-    // Function to open size chart modal
-    const openSizeChartModal = () => {
-      sizeChartModal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    };
-
-    // Function to close size chart modal
-    const closeSizeChartModal = () => {
-      sizeChartModal.style.display = 'none';
-      // Only unlock body scroll if no other modals are open
-      if (quickViewModal.style.display === 'none') {
-        document.body.style.overflow = '';
-      }
-    };
-
 
     // Event listeners for opening modal (all overlays)
     document.querySelectorAll('.overlay-button').forEach(button => {
@@ -1073,11 +976,6 @@
     // Event listeners for closing quick view modal
     modalCloseButton.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
-
-    // Event listeners for size chart modal
-    sizeChartButton.addEventListener('click', openSizeChartModal);
-    sizeChartCloseButton.addEventListener('click', closeSizeChartModal);
-    sizeChartOverlay.addEventListener('click', closeSizeChartModal);
 
 
     // Add to Cart functionality
