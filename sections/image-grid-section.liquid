@@ -1,14 +1,4 @@
-{% comment %}
-  This section creates a responsive image grid with optional overlay images and product links.
-  It includes a product quick-view modal with custom color and size selection dropdowns.
-  The "ADD TO CART" button is now ALWAYS enabled and attempts to add the product to the cart,
-  regardless of its availability. There will be no "Sold Out" text or disabled states for the button.
-
-  FIXED: Removed all logic that would disable the "ADD TO CART" button or display "Sold Out".
-         The button now always attempts to add the product to the cart.
-{% endcomment %}
-
-<div class="image-grid-section">
+ <div class="image-grid-section">
   <div class="page-width">
     <div class="grid-header">
       <h2 class="grid-title">{{ section.settings.title }}</h2>
@@ -44,7 +34,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" > {# Removed onerror - JS handles placeholders #}
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" > 
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -57,8 +47,7 @@
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
-        {# In-modal success message for feedback #}
-        <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart successfully!</p>
+         <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart successfully!</p>
     </div>
   </div>
 </div>
