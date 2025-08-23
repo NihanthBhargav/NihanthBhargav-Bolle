@@ -1,3 +1,8 @@
+{% comment %}
+  This section creates a responsive image grid with optional overlay images and product links.
+  It also includes a product quick-view modal with custom color and size selection dropdowns.
+{% endcomment %}
+
 <div class="image-grid-section">
   <div class="page-width">
     <div class="grid-header">
@@ -5,71 +10,24 @@
     </div>
 
     <div class="image-grid-container">
-      <div class="grid-item">
-        {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_1 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_1 }}"
-            data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
+      {%- for i in (1..6) -%}
+        {%- assign image_setting = 'image_' | append: i -%}
+        {%- assign overlay_image_setting = 'overlay_image_' | append: i -%}
+        {%- assign product_setting = 'product_' | append: i -%}
 
-      <div class="grid-item">
-        {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_2 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_2 }}"
-            data-grid-image-url="{{ section.settings.image_2 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
+        {%- if section.settings[image_setting] != blank -%}
+          <div class="grid-item">
+            {{ section.settings[image_setting] | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615, loading: 'lazy' }}
+            {%- if section.settings[overlay_image_setting] != blank and section.settings[product_setting] != blank -%}
+              <div class="overlay-button"
+                   data-product-handle="{{ section.settings[product_setting].handle }}"
+                   data-grid-image-url="{{ section.settings[image_setting] | image_url: width: 400 }}">
+                {{ section.settings[overlay_image_setting] | image_url: width: 22 | image_tag: class: 'grid-overlay-image', width: 22, height: 22, loading: 'lazy' }}
+              </div>
+            {%- endif -%}
           </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_3 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_3 }}"
-            data-grid-image-url="{{ section.settings.image_3 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_4 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_4 }}"
-            data-grid-image-url="{{ section.settings.image_4 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_4 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-4', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_5 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_5 }}"
-            data-grid-image-url="{{ section.settings.image_5 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_6 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_6 }}"
-            data-grid-image-url="{{ section.settings.image_6 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
@@ -94,6 +52,7 @@
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
+        <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart!</p>
     </div>
   </div>
 </div>
@@ -206,7 +165,7 @@
     transition: transform 0.2s ease-in-out;
   }
 
-  
+
   .grid-overlay-image-1 {
     top: 238px;
     left: 256.5px;
@@ -252,7 +211,7 @@
       height: auto;
       aspect-ratio: 433 / 444;
     }
-    
+
     .grid-overlay-image { /* Generic responsive adjustments if needed */
       width: 5%;
       height: auto;
@@ -763,15 +722,49 @@
     color: #fff;
   }
 
+  /* Custom Message Box styles */
+  #custom-message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 2000;
+    text-align: center;
+    font-family: 'Jost', sans-serif;
+    color: #333;
+    font-size: 1.1rem;
+    max-width: 300px;
+  }
+
+  #custom-message-box button {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  #custom-message-box button:hover {
+    background-color: #333;
+  }
+
 </style>
 
 <script>
   // Access the product handles from liquid settings
-  const product1Handle = "{{ section.settings.product_1 }}";
-  const product2Handle = "{{ section.settings.product_2 }}";
-  const product3Handle = "{{ section.settings.product_3 }}";
-  const product5Handle = "{{ section.settings.product_5 }}";
-  const product6Handle = "{{ section.settings.product_6 }}";
+  const product1Handle = "{{ section.settings.product_1.handle }}";
+  const product2Handle = "{{ section.settings.product_2.handle }}";
+  const product3Handle = "{{ section.settings.product_3.handle }}";
+  const product4Handle = "{{ section.settings.product_4.handle }}"; // Added product_4 handle
+  const product5Handle = "{{ section.settings.product_5.handle }}";
+  const product6Handle = "{{ section.settings.product_6.handle }}";
 
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
@@ -783,19 +776,74 @@
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
+    const addToCartSuccessMessage = quickViewModal.querySelector('.add-to-cart-success-message'); // Success message element
 
     let currentProductData = null;
+    let selectedOptionsMap = {}; // To store selected options for the current product
+
+    // --- Custom Message Box Function (replaces alert()) ---
+    function displayMessageBox(message, type = 'info') {
+      const existingMessageBox = document.getElementById('custom-message-box');
+      if (existingMessageBox) {
+        existingMessageBox.remove();
+      }
+      const messageBox = document.createElement('div');
+      messageBox.id = 'custom-message-box';
+
+      // Basic styling for the message box
+      let bgColor = '#f0f8ff'; // Light blue for info
+      let textColor = '#333';
+      if (type === 'error') {
+        bgColor = '#ffebee'; // Light red for error
+        textColor = '#d32f2f';
+      } else if (type === 'success') {
+        bgColor = '#e8f5e9'; // Light green for success
+        textColor = '#2e7d32';
+      }
+
+      messageBox.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: ${bgColor};
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 2000;
+        text-align: center;
+        font-family: 'Jost', sans-serif;
+        color: ${textColor};
+        font-size: 1.1rem;
+        max-width: 300px;
+        border: 1px solid ${textColor};
+      `;
+      messageBox.innerHTML = `
+        <p>${message}</p>
+        <button>OK</button>
+      `;
+      document.body.appendChild(messageBox);
+      messageBox.querySelector('button').addEventListener('click', () => {
+        messageBox.remove();
+      });
+      setTimeout(() => {
+          if (messageBox && messageBox.parentNode) {
+              messageBox.remove();
+          }
+      }, 5000);
+    }
 
     // Helper to format money
     const formatMoney = (cents) => {
       const numericCents = parseFloat(cents) || 0;
 
-      if (typeof Shopify === 'undefined' || !Shopify.currency) {
+      if (typeof Shopify === 'undefined' || !Shopify.currency || !Shopify.currency.active) {
+        // Fallback for when Shopify.currency is not fully loaded or available
         return `$${(numericCents / 100).toFixed(2)}`;
       }
-      return new Intl.NumberFormat(Shopify.currency.active, {
+      return new Intl.NumberFormat(navigator.language, { // Use navigator.language for user's locale
           style: 'currency',
-          currency: Shopify.currency.active || 'EUR'
+          currency: Shopify.currency.active
       }).format(numericCents / 100);
     };
 
@@ -803,44 +851,26 @@
     window.updateVariantInfo = () => {
       if (!currentProductData) return;
 
-      const selectedOptions = {};
       let allOptionsSelected = true;
+      const currentSelectedOptions = {}; // Temporary map for current selections
 
-      modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
-        const optionName = group.dataset.optionName;
+      currentProductData.options.forEach(option => {
+          const optionName = option.name;
+          const selectedValue = selectedOptionsMap[optionName];
 
-        if (optionName.toLowerCase() === 'color') {
-            const activeColorOption = group.querySelector('.color-option.active');
-            if (activeColorOption) {
-                selectedOptions[optionName] = activeColorOption.dataset.value;
-            } else {
-                allOptionsSelected = false;
-            }
-        } else if (optionName.toLowerCase().includes('size')) {
-            const selectedSizeSpan = group.querySelector('.dropdown-header span');
-            if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
-                selectedOptions[optionName] = selectedSizeSpan.dataset.value;
-            } else {
-                allOptionsSelected = false;
-            }
-        } else {
-            const selectedPill = group.querySelector('.variant-option-value-pill.selected');
-            if (selectedPill) {
-                selectedOptions[optionName] = selectedPill.dataset.value;
-            } else {
-                allOptionsSelected = false;
-            }
-        }
+          if (!selectedValue || selectedValue === 'Choose your size') {
+              allOptionsSelected = false;
+          } else {
+              currentSelectedOptions[optionName] = selectedValue;
+          }
       });
 
       let selectedVariant = null;
       if (allOptionsSelected) {
           selectedVariant = currentProductData.variants.find(variant => {
-            return Object.keys(selectedOptions).every(optionName => {
-              const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
-              if (optionIndex === -1) return false;
-              return variant.options[optionIndex] === selectedOptions[optionName];
-            });
+              return currentProductData.options.every((option, index) => {
+                  return variant.options[index] === currentSelectedOptions[option.name];
+              });
           });
       }
 
@@ -854,6 +884,10 @@
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
             modalMainProductImage.src = selectedVariant.featured_image.src;
             modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
+        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            // Fallback to product featured image
+            modalMainProductImage.src = currentProductData.featured_image.src;
+            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
         } else if (currentProductData.images && currentProductData.images.length > 0) {
             // Fallback to the first product image if no variant image
             modalMainProductImage.src = currentProductData.images[0].src;
@@ -865,16 +899,26 @@
         }
 
       } else {
-        modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
+        modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Show default product price if no variant selected
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'ADD TO CART →';
+        modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Indicate options need selection
       }
     };
 
     // Function to generate variant selectors
     const generateVariantSelectors = (productData, currentProductHandle) => {
       modalVariantOptions.innerHTML = '';
+      selectedOptionsMap = {}; // Reset selected options for new product
+
+      // Initial population of selectedOptionsMap with first available values
+      // This ensures a default variant is selected if possible upon modal open
+      currentProductData.options.forEach((option, index) => {
+          // Find the first variant that has this option value
+          const firstAvailableValue = currentProductData.variants.find(v => v.options[index] === option.values[0]) ? option.values[0] : null;
+          selectedOptionsMap[option.name] = firstAvailableValue || (option.name.toLowerCase().includes('size') ? 'Choose your size' : null);
+      });
+
       let optionsToRender = [...productData.options];
 
       // Apply reordering for all products EXCEPT product_1
@@ -904,119 +948,63 @@
           const fieldset = document.createElement('fieldset');
           fieldset.classList.add('color-container');
 
-          const legend = document.createElement('legend');
-          legend.textContent = option.name;
-          fieldset.appendChild(legend);
-
           let colorBoxHTML = ''; // Initialize HTML string for color box
 
-          // --- Conditional Color Options based on product handle ---
-          if (currentProductHandle === product2Handle) {
-            // Product 2: Blue and Black
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="blue">
-                  <span class="color-swatch blue-swatch"></span>
-                  Blue
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
+          // Determine which color options to show based on product handle
+          let colors = [];
+          if (currentProductHandle === product2Handle || currentProductHandle === product6Handle) {
+            colors = [{name: 'blue', class: 'blue-swatch', value: 'Blue'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
           } else if (currentProductHandle === product3Handle) {
-            // Product 3: Red and Grey
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="red">
-                  <span class="color-swatch red-swatch"></span>
-                  Red
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="grey">
-                  <span class="color-swatch grey-swatch"></span>
-                  Grey
-                </div>
-              </div>
-            `;
+            colors = [{name: 'red', class: 'red-swatch', value: 'Red'}, {name: 'grey', class: 'grey-swatch', value: 'Grey'}];
           } else if (currentProductHandle === product5Handle) {
-            // Product 5: Grey and Black
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="grey">
-                  <span class="color-swatch grey-swatch"></span>
-                  Grey
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
-          } else if (currentProductHandle === product6Handle) {
-            // Product 6: Blue and Black
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="blue">
-                  <span class="color-swatch blue-swatch"></span>
-                  Blue
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
-          }
-          else {
-            // Default: White and Black (for product 1 and others)
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="white">
-                  <span class="color-swatch white-swatch"></span>
-                  White
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
+            colors = [{name: 'grey', class: 'grey-swatch', value: 'Grey'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
+          } else { // Default for product 1 and others
+            colors = [{name: 'white', class: 'white-swatch', value: 'White'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
           }
 
-          fieldset.insertAdjacentHTML('beforeend', colorBoxHTML); // Insert the HTML
+          colorBoxHTML += `<div class="color-box"><div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>`;
+          colors.forEach((col, idx) => {
+              colorBoxHTML += `
+                  <div class="color-option" id="colorOption${idx + 1}-${currentProductHandle}" data-value="${col.value}">
+                      <span class="color-swatch ${col.class}"></span>
+                      ${col.name.charAt(0).toUpperCase() + col.name.slice(1)}
+                  </div>
+              `;
+          });
+          colorBoxHTML += `</div>`;
 
+          fieldset.insertAdjacentHTML('beforeend', colorBoxHTML);
           optionGroup.appendChild(fieldset);
           modalVariantOptions.appendChild(optionGroup);
 
           // Get the dynamically created elements for event listeners
-          const colorOption1 = document.getElementById(`colorOption1-${currentProductHandle}`);
-          const colorOption2 = document.getElementById(`colorOption2-${currentProductHandle}`);
+          const colorOptionsDivs = fieldset.querySelectorAll('.color-option');
           const slider = document.getElementById(`slider-${currentProductHandle}`);
 
-          if (colorOption1 && colorOption2 && slider) {
-            colorOption1.addEventListener("click", () => {
-              slider.style.display = "block";
-              slider.classList.remove("right");
-              colorOption1.classList.add("active");
-              colorOption2.classList.remove("active");
-              updateVariantInfo();
-            });
+          colorOptionsDivs.forEach((colorOption, index) => {
+              colorOption.addEventListener("click", () => {
+                  slider.style.display = "block";
+                  colorOptionsDivs.forEach(opt => opt.classList.remove('active'));
+                  colorOption.classList.add('active');
+                  selectedOptionsMap[option.name] = colorOption.dataset.value;
 
-            colorOption2.addEventListener("click", () => {
-              slider.style.display = "block";
-              slider.classList.add("right");
-              colorOption2.classList.add("active");
-              colorOption1.classList.remove("active");
-              updateVariantInfo();
-            });
-            // No initial click for neutral state
-          }
+                  if (index === 0) { // First option (left)
+                      slider.classList.remove("right");
+                  } else { // Second option (right)
+                      slider.classList.add("right");
+                  }
+                  updateVariantInfo();
+              });
+
+              // Set initial active state if a default color is pre-selected
+              if (selectedOptionsMap[option.name] === colorOption.dataset.value) {
+                  colorOption.classList.add('active');
+                  slider.style.display = "block";
+                  if (index === 1) { // If the second color is default
+                      slider.classList.add("right");
+                  }
+              }
+          });
 
         } else if (option.name.toLowerCase().includes('size')) {
           // CUSTOM DROPDOWN FOR SIZE
@@ -1024,9 +1012,11 @@
           dropdownDiv.classList.add('dropdown');
           dropdownDiv.id = `dropdown-${option.name.toLowerCase().replace(/\s/g, '-')}-${currentProductHandle}`;
 
+          const initialSelectedSizeText = selectedOptionsMap[option.name] || 'Choose your size';
+
           dropdownDiv.innerHTML = `
               <div class="dropdown-header">
-                  <span data-value="Choose your size">Choose your size</span>
+                  <span data-value="${initialSelectedSizeText}">${initialSelectedSizeText}</span>
                   <div class="line"></div>
                   <i class="arrow"></i>
               </div>
@@ -1055,11 +1045,18 @@
               selectedElement.dataset.value = item.innerText;
               listElement.style.display = "none";
               arrowElement.classList.remove("up");
+              selectedOptionsMap[option.name] = item.innerText;
               updateVariantInfo();
             });
           });
-          selectedElement.innerText = 'Choose your size';
-          selectedElement.dataset.value = 'Choose your size';
+          // Set initial selection for size dropdown
+          if (selectedOptionsMap[option.name] && selectedOptionsMap[option.name] !== 'Choose your size') {
+              selectedElement.innerText = selectedOptionsMap[option.name];
+              selectedElement.dataset.value = selectedOptionsMap[option.name];
+          } else {
+              selectedElement.innerText = 'Choose your size';
+              selectedElement.dataset.value = 'Choose your size';
+          }
 
         } else {
           // For all other variants (pill selection)
@@ -1076,20 +1073,21 @@
             pill.addEventListener('click', () => {
               valuesContainer.querySelectorAll('.variant-option-value-pill').forEach(p => p.classList.remove('selected'));
               pill.classList.add('selected');
+              selectedOptionsMap[option.name] = value;
               updateVariantInfo();
             });
+
+            // Set initial active state if a default value is pre-selected
+            if (selectedOptionsMap[option.name] === value) {
+                pill.classList.add('selected');
+            }
           });
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
-
-          const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
-          if (firstPill) {
-              firstPill.classList.add('selected');
-          }
         }
       });
 
-      updateVariantInfo();
+      updateVariantInfo(); // Initial update after rendering all options
     };
 
 
@@ -1141,7 +1139,7 @@
         document.body.style.overflow = 'hidden';
       } catch (error) {
         console.error('Error fetching product data:', error);
-        alert(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`);
+        displayMessageBox(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`, 'error');
         quickViewModal.style.display = 'none';
       }
     };
@@ -1175,11 +1173,12 @@
         }
       });
 
-
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
+      addToCartSuccessMessage.style.display = 'none'; // Hide success message
       currentProductData = null;
+      selectedOptionsMap = {}; // Clear selected options
     };
 
 
@@ -1193,7 +1192,7 @@
           openModal(productHandle, gridImageUrl);
         } else {
           console.warn('Overlay button clicked but no product handle found.');
-          alert('No product linked to this overlay.');
+          displayMessageBox('No product linked to this overlay.', 'error');
         }
       });
     });
@@ -1212,14 +1211,14 @@
       });
     });
 
-    // Add to Cart functionality
+    // --- Add to Cart functionality ---
     modalAddToCartButton.addEventListener('click', async () => {
       const variantId = modalAddToCartButton.dataset.variantId;
       const quantity = 1;
 
-      if (!variantId) {
-        console.error('Invalid variant ID.');
-        alert('Please select all required options.');
+      if (!variantId || modalAddToCartButton.disabled) {
+        console.error('Invalid variant ID or button is disabled.');
+        displayMessageBox('Please select all available options before adding to cart.', 'error');
         return;
       }
 
@@ -1246,79 +1245,29 @@
 
         const cartData = await response.json();
         console.log('Product added to cart:', cartData);
-        closeModal();
-        alert('Product added to cart successfully!');
+        addToCartSuccessMessage.style.display = 'block'; // Show success message
+        setTimeout(() => {
+            closeModal();
+            addToCartSuccessMessage.style.display = 'none'; // Hide success message after closing modal
+            // Optional: Dispatch a custom event to notify other parts of your theme (e.g., mini-cart)
+            document.dispatchEvent(new CustomEvent('cart:item_added', {
+                detail: {
+                    variantId: variantId,
+                    quantity: quantity,
+                    cart: cartData
+                }
+            }));
+        }, 1500); // Hide success message and close modal after 1.5 seconds
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        alert('Failed to add product to cart. Please try again.');
+        displayMessageBox(`Failed to add product to cart: ${error.message}`, 'error');
       }
     });
 
-    // Simple custom alert for demonstration (replace with a proper modal in production)
-    function alert(message) {
-      const existingAlert = document.getElementById('custom-alert');
-      if (existingAlert) {
-        existingAlert.remove();
-      }
-
-      const alertDiv = document.createElement('div');
-      alertDiv.id = 'custom-alert';
-      alertDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #f44336;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        z-index: 10000;
-        font-family: 'Jost', sans-serif;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        animation: slideIn 0.5s forwards, fadeOut 3s forwards 2s;
-      `;
-      alertDiv.innerHTML = `
-        <span>${message}</span>
-        <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
-      `;
-
-      document.body.appendChild(alertDiv);
-
-      alertDiv.querySelector('button').addEventListener('click', () => {
-        alertDiv.remove();
-      });
-
-      const styleSheet = document.createElement("style");
-      styleSheet.type = "text/css";
-      styleSheet.innerText = `
-        @keyframes slideIn {
-          from { top: -50px; opacity: 0; }
-          to { top: 20px; opacity: 1; }
-        }
-        @keyframes fadeOut {
-          from { opacity: 1; }
-          to { opacity: 0; }
-        }
-      `;
-      document.head.appendChild(styleSheet);
-
-      setTimeout(() => {
-        if (document.body.contains(alertDiv)) {
-          alertDiv.remove();
-        }
-        if (document.head.contains(styleSheet)) {
-            styleSheet.remove();
-        }
-      }, 5000);
-    }
-
   });
 </script>
+
 
 {% schema %}
 {
