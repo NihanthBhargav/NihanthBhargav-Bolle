@@ -88,6 +88,9 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
+        {# ADDED SIZE CHART BUTTON HERE #}
+        <button class="modal-size-chart-button">Size Chart</button>
+
         <div class="modal-variant-options">
         </div>
 
@@ -97,6 +100,57 @@
     </div>
   </div>
 </div>
+
+{% comment %} Size Chart Modal HTML {% endcomment %}
+<div id="size-chart-modal" class="size-chart-modal" style="display: none;">
+  <div class="modal-overlay"></div>
+  <div class="modal-content size-chart-content">
+    <button class="modal-close-button">&times;</button>
+    <h3 class="size-chart-title">Product Size Chart</h3>
+    <div class="size-chart-image-container">
+      {# Replace this with your actual size chart image or table content #}
+      <img src="https://placehold.co/400x300/e0e0e0/333333?text=Your+Size+Chart+Here" alt="Size Chart" style="max-width: 100%; height: auto; display: block;">
+    </div>
+    {# You can also add a table here for the size chart #}
+    <table class="size-table">
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Bust (cm)</th>
+                <th>Waist (cm)</th>
+                <th>Hips (cm)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>XS</td>
+                <td>80-84</td>
+                <td>60-64</td>
+                <td>86-90</td>
+            </tr>
+            <tr>
+                <td>S</td>
+                <td>85-89</td>
+                <td>65-69</td>
+                <td>91-95</td>
+            </tr>
+            <tr>
+                <td>M</td>
+                <td>90-94</td>
+                <td>70-74</td>
+                <td>96-100</td>
+            </tr>
+            <tr>
+                <td>L</td>
+                <td>95-99</td>
+                <td>75-79</td>
+                <td>101-105</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</div>
+
 
 <style>
   /* Base font for the theme */
@@ -346,6 +400,11 @@
     .modal-product-description {
         font-size: 0.9em;
     }
+    .modal-size-chart-button { /* Responsive for button */
+      position: static;
+      width: 100%;
+      margin-bottom: 15px;
+    }
 
     .modal-add-to-cart-form {
       flex-direction: column;
@@ -367,10 +426,28 @@
     .custom-dropdown-container {
       width: 100%;
     }
+
+    /* Size Chart Modal Responsive */
+    .size-chart-modal .modal-content {
+      width: 95%;
+      height: auto;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .size-chart-image-container img {
+      width: 100%;
+      height: auto;
+    }
+    .size-table {
+      width: 100%;
+      font-size: 0.8em;
+    }
   }
 
   /* Styles for Product Quick View Modal */
-  .product-quick-view-modal {
+  .product-quick-view-modal, .size-chart-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -507,9 +584,33 @@
     z-index: 2;
   }
 
+  /* NEW: Size Chart Button */
+  .modal-size-chart-button {
+    position: absolute;
+    width: 100px; /* Adjust as needed */
+    height: 25px; /* Adjust as needed */
+    top: 185px; /* Position below description */
+    left: 145px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    z-index: 2;
+  }
+
+  .modal-size-chart-button:hover {
+    background-color: #e0e0e0;
+    color: #000;
+  }
+
   .modal-variant-options {
     position: absolute;
-    top: 190px;
+    top: 220px; /* Adjusted to be below the new size chart button */
     left: 17px;
     width: calc(100% - 34px);
     height: 130px;
@@ -755,6 +856,51 @@
     color: #fff !important;
   }
 
+  /* NEW: Size Chart Modal Specific Styles */
+  .size-chart-modal .modal-content {
+    width: 500px; /* Adjust size as needed for the chart */
+    height: auto; /* Auto height to fit content */
+    max-height: 90vh; /* Max height to prevent overflow on small screens */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto; /* Enable scrolling if content is too tall */
+  }
+
+  .size-chart-title {
+    font-family: 'Lustria', serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;
+    text-align: center;
+  }
+
+  .size-chart-image-container {
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    padding: 5px;
+  }
+
+  .size-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: 'Jost', sans-serif;
+  }
+
+  .size-table th, .size-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .size-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
 </style>
 
 <script>
@@ -768,6 +914,12 @@
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
+
+    // NEW: Size Chart elements
+    const sizeChartButton = quickViewModal.querySelector('.modal-size-chart-button');
+    const sizeChartModal = document.getElementById('size-chart-modal');
+    const sizeChartCloseButton = sizeChartModal.querySelector('.modal-close-button');
+    const sizeChartOverlay = sizeChartModal.querySelector('.modal-overlay');
 
     let currentProductData = null;
 
@@ -1116,6 +1268,22 @@
       });
     };
 
+    // NEW: Function to open size chart modal
+    const openSizeChartModal = () => {
+      sizeChartModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    // NEW: Function to close size chart modal
+    const closeSizeChartModal = () => {
+      sizeChartModal.style.display = 'none';
+      // Only unlock body scroll if no other modals are open
+      if (quickViewModal.style.display === 'none') {
+        document.body.style.overflow = '';
+      }
+    };
+
+
     // Event listeners for opening modal (all overlays)
     document.querySelectorAll('.overlay-button').forEach(button => {
       button.addEventListener('click', (event) => {
@@ -1131,9 +1299,14 @@
       });
     });
 
-    // Event listeners for closing modal
+    // Event listeners for closing quick view modal
     modalCloseButton.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
+
+    // NEW: Event listeners for size chart modal
+    sizeChartButton.addEventListener('click', openSizeChartModal);
+    sizeChartCloseButton.addEventListener('click', closeSizeChartModal);
+    sizeChartOverlay.addEventListener('click', closeSizeChartModal);
 
 
     // Add to Cart functionality
