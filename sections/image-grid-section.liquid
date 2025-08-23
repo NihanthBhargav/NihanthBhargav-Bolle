@@ -89,7 +89,8 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-         </div>
+          {# Variant options will be rendered here dynamically, including the custom dropdown for 'Size' #}
+        </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -504,9 +505,9 @@
 
   .modal-variant-options {
     position: absolute;
-    top: 186px; /* Adjusted from 220px */
-    left: 20px; /* Adjusted from 17px */
-    width: calc(100% - 40px); /* Adjusted from calc(100% - 34px) */
+    top: 186px;
+    left: 20px;
+    width: calc(100% - 40px);
     height: 130px; /* Keep this height or adjust if needed for more options */
     overflow-y: hidden;
     display: block;
@@ -754,6 +755,9 @@
 </style>
 
 <script>
+  // Access the product handle for product_1 from liquid settings
+  const product1Handle = "{{ section.settings.product_1 }}";
+
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
@@ -853,9 +857,27 @@
     };
 
     // Function to generate variant selectors
-    const generateVariantSelectors = (productData) => {
+    const generateVariantSelectors = (productData, currentProductHandle) => {
       modalVariantOptions.innerHTML = '';
-      productData.options.forEach((option, optionIndex) => {
+      let optionsToRender = [...productData.options]; // Create a mutable copy
+
+      // Reorder options if the current product is NOT product_1
+      if (currentProductHandle !== product1Handle) {
+        const colorOption = optionsToRender.find(opt => opt.name.toLowerCase() === 'color');
+        const sizeOption = optionsToRender.find(opt => opt.name.toLowerCase().includes('size'));
+
+        if (colorOption && sizeOption) {
+          // Remove them from their original positions
+          optionsToRender = optionsToRender.filter(opt =>
+            opt.name.toLowerCase() !== 'color' && !opt.name.toLowerCase().includes('size')
+          );
+          // Add color first, then size, then the rest
+          optionsToRender.unshift(colorOption);
+          optionsToRender.splice(1, 0, sizeOption); // Insert size after color
+        }
+      }
+
+      optionsToRender.forEach((option, optionIndex) => {
         const optionGroup = document.createElement('div');
         optionGroup.classList.add('variant-option-group');
         optionGroup.dataset.optionName = option.name;
@@ -1051,7 +1073,8 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        generateVariantSelectors(currentProductData); // This will now create the custom dropdown for Size
+        // Pass the current product handle to the variant selector generator
+        generateVariantSelectors(currentProductData, productHandle);
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
