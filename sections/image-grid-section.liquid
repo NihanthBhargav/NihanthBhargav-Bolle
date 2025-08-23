@@ -92,6 +92,7 @@
         <button class="modal-size-chart-button">Size Chart</button>
 
         <div class="modal-variant-options">
+          {# Shopify's default size options will render here as pills or selects. #}
         </div>
 
         <div class="modal-add-to-cart-form">
@@ -101,65 +102,17 @@
   </div>
 </div>
 
-{% comment %} Dedicated Size Chart Modal HTML (now contains user's exact dropdown code) {% endcomment %}
+{% comment %} Dedicated Size Chart Modal HTML (now empty of custom dropdown code) {% endcomment %}
 <div id="size-chart-modal" class="size-chart-modal" style="display: none;">
   <div class="modal-overlay"></div>
   <div class="modal-content size-chart-content">
     <button class="modal-close-button">&times;</button>
-    <h3 class="size-chart-title">Product Size Selection</h3>
-    {# User's provided size chart HTML, with unique IDs for this modal #}
-    <label for="size-chart-size">Size</label>
-    <div class="dropdown" id="size-chart-specific-dropdown">
-      <div class="dropdown-header">
-        <span id="size-chart-selected">Choose your size</span>
-        <div class="line"></div>
-        <i class="arrow" id="size-chart-arrow"></i>
-      </div>
-      <div class="dropdown-list" id="size-chart-dropdown-list">
-        <div>XS</div>
-        <div>S</div>
-        <div>M</div>
-        <div>L</div>
-        <div>XL</div>
-      </div>
-    </div>
-    {# User's provided size chart JavaScript, adapted for this specific instance #}
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const dropdown = document.getElementById("size-chart-specific-dropdown");
-        const arrow = document.getElementById("size-chart-arrow");
-        const list = document.getElementById("size-chart-dropdown-list");
-        const selected = document.getElementById("size-chart-selected");
-
-        if (dropdown && arrow && list && selected) {
-          dropdown.addEventListener("click", (e) => {
-            e.stopPropagation(); // Prevent modal from closing if dropdown is inside it
-            list.style.display = list.style.display === "block" ? "none" : "block";
-            arrow.classList.toggle("up");
-          });
-
-          document.querySelectorAll("#size-chart-dropdown-list div").forEach(item => {
-            item.addEventListener("click", (e) => {
-              e.stopPropagation();
-              selected.innerText = item.innerText;
-              list.style.display = "none";
-              arrow.classList.remove("up");
-            });
-          });
-
-          // Global click listener specific to this dropdown, within the modal
-          const sizeChartModalGlobalClickListener = (e) => {
-            if (!dropdown.contains(e.target) && list.style.display === "block") {
-              list.style.display = "none";
-              arrow.classList.remove("up");
-            }
-          };
-          window.addEventListener("click", sizeChartModalGlobalClickListener);
-          // Store for cleanup if modal content is ever dynamically removed
-          dropdown._sizeChartModalGlobalClickListener = sizeChartModalGlobalClickListener;
-        }
-      });
-    </script>
+    <h3 class="size-chart-title">Product Size Chart</h3>
+    {# Placeholder for Shopify's default size chart content (e.g., a table or content from a page).
+       This area will now be empty of the custom dropdown.
+       You would typically load a Shopify page content here or dynamically populate a table.
+    #}
+    <p>Please refer to the product description or a dedicated size chart page for sizing information.</p>
   </div>
 </div>
 
@@ -633,79 +586,33 @@
     color: #333;
   }
 
-  /* YOUR EXACT CUSTOM SIZE DROPDOWN STYLES (Classes for reusability) */
-  .dropdown {
-    position: relative;
-    width: 250px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    font-family: 'Jost', sans-serif;
-  }
-
-  .dropdown-header {
+  /* Styles for default pill-style variant selectors */
+  .variant-option-values {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
-  .dropdown-header span.selected { /* Added .selected for specificity */
-    font-size: 16px;
-    flex: 1;
-    padding: 0 10px;
-    line-height: 40px;
-  }
-
-  /* Vertical line separator */
-  .line {
-    border-left: 0.5px solid #000;
-    height: 100%;
-  }
-
-  .arrow {
-    border: solid black;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 4px;
-    margin: 0 10px;
-    transform: rotate(45deg);
-    transition: transform 300ms ease-out; /* smooth arrow rotation */
-  }
-
-  .arrow.up {
-    transform: rotate(-135deg);
-  }
-
-  .dropdown-list {
-    display: none;
-    position: absolute;
-    width: 100%;
-    background: #fff;
-    z-index: 100;
+  .variant-option-value-pill {
+    padding: 8px 12px;
     border: 1px solid #ccc;
-    border-top: none;
-    font-family: 'Jost', sans-serif;
-  }
-
-  .dropdown-list div {
-    padding: 12px;
-    text-align: center;
+    border-radius: 4px;
     cursor: pointer;
-    border-top: 1px solid #ccc;
-    transition: all 300ms ease-out; /* 👈 smooth hover animation */
+    background-color: #f9f9f9;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
   }
 
-  .dropdown-list div:last-child {
-    border-bottom: 1px solid #ccc;
+  .variant-option-value-pill:hover {
+    background-color: #e0e0e0;
+    border-color: #aaa;
   }
 
-  /* Hover effect */
-  .dropdown-list div:hover {
-    background: #000;
-    color: #fff;
+  .variant-option-value-pill.selected {
+    background-color: #000;
+    color: white;
+    border-color: #000;
   }
-  /* END OF YOUR EXACT CUSTOM SIZE DROPDOWN STYLES */
-
 
   .modal-add-to-cart-form {
     position: absolute;
@@ -856,9 +763,6 @@
 </style>
 
 <script>
-  // No more generalized initializeUserDropdown function for dynamic quick view dropdowns
-  // Each size dropdown in quick view will have its own embedded script.
-
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
@@ -892,7 +796,7 @@
     };
 
     // Function to update modal content based on selected variant
-    window.updateVariantInfo = () => { // Made global to be accessible by dropdowns
+    window.updateVariantInfo = () => {
       if (!currentProductData) return;
 
       const selectedOptions = {};
@@ -901,20 +805,7 @@
       modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
         const optionName = group.dataset.optionName;
 
-        if (optionName.toLowerCase() === 'size') {
-            // For the size dropdown using user's code structure
-            const dropdownSelectedSpan = group.querySelector('.dropdown-header .selected');
-            if (dropdownSelectedSpan) {
-                const selectedText = dropdownSelectedSpan.textContent;
-                if (selectedText && selectedText !== "Choose your size") {
-                    selectedOptions[optionName] = selectedText;
-                } else {
-                    allOptionsSelected = false;
-                }
-            } else {
-                allOptionsSelected = false;
-            }
-        } else if (optionName.toLowerCase() === 'color') {
+        if (optionName.toLowerCase() === 'color') {
             const activeColorOption = group.querySelector('.color-option.active');
             if (activeColorOption) {
                 selectedOptions[optionName] = activeColorOption.dataset.value;
@@ -922,7 +813,7 @@
                 allOptionsSelected = false;
             }
         } else {
-            // For other variants, use the pill selection
+            // For all other variants (including Size now), use the pill selection
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
@@ -980,69 +871,7 @@
         label.textContent = option.name;
         optionGroup.appendChild(label);
 
-        if (option.name.toLowerCase() === 'size') {
-            // Dynamically generating unique IDs for this dropdown instance
-            const dropdownId = `dropdown-${optionIndex}`;
-            const selectedId = `selected-${optionIndex}`;
-            const arrowId = `arrow-${optionIndex}`;
-            const listId = `dropdown-list-${optionIndex}`;
-
-            // Constructing user's provided dropdown HTML for size selection
-            const dropdownHTML = `
-                <div class="dropdown" id="${dropdownId}">
-                    <div class="dropdown-header">
-                        <span class="selected" id="${selectedId}">Choose your size</span>
-                        <div class="line"></div>
-                        <i class="arrow" id="${arrowId}"></i>
-                    </div>
-                    <div class="dropdown-list" id="${listId}">
-                        ${option.values.map(value => `<div>${value}</div>`).join('')}
-                    </div>
-                </div>
-            `;
-            optionGroup.insertAdjacentHTML('beforeend', dropdownHTML);
-            modalVariantOptions.appendChild(optionGroup);
-
-            // Directly embedding user's JavaScript logic for this specific dropdown instance
-            const dropdownElement = optionGroup.querySelector(`#${dropdownId}`);
-            const arrowElement = optionGroup.querySelector(`#${arrowId}`);
-            const listElement = optionGroup.querySelector(`#${listId}`);
-            const selectedElement = optionGroup.querySelector(`#${selectedId}`);
-
-            if (dropdownElement && arrowElement && listElement && selectedElement) {
-                const dropdownClickHandler = (e) => {
-                    e.stopPropagation();
-                    listElement.style.display = listElement.style.display === "block" ? "none" : "block";
-                    arrowElement.classList.toggle("up");
-                };
-
-                const listItemClickHandler = (e) => {
-                    e.stopPropagation();
-                    selectedElement.innerText = e.target.innerText;
-                    listElement.style.display = "none";
-                    arrowElement.classList.remove("up");
-                    updateVariantInfo(); // Call updateVariantInfo when a size is selected
-                };
-
-                const globalClickHandler = (e) => {
-                    if (!dropdownElement.contains(e.target) && listElement.style.display === "block") {
-                        listElement.style.display = "none";
-                        arrowElement.classList.remove("up");
-                    }
-                };
-
-                dropdownElement.addEventListener("click", dropdownClickHandler);
-                listElement.querySelectorAll("div").forEach(item => {
-                    item.addEventListener("click", listItemClickHandler);
-                });
-
-                // Store listener references for cleanup when modal closes
-                dropdownElement._dropdownClickHandler = dropdownClickHandler;
-                dropdownElement._listItemClickHandler = listItemClickHandler;
-                dropdownElement._globalClickHandler = globalClickHandler;
-                document.addEventListener("click", globalClickHandler);
-            }
-        } else if (option.name.toLowerCase() === 'color') {
+        if (option.name.toLowerCase() === 'color') {
             const fieldset = document.createElement('fieldset');
             fieldset.classList.add('color-container');
 
@@ -1115,7 +944,7 @@
                 });
             }
         } else {
-          // For other variants, use the pill selection
+          // For all other variants (including Size now), use the pill selection
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -1208,18 +1037,6 @@
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
       currentProductData = null;
-
-      // Clean up global click listeners from dynamically created dropdowns in quick view
-      modalVariantOptions.querySelectorAll('.dropdown').forEach(dropdownElement => {
-        if (dropdownElement._globalClickHandler) {
-          document.removeEventListener("click", dropdownElement._globalClickHandler);
-          delete dropdownElement._globalClickHandler;
-          dropdownElement.removeEventListener("click", dropdownElement._dropdownClickHandler);
-          dropdownElement.querySelector('.dropdown-list').querySelectorAll("div").forEach(item => {
-              item.removeEventListener("click", dropdownElement._listItemClickHandler);
-          });
-        }
-      });
     };
 
     // Function to open size chart modal
