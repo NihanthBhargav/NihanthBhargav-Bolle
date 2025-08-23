@@ -89,7 +89,7 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-        </div>
+         </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -740,15 +740,16 @@
 
   .dropdown-list {
     display: none;
-    position: absolute;
+    position: absolute; /* This makes it float over content */
+    top: 100%; /* Position right below the header */
     width: 100%;
     background: #fff;
     z-index: 100;
     border: 1px solid #ccc;
     border-top: none;
     font-family: 'Jost', sans-serif;
-    max-height: 150px; /* Added to allow scrolling for many options */
-    overflow-y: auto; /* Added for scrolling */
+    max-height: 150px;
+    overflow-y: auto;
   }
 
   .dropdown-list div {
@@ -777,7 +778,7 @@
   const product2Handle = "{{ section.settings.product_2 }}";
   const product3Handle = "{{ section.settings.product_3 }}";
   const product5Handle = "{{ section.settings.product_5 }}";
-  const product6Handle = "{{ section.settings.product_6 }}"; // New product handle
+  const product6Handle = "{{ section.settings.product_6 }}";
 
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
