@@ -1,6 +1,7 @@
 {% comment %}
   This section creates a responsive image grid with optional overlay images and product links.
-  It also includes a product quick-view modal with custom color and size selection dropdowns.
+  It includes a simplified product quick-view modal with custom color and size selection dropdowns,
+  and direct add-to-cart functionality without displaying product name or description.
 {% endcomment %}
 
 <div class="image-grid-section">
@@ -42,9 +43,9 @@
             <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
         </div>
 
-        <h3 class="modal-product-title"></h3>
+        {# REMOVED: <h3 class="modal-product-title"></h3> #}
         <p class="modal-product-price"></p>
-        <div class="modal-product-description"></div>
+        {# REMOVED: <div class="modal-product-description"></div> #}
 
         <div class="modal-variant-options">
          </div>
@@ -273,9 +274,7 @@
       object-fit: contain;
     }
 
-    .modal-product-title,
     .modal-product-price,
-    .modal-product-description,
     .modal-variant-options,
     .modal-add-to-cart-form {
         width: 100%;
@@ -285,14 +284,8 @@
         padding: 0;
     }
 
-    .modal-product-title {
-        font-size: 1.5em;
-    }
     .modal-product-price {
         font-size: 1.2em;
-    }
-    .modal-product-description {
-        font-size: 0.9em;
     }
 
     .modal-add-to-cart-form {
@@ -407,22 +400,8 @@
     border-radius: 0;
   }
 
-  /* TEXT CONTEXTS - NOW FLOW-BASED */
-  .modal-product-title {
-    width: 100%;
-    height: auto;
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 120%;
-    letter-spacing: 0px;
-    text-align: left;
-    color: black;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    z-index: 2;
-  }
+  /* REMOVED: TEXT CONTEXTS - modal-product-title, modal-product-description */
+
 
   .modal-product-price {
     width: auto;
@@ -441,20 +420,6 @@
     text-overflow: ellipsis;
     z-index: 2;
     align-self: flex-start;
-  }
-
-  .modal-product-description {
-    width: 100%;
-    height: auto;
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 110%;
-    letter-spacing: -1%;
-    text-align: left;
-    color: #666;
-    overflow-y: hidden;
-    z-index: 2;
   }
 
   .modal-variant-options {
@@ -730,8 +695,7 @@
   const product1Handle = "{{ section.settings.product_1 }}";
   const product2Handle = "{{ section.settings.product_2 }}";
   const product3Handle = "{{ section.settings.product_3 }}";
-  // Assuming product_4, product_5, product_6 are also handles and not product objects directly
-  const product4Handle = "{{ section.settings.product_4 }}"; // Added for completeness if needed
+  const product4Handle = "{{ section.settings.product_4 }}";
   const product5Handle = "{{ section.settings.product_5 }}";
   const product6Handle = "{{ section.settings.product_6 }}";
 
@@ -739,19 +703,18 @@
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
     const modalOverlay = quickViewModal.querySelector('.modal-overlay');
-    const modalProductTitle = quickViewModal.querySelector('.modal-product-title');
+    // Removed: const modalProductTitle = quickViewModal.querySelector('.modal-product-title');
     const modalProductPrice = quickViewModal.querySelector('.modal-product-price');
-    const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
+    // Removed: const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
-    // NEW: Reference to the success message element
     const addToCartSuccessMessage = quickViewModal.querySelector('.add-to-cart-success-message');
 
 
     let currentProductData = null;
-    let selectedOptionsMap = {}; // Map to hold current selections for each option type
-    let initialGridImageURL = ''; // Store the URL of the grid image that opened the modal
+    let selectedOptionsMap = {};
+    let initialGridImageURL = '';
 
     // --- Custom Message Box Function (replaces alert()) ---
     function displayMessageBox(message, type = 'info') {
@@ -919,7 +882,7 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Show base price
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'SELECT OPTIONS';
+        modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART, even if options need selecting
 
         // --- Image update logic (when no variant selected) ---
         let imageUrlToSet = '';
@@ -967,7 +930,6 @@
       let optionsToRender = [...productData.options];
 
       // Reordering for specific products (only if product.handle property is available and comparison is correct)
-      // Note: Assuming product1Handle etc. are string handles, not full product objects.
       if (currentProductHandle !== product1Handle) {
         const colorOption = optionsToRender.find(opt => opt.name.toLowerCase() === 'color');
         const sizeOption = optionsToRender.find(opt => opt.name.toLowerCase().includes('size'));
@@ -1177,9 +1139,9 @@
         modalMainProductImage.src = imageUrlToSet;
         modalMainProductImage.alt = imageAltToSet;
 
-        modalProductTitle.textContent = currentProductData.title;
+        // Removed: modalProductTitle.textContent = currentProductData.title;
         modalProductPrice.textContent = formatMoney(currentProductData.price);
-        modalProductDescription.innerHTML = currentProductData.description;
+        // Removed: modalProductDescription.innerHTML = currentProductData.description;
 
         generateVariantSelectors(currentProductData, productHandle);
 
@@ -1200,9 +1162,9 @@
       modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
       initialGridImageURL = ''; // Clear the stored initial grid image URL on close
-      modalProductTitle.textContent = '';
+      // Removed: modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
-      modalProductDescription.innerHTML = '';
+      // Removed: modalProductDescription.innerHTML = '';
       modalVariantOptions.innerHTML = '';
 
       quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
