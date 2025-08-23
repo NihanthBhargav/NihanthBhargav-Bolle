@@ -89,7 +89,7 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-         </div>
+        </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -689,7 +689,7 @@
   }
 
   .grey-swatch {
-    width: 4.8392px; /* Adjusted from 5.8071px to 4.8392px for consistency if needed, but original was 5.8071px for grey */
+    width: 4.8392px;
     background: #AFAFB7; /* Grey swatch */
   }
 
@@ -776,7 +776,8 @@
   const product1Handle = "{{ section.settings.product_1 }}";
   const product2Handle = "{{ section.settings.product_2 }}";
   const product3Handle = "{{ section.settings.product_3 }}";
-  const product5Handle = "{{ section.settings.product_5 }}"; // New product handle
+  const product5Handle = "{{ section.settings.product_5 }}";
+  const product6Handle = "{{ section.settings.product_6 }}"; // New product handle
 
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
@@ -954,6 +955,21 @@
                 <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="grey">
                   <span class="color-swatch grey-swatch"></span>
                   Grey
+                </div>
+                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
+                  <span class="color-swatch black-swatch"></span>
+                  Black
+                </div>
+              </div>
+            `;
+          } else if (currentProductHandle === product6Handle) {
+            // Product 6: Blue and Black
+            colorBoxHTML = `
+              <div class="color-box">
+                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
+                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="blue">
+                  <span class="color-swatch blue-swatch"></span>
+                  Blue
                 </div>
                 <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
                   <span class="color-swatch black-swatch"></span>
