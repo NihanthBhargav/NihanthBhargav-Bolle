@@ -1,7 +1,9 @@
 {% comment %}
   This section creates a responsive image grid with optional overlay images and product links.
-  It includes a simplified product quick-view modal with custom color and size selection dropdowns,
-  and direct add-to-cart functionality without displaying product name or description.
+  It includes a product quick-view modal with custom color and size selection dropdowns.
+  The "ADD TO CART" button now functions to add the selected product directly to the cart.
+  Product title and description are present. The button always says "ADD TO CART"
+  and is disabled if the product is unavailable or options are not fully selected.
 {% endcomment %}
 
 <div class="image-grid-section">
@@ -43,9 +45,9 @@
             <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
         </div>
 
-        {# REMOVED: <h3 class="modal-product-title"></h3> #}
+        <h3 class="modal-product-title"></h3> {# RESTORED #}
         <p class="modal-product-price"></p>
-        {# REMOVED: <div class="modal-product-description"></div> #}
+        <div class="modal-product-description"></div> {# RESTORED #}
 
         <div class="modal-variant-options">
          </div>
@@ -53,7 +55,7 @@
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
-        {# NEW: Add a success message element here for in-modal feedback #}
+        {# In-modal success message for feedback #}
         <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart successfully!</p>
     </div>
   </div>
@@ -274,7 +276,9 @@
       object-fit: contain;
     }
 
+    .modal-product-title,
     .modal-product-price,
+    .modal-product-description,
     .modal-variant-options,
     .modal-add-to-cart-form {
         width: 100%;
@@ -284,8 +288,14 @@
         padding: 0;
     }
 
+    .modal-product-title {
+        font-size: 1.5em;
+    }
     .modal-product-price {
         font-size: 1.2em;
+    }
+    .modal-product-description {
+        font-size: 0.9em;
     }
 
     .modal-add-to-cart-form {
@@ -400,8 +410,22 @@
     border-radius: 0;
   }
 
-  /* REMOVED: TEXT CONTEXTS - modal-product-title, modal-product-description */
-
+  /* TEXT CONTEXTS */
+  .modal-product-title {
+    width: 100%;
+    height: auto;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    text-align: left;
+    color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    z-index: 2;
+  }
 
   .modal-product-price {
     width: auto;
@@ -420,6 +444,20 @@
     text-overflow: ellipsis;
     z-index: 2;
     align-self: flex-start;
+  }
+
+  .modal-product-description {
+    width: 100%;
+    height: auto;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 110%;
+    letter-spacing: -1%;
+    text-align: left;
+    color: #666;
+    overflow-y: hidden;
+    z-index: 2;
   }
 
   .modal-variant-options {
@@ -692,20 +730,20 @@
 
 <script>
   // Access the product handles from liquid settings
-  const product1Handle = "{{ section.settings.product_1 }}";
-  const product2Handle = "{{ section.settings.product_2 }}";
-  const product3Handle = "{{ section.settings.product_3 }}";
-  const product4Handle = "{{ section.settings.product_4 }}";
-  const product5Handle = "{{ section.settings.product_5 }}";
-  const product6Handle = "{{ section.settings.product_6 }}";
+  const product1Handle = "{{ section.settings.product_1.handle }}";
+  const product2Handle = "{{ section.settings.product_2.handle }}";
+  const product3Handle = "{{ section.settings.product_3.handle }}";
+  const product4Handle = "{{ section.settings.product_4.handle }}";
+  const product5Handle = "{{ section.settings.product_5.handle }}";
+  const product6Handle = "{{ section.settings.product_6.handle }}";
 
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
     const modalOverlay = quickViewModal.querySelector('.modal-overlay');
-    // Removed: const modalProductTitle = quickViewModal.querySelector('.modal-product-title');
+    const modalProductTitle = quickViewModal.querySelector('.modal-product-title'); {# RESTORED #}
     const modalProductPrice = quickViewModal.querySelector('.modal-product-price');
-    // Removed: const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
+    const modalProductDescription = quickViewModal.querySelector('.modal-product-description'); {# RESTORED #}
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
@@ -847,8 +885,16 @@
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
-        modalAddToCartButton.disabled = selectedVariant.available ? false : true;
-        modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
+        modalAddToCartButton.disabled = !selectedVariant.available; // Button disabled if not available
+        modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
+        if (!selectedVariant.available) {
+            // Optionally, visually indicate it's sold out, but keep button text as ADD TO CART
+            modalAddToCartButton.style.opacity = '0.7'; // Example: dim the button
+            modalAddToCartButton.style.cursor = 'not-allowed'; // Example: change cursor
+        } else {
+            modalAddToCartButton.style.opacity = '1';
+            modalAddToCartButton.style.cursor = 'pointer';
+        }
 
         // --- Image update logic ---
         let imageUrlToSet = '';
@@ -881,8 +927,10 @@
         // If no valid variant is selected (e.g., options not fully chosen or invalid combination)
         modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Show base price
         modalAddToCartButton.dataset.variantId = '';
-        modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART, even if options need selecting
+        modalAddToCartButton.disabled = true; // Disabled if options not fully chosen
+        modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
+        modalAddToCartButton.style.opacity = '0.7'; // Dimmed if disabled
+        modalAddToCartButton.style.cursor = 'not-allowed';
 
         // --- Image update logic (when no variant selected) ---
         let imageUrlToSet = '';
@@ -1139,9 +1187,9 @@
         modalMainProductImage.src = imageUrlToSet;
         modalMainProductImage.alt = imageAltToSet;
 
-        // Removed: modalProductTitle.textContent = currentProductData.title;
+        modalProductTitle.textContent = currentProductData.title; {# RESTORED #}
         modalProductPrice.textContent = formatMoney(currentProductData.price);
-        // Removed: modalProductDescription.innerHTML = currentProductData.description;
+        modalProductDescription.innerHTML = currentProductData.description; {# RESTORED #}
 
         generateVariantSelectors(currentProductData, productHandle);
 
@@ -1162,9 +1210,9 @@
       modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
       initialGridImageURL = ''; // Clear the stored initial grid image URL on close
-      // Removed: modalProductTitle.textContent = '';
+      modalProductTitle.textContent = ''; {# RESTORED #}
       modalProductPrice.textContent = '';
-      // Removed: modalProductDescription.innerHTML = '';
+      modalProductDescription.innerHTML = ''; {# RESTORED #}
       modalVariantOptions.innerHTML = '';
 
       quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
@@ -1187,6 +1235,8 @@
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
+      modalAddToCartButton.style.opacity = '1'; // Reset styles
+      modalAddToCartButton.style.cursor = 'pointer'; // Reset styles
       addToCartSuccessMessage.style.display = 'none'; // Ensure success message is hidden on close
       currentProductData = null;
       selectedOptionsMap = {};
@@ -1229,7 +1279,7 @@
 
       if (!variantId || modalAddToCartButton.disabled) {
         console.error('Invalid variant ID or button is disabled.');
-        displayMessageBox('Please select all available options before adding to cart.', 'error');
+        displayMessageBox('Please select all available options or wait for product availability.', 'error');
         return;
       }
 
@@ -1278,22 +1328,13 @@
       }
     });
 
-    // NEW: Define custom-alert CSS to remove the temporary stylesheet creation
+    // Ensure custom message box CSS is always present
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = `
       #custom-message-box button:hover {
         background-color: #333;
       }
-      @keyframes slideIn {
-        from { top: -50px; opacity: 0; }
-        to { top: 20px; opacity: 1; }
-      }
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-      #custom-alert { /* Removed this, replaced by displayMessageBox */ }
     `;
     document.head.appendChild(styleSheet);
 
