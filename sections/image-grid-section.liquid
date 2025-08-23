@@ -1,12 +1,11 @@
 {% comment %}
   This section creates a responsive image grid with optional overlay images and product links.
   It includes a product quick-view modal with custom color and size selection dropdowns.
-  The "ADD TO CART" button now functions to add the selected product directly to the cart.
-  Product title and description are present. The button always says "ADD TO CART"
-  and is disabled if the product is unavailable or options are not fully selected.
+  The "ADD TO CART" button is now ALWAYS enabled and attempts to add the product to the cart,
+  regardless of its availability. There will be no "Sold Out" text or disabled states for the button.
 
-  FIXED: Overlay buttons were not responding due to an incorrect Liquid conditional
-  and incorrect product handle assignment in JavaScript. These have been corrected.
+  FIXED: Removed all logic that would disable the "ADD TO CART" button or display "Sold Out".
+         The button now always attempts to add the product to the cart.
 {% endcomment %}
 
 <div class="image-grid-section">
@@ -19,17 +18,14 @@
       {%- for i in (1..6) -%}
         {%- assign image_setting = 'image_' | append: i -%}
         {%- assign overlay_image_setting = 'overlay_image_' | append: i -%}
-        {%- assign product_setting_id = 'product_' | append: i -%} {# Use a different variable name for the ID #}
+        {%- assign product_setting_id = 'product_' | append: i -%}
 
         {%- if section.settings[image_setting] != blank -%}
           <div class="grid-item">
             {{ section.settings[image_setting] | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-            {%- comment -%}
-              BUG FIXED: Changed condition from 'overlay_image_1' to dynamic 'overlay_image_setting'
-            {%- endcomment -%}
             {% if section.settings[overlay_image_setting] != blank %}
               <div class="overlay-button"
-                data-product-handle="{{ section.settings[product_setting_id].handle }}" {# Correctly pass the product handle #}
+                data-product-handle="{{ section.settings[product_setting_id].handle }}"
                 data-grid-image-url="{{ section.settings[image_setting] | image_url: width: 400 }}">
                 {{ section.settings[overlay_image_setting] | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
               </div>
@@ -48,7 +44,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" > {# Removed onerror - JS handles placeholders #}
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -552,10 +548,6 @@
   .modal-add-to-cart-button:hover {
     background-color: #333;
   }
-  .modal-add-to-cart-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
 
   /* --- CUSTOM COLOR SELECTOR STYLES (from your provided code) --- */
   fieldset.color-container {
@@ -739,7 +731,7 @@
 </style>
 
 <script>
-  // BUG FIXED: Now assigning product handles correctly instead of entire product objects.
+  // Assign product handles correctly
   const product1Handle = "{{ section.settings.product_1.handle }}";
   const product2Handle = "{{ section.settings.product_2.handle }}";
   const product3Handle = "{{ section.settings.product_3.handle }}";
@@ -881,7 +873,6 @@
           // Find the variant that matches all selected options
           selectedVariant = currentProductData.variants.find(variant => {
             return currentProductData.options.every((option, index) => {
-              // Ensure the variant's option matches the currently selected option
               return variant.options[index] === currentSelectedOptions[option.name];
             });
           });
@@ -891,78 +882,51 @@
       console.log('Selected options for variant matching:', currentSelectedOptions);
       console.log('Found matching variant:', selectedVariant);
 
-
+      // --- ALWAYS set variant ID and price, do NOT disable button ---
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
-        modalAddToCartButton.disabled = !selectedVariant.available; // Button disabled if not available
         modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
-        // Visual feedback for disabled state
-        if (!selectedVariant.available) {
-            modalAddToCartButton.classList.add('disabled');
-        } else {
-            modalAddToCartButton.classList.remove('disabled');
-        }
-
-        // --- Image update logic ---
-        let imageUrlToSet = '';
-        let imageAltToSet = currentProductData.title;
-
-        if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
-            imageUrlToSet = selectedVariant.featured_image.src;
-            imageAltToSet = selectedVariant.featured_image.alt || currentProductData.title;
-            console.log("Setting modal image from selected variant:", imageUrlToSet);
-        } else if (initialGridImageURL && initialGridImageURL.trim() !== '') {
-            imageUrlToSet = initialGridImageURL;
-            console.log("Setting modal image from initial grid image (variant fallback):", imageUrlToSet);
-        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            imageUrlToSet = currentProductData.featured_image.src;
-            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
-            console.log("Setting modal image from product featured (variant fallback):", imageUrlToSet);
-        } else if (currentProductData.images && currentProductData.images.length > 0) {
-            imageUrlToSet = currentProductData.images[0].src;
-            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
-            console.log("Setting modal image from first product image (variant fallback):", imageUrlToSet);
-        } else {
-            console.warn("No image found for variant or product, using placeholder.");
-            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Red placeholder for clarity
-            imageAltToSet = 'No image available';
-        }
-        modalMainProductImage.src = imageUrlToSet;
-        modalMainProductImage.alt = imageAltToSet;
-
       } else {
-        // If no valid variant is selected (e.g., options not fully chosen or invalid combination)
-        modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Show base price
-        modalAddToCartButton.dataset.variantId = '';
-        modalAddToCartButton.disabled = true; // Disabled if options not fully chosen
-        modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
-        modalAddToCartButton.classList.add('disabled'); // Add disabled class
-
-        // --- Image update logic (when no variant selected) ---
-        let imageUrlToSet = '';
-        let imageAltToSet = currentProductData.title;
-
-        // Prioritize the initial grid image that opened the modal
-        if (initialGridImageURL && initialGridImageURL.trim() !== '') {
-            imageUrlToSet = initialGridImageURL;
-            console.log("Setting modal image from initial grid image (no variant selected):", imageUrlToSet);
-        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            imageUrlToSet = currentProductData.featured_image.src;
-            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
-            console.log("Setting modal image from product featured (no variant selected fallback):", imageUrlToSet);
-        } else if (currentProductData.images && currentProductData.images.length > 0) {
-            imageUrlToSet = currentProductData.images[0].src;
-            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
-            console.log("Setting modal image from first product image (no variant selected fallback):", imageUrlToSet);
+        // If no specific variant is matched, default to the first variant's ID and base price
+        // This ensures a variantId is always present for the add to cart attempt.
+        if (currentProductData.variants && currentProductData.variants.length > 0) {
+            modalProductPrice.textContent = formatMoney(currentProductData.variants[0].price);
+            modalAddToCartButton.dataset.variantId = currentProductData.variants[0].id;
         } else {
-            console.warn("No image found for product, using placeholder (no variant selected).");
-            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Red placeholder
-            imageAltToSet = 'No image available';
+            modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Fallback to base product price
+            modalAddToCartButton.dataset.variantId = ''; // No variant available at all
         }
-        modalMainProductImage.src = imageUrlToSet;
-        modalMainProductImage.alt = imageAltToSet;
+        modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
       }
+
+      // --- Image update logic ---
+      let imageUrlToSet = '';
+      let imageAltToSet = currentProductData.title;
+
+      if (selectedVariant && selectedVariant.featured_image && selectedVariant.featured_image.src) {
+          imageUrlToSet = selectedVariant.featured_image.src;
+          imageAltToSet = selectedVariant.featured_image.alt || currentProductData.title;
+          console.log("Setting modal image from selected variant:", imageUrlToSet);
+      } else if (initialGridImageURL && initialGridImageURL.trim() !== '') {
+          imageUrlToSet = initialGridImageURL;
+          console.log("Setting modal image from initial grid image (variant fallback):", imageUrlToSet);
+      } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+          imageUrlToSet = currentProductData.featured_image.src;
+          imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
+          console.log("Setting modal image from product featured (variant fallback):", imageUrlToSet);
+      } else if (currentProductData.images && currentProductData.images.length > 0) {
+          imageUrlToSet = currentProductData.images[0].src;
+          imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
+          console.log("Setting modal image from first product image (variant fallback):", imageUrlToSet);
+      } else {
+          console.warn("No image found for variant or product, using placeholder.");
+          imageUrlToSet = 'https://placehold.co/400x400/cccccc/333333?text=No+Image'; // Generic placeholder
+          imageAltToSet = 'No image available';
+      }
+      modalMainProductImage.src = imageUrlToSet;
+      modalMainProductImage.alt = imageAltToSet;
+
       console.log('Final modal image src (after updateVariantInfo):', modalMainProductImage.src);
       console.log('--- updateVariantInfo finished ---');
     };
@@ -1169,7 +1133,7 @@
         console.log('Fetched product data:', currentProductData);
 
         // Store the gridImageUrl globally for this modal instance
-        initialGridImageURL = gridImageUrl; // Use a distinct variable name to avoid confusion
+        initialGridImageURL = gridImageUrl;
 
         let imageUrlToSet = '';
         let imageAltToSet = currentProductData.title;
@@ -1188,7 +1152,7 @@
             console.log("Initial modal image (from first product image - fallback):", imageUrlToSet);
         } else {
             console.warn("No initial image source found for product, using placeholder.");
-            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            imageUrlToSet = 'https://placehold.co/400x400/cccccc/333333?text=No+Image'; // Generic placeholder
             imageAltToSet = 'No image available';
         }
         modalMainProductImage.src = imageUrlToSet;
@@ -1240,9 +1204,7 @@
       });
 
       modalAddToCartButton.dataset.variantId = '';
-      modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
-      modalAddToCartButton.classList.remove('disabled'); // Remove disabled class
       addToCartSuccessMessage.style.display = 'none'; // Ensure success message is hidden on close
       currentProductData = null;
       selectedOptionsMap = {};
@@ -1255,7 +1217,7 @@
         event.preventDefault();
         const productHandle = button.dataset.productHandle;
         const gridImageUrl = button.dataset.gridImageUrl;
-        if (productHandle && productHandle !== 'null') { // Add check for 'null' string
+        if (productHandle && productHandle !== 'null') {
           openModal(productHandle, gridImageUrl);
         } else {
           console.warn('Overlay button clicked but no valid product handle found.');
@@ -1283,9 +1245,10 @@
       const variantId = modalAddToCartButton.dataset.variantId;
       const quantity = 1;
 
-      if (!variantId || modalAddToCartButton.disabled) {
-        console.error('Invalid variant ID or button is disabled.');
-        displayMessageBox('Please select all available options or wait for product availability.', 'error');
+      // The button is always enabled per user request, so only check for variantId presence
+      if (!variantId) {
+        console.error('No variant ID available to add to cart.');
+        displayMessageBox('Cannot add to cart. No product variant selected or available.', 'error');
         return;
       }
 
@@ -1330,20 +1293,16 @@
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        displayMessageBox(`Failed to add product to cart: ${error.message}`, 'error');
+        displayMessageBox(`Failed to add product to cart: ${error.message}. Please check product stock.`, 'error');
       }
     });
 
-    // Add CSS for the disabled state of the button
+    // Add custom message box CSS if not already present
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = `
       #custom-message-box button:hover {
         background-color: #333;
-      }
-      .modal-add-to-cart-button.disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
       }
     `;
     document.head.appendChild(styleSheet);
