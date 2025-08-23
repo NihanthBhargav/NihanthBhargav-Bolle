@@ -39,7 +39,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200">
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -83,7 +83,7 @@
 
   .grid-title {
     width: 372px;
-    height: 43px;
+    height: auto; /* Changed from fixed height */
     font-family: 'Lustria', serif;
     font-weight: 400;
     font-size: 36px;
@@ -110,6 +110,8 @@
     align-items: center;
     aspect-ratio: 433 / 444;
     opacity: 1;
+    border-radius: 8px; /* Added for rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   }
 
   .grid-image {
@@ -117,85 +119,41 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    transition: transform 0.3s ease; /* Smooth hover effect */
   }
 
-  .placeholder-image {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .grid-item:hover .grid-image {
+    transform: scale(1.05); /* Slightly zoom on hover */
   }
 
-  .placeholder-svg {
-    max-width: 50%;
-    max-height: 50%;
-    opacity: 0.5;
-  }
-
-  /* Overlay button wrapper (for click event) */
+  /* Overlay button wrapper (for click event) - NOW POSITIONS THE BUTTON */
   .overlay-button {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    z-index: 10;
-  }
-
-  /* Hover effect for the overlay button, targeting the image inside it */
-  .overlay-button:hover .grid-overlay-image {
-    transform: translate(-50%, -50%) scale(1.1);
-    transition: transform 0.2s ease-in-out;
-  }
-
-  /* General styles for all overlay images */
-  .grid-overlay-image {
-    position: absolute;
-    z-index: 9;
-    pointer-events: none;
-    background: white;
-    border-radius: 50%;
+    bottom: 20px; /* Position from bottom */
+    right: 20px; /* Position from right */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%; /* Circular button */
+    padding: 10px; /* Padding around the icon */
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    z-index: 10; /* Ensure it's above the image */
+  }
+
+  .overlay-button:hover {
+    transform: scale(1.1); /* Pop on hover */
+  }
+
+  /* Styling for the overlay image (e.g., a plus icon) - INSIDE THE BUTTON */
+  .grid-overlay-image {
     width: 22px;
     height: 22px;
-    transform: translate(-50%, -50%);
-    transition: transform 0.2s ease-in-out;
+    display: block; /* Ensure it's a block element */
+    /* Remove any specific positioning for the image itself, it's centered by its parent .overlay-button */
   }
-
-
-  .grid-overlay-image-1 {
-    top: 238px;
-    left: 256.5px;
-  }
-
-  .grid-overlay-image-2 {
-    top: 222px;
-    left: 355.2px;
-  }
-
-  .grid-overlay-image-3 {
-    top: 82px;
-    left: 261px;
-  }
-
-  .grid-overlay-image-4 {
-    top: 71px;
-    left: 301.5px;
-  }
-
-  .grid-overlay-image-5 {
-    top: 104px;
-    left: 212.5px;
-  }
-
-  .grid-overlay-image-6 {
-    top: 164px;
-    left: 319.5px;
-  }
-
 
   /* Responsive Design */
   @media screen and (max-width: 1400px) {
@@ -211,14 +169,15 @@
       height: auto;
       aspect-ratio: 433 / 444;
     }
-
-    .grid-overlay-image { /* Generic responsive adjustments if needed */
-      width: 5%;
-      height: auto;
-      top: 15%;
-      right: 15%;
-      left: auto;
-      transform: translate(0,0);
+    /* Overlay button adjustments for smaller screens if needed */
+    .overlay-button {
+      bottom: 15px;
+      right: 15px;
+      padding: 8px;
+    }
+    .grid-overlay-image {
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -240,9 +199,15 @@
       grid-template-columns: 1fr;
       gap: 10px;
     }
+    /* Overlay button adjustments for mobile */
+    .overlay-button {
+      bottom: 10px;
+      right: 10px;
+      padding: 6px;
+    }
     .grid-overlay-image {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
 
     /* Modal Responsive Styling Adjustments */
@@ -347,7 +312,7 @@
   .modal-content {
     background-color: white;
     padding: 20px;
-    border-radius: 0;
+    border-radius: 8px; /* Changed from 0 to 8px for rounded corners */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 1001;
@@ -391,7 +356,7 @@
     width: 100%;
     height: 200px;
     overflow: hidden;
-    border-radius: 0;
+    border-radius: 8px; /* Changed from 0 to 8px for rounded corners */
     margin-bottom: 0;
     display: flex;
     justify-content: center;
@@ -400,10 +365,10 @@
   }
 
   .modal-single-image img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%; /* Ensure image fits within container */
+    max-height: 100%; /* Ensure image fits within container */
     object-fit: contain;
-    border-radius: 0;
+    border-radius: 8px; /* Changed from 0 to 8px for rounded corners */
   }
 
   /* TEXT CONTEXTS - NOW FLOW-BASED */
@@ -440,6 +405,7 @@
     text-overflow: ellipsis;
     z-index: 2;
     align-self: flex-start;
+    border-radius: 4px; /* Added for rounded corners */
   }
 
   .modal-product-description {
@@ -526,7 +492,7 @@
     color: white;
     padding: 10px 18px;
     border: none;
-    border-radius: 0;
+    border-radius: 8px; /* Changed from 0 to 8px for rounded corners */
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
@@ -567,9 +533,10 @@
     max-width: 100%; /* Ensure it shrinks on smaller screens */
     height: 40.4413px;
     border: 0.5px solid #000;
-    box-sizing: border-box; /* Corrected typo here */
+    box-sizing: border-box;
     overflow: hidden;
     align-self: flex-start; /* Align to the left in flex container */
+    border-radius: 4px; /* Added for rounded corners */
   }
 
   /* Sliding background (always black) */
@@ -583,6 +550,7 @@
     transition: transform 0.4s ease;
     z-index: 1;
     display: none; /* Keep initially hidden */
+    border-radius: 4px; /* Added for rounded corners */
   }
 
   .slider.right {
@@ -620,30 +588,11 @@
     z-index: 3;
   }
 
-  .blue-swatch {
-    width: 5.8071px;
-    background: #0D499F; /* Blue swatch */
-  }
-
-  .black-swatch {
-    width: 4.8392px;
-    background: #000; /* Black swatch */
-  }
-
-  .white-swatch {
-    width: 5.8071px;
-    background: #fff; /* White swatch */
-  }
-
-  .red-swatch {
-    width: 5.8071px;
-    background: #B20F36; /* Red swatch */
-  }
-
-  .grey-swatch {
-    width: 4.8392px;
-    background: #AFAFB7; /* Grey swatch */
-  }
+  .blue-swatch { width: 5.8071px; background: #0D499F; }
+  .black-swatch { width: 4.8392px; background: #000; }
+  .white-swatch { width: 5.8071px; background: #fff; }
+  .red-swatch { width: 5.8071px; background: #B20F36; }
+  .grey-swatch { width: 4.8392px; background: #AFAFB7; }
 
 
   /* CUSTOM DROPDOWN CSS */
@@ -654,6 +603,7 @@
     cursor: pointer;
     font-family: 'Jost', sans-serif;
     margin-top: 5px; /* Added for spacing */
+    border-radius: 4px; /* Added for rounded corners */
   }
 
   .dropdown-header {
@@ -661,6 +611,7 @@
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    border-radius: 4px; /* Added for rounded corners */
   }
 
   .dropdown-header span {
@@ -702,6 +653,8 @@
     font-family: 'Jost', sans-serif;
     max-height: 150px;
     overflow-y: auto;
+    border-radius: 0 0 4px 4px; /* Rounded bottom corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
   }
 
   .dropdown-list div {
@@ -882,19 +835,22 @@
 
         // Update main product image based on selected variant if available
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
+            console.log("Setting modal image from variant:", selectedVariant.featured_image.src);
             modalMainProductImage.src = selectedVariant.featured_image.src;
             modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
             // Fallback to product featured image
+            console.log("Setting modal image from product featured:", currentProductData.featured_image.src);
             modalMainProductImage.src = currentProductData.featured_image.src;
             modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
         } else if (currentProductData.images && currentProductData.images.length > 0) {
             // Fallback to the first product image if no variant image
+            console.log("Setting modal image from first product image:", currentProductData.images[0].src);
             modalMainProductImage.src = currentProductData.images[0].src;
             modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
         } else {
-            // Generic fallback if no images at all
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            console.log("No images found, using placeholder for modal image.");
+            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/333333?text=No+Image'; // Ensure placeholder is visible
             modalMainProductImage.alt = 'No image available';
         }
 
@@ -903,6 +859,20 @@
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
         modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Indicate options need selection
+        // Revert to initial image if no valid variant is selected, or if initial image was gridImageUrl
+        if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            console.log("Reverting modal image to product featured (no variant selected):", currentProductData.featured_image.src);
+            modalMainProductImage.src = currentProductData.featured_image.src;
+            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
+        } else if (currentProductData.images && currentProductData.images.length > 0) {
+            console.log("Reverting modal image to first product image (no variant selected):", currentProductData.images[0].src);
+            modalMainProductImage.src = currentProductData.images[0].src;
+            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+        } else {
+            console.log("No images found, using placeholder for modal image (no variant selected).");
+            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/333333?text=No+Image';
+            modalMainProductImage.alt = 'No image available';
+        }
       }
     };
 
@@ -915,8 +885,8 @@
       // This ensures a default variant is selected if possible upon modal open
       currentProductData.options.forEach((option, index) => {
           // Find the first variant that has this option value
-          const firstAvailableValue = currentProductData.variants.find(v => v.options[index] === option.values[0]) ? option.values[0] : null;
-          selectedOptionsMap[option.name] = firstAvailableValue || (option.name.toLowerCase().includes('size') ? 'Choose your size' : null);
+          const firstAvailableValue = option.values[0]; // Always pick the first value
+          selectedOptionsMap[option.name] = firstAvailableValue;
       });
 
       let optionsToRender = [...productData.options];
@@ -958,11 +928,11 @@
             colors = [{name: 'red', class: 'red-swatch', value: 'Red'}, {name: 'grey', class: 'grey-swatch', value: 'Grey'}];
           } else if (currentProductHandle === product5Handle) {
             colors = [{name: 'grey', class: 'grey-swatch', value: 'Grey'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
-          } else { // Default for product 1 and others
+          } else { // Default for product 1, 4 and others not explicitly defined
             colors = [{name: 'white', class: 'white-swatch', value: 'White'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
           }
 
-          colorBoxHTML += `<div class="color-box"><div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>`;
+          colorBoxHTML += `<div class="color-box"><div class="slider" id="slider-${currentProductHandle}"></div>`;
           colors.forEach((col, idx) => {
               colorBoxHTML += `
                   <div class="color-option" id="colorOption${idx + 1}-${currentProductHandle}" data-value="${col.value}">
@@ -983,7 +953,7 @@
 
           colorOptionsDivs.forEach((colorOption, index) => {
               colorOption.addEventListener("click", () => {
-                  slider.style.display = "block";
+                  slider.style.display = "block"; // Ensure slider is visible on first click
                   colorOptionsDivs.forEach(opt => opt.classList.remove('active'));
                   colorOption.classList.add('active');
                   selectedOptionsMap[option.name] = colorOption.dataset.value;
@@ -1115,16 +1085,20 @@
 
         // Set the main product image from gridImageUrl first, then variant image, then first product image
         if (gridImageUrl) {
+            console.log("Initial modal image from gridImageUrl:", gridImageUrl);
             modalMainProductImage.src = gridImageUrl;
             modalMainProductImage.alt = currentProductData.title;
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            console.log("Initial modal image from product featured:", currentProductData.featured_image.src);
             modalMainProductImage.src = currentProductData.featured_image.src;
             modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
         } else if (currentProductData.images && currentProductData.images.length > 0) {
+            console.log("Initial modal image from first product image:", currentProductData.images[0].src);
             modalMainProductImage.src = currentProductData.images[0].src;
             modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
         } else {
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            console.log("No initial images found, using placeholder.");
+            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/333333?text=No+Image'; // Fallback
             modalMainProductImage.alt = 'No image available';
         }
 
