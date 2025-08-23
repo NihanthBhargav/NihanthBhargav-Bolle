@@ -616,7 +616,7 @@
     max-width: 100%; /* Ensure it shrinks on smaller screens */
     height: 40.4413px;
     border: 0.5px solid #000;
-    box-sizing: border-box;
+    box-sizing: border;
     overflow: hidden;
     align-self: flex-start; /* Align to the left in flex container */
   }
@@ -902,124 +902,51 @@
           legend.textContent = option.name;
           fieldset.appendChild(legend);
 
-          const colorBox = document.createElement('div');
-          colorBox.classList.add('color-box');
-          fieldset.appendChild(colorBox);
+          // Your provided HTML structure for color-box
+          const colorBoxHTML = `
+            <div class="color-box">
+              <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
+              <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="${currentProductHandle === product2Handle ? 'blue' : 'white'}">
+                <span class="color-swatch ${currentProductHandle === product2Handle ? 'blue-swatch' : 'white-swatch'}"></span>
+                ${currentProductHandle === product2Handle ? 'Blue' : 'White'}
+              </div>
+              <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
+                <span class="color-swatch black-swatch"></span>
+                Black
+              </div>
+            </div>
+          `;
+          fieldset.insertAdjacentHTML('beforeend', colorBoxHTML); // Insert the HTML
 
-          const slider = document.createElement('div');
-          slider.classList.add('slider');
-          slider.id = `slider-${currentProductHandle}`; // Unique ID for each slider
-          slider.style.display = 'none'; // Initially hidden
-          colorBox.appendChild(slider);
+          optionGroup.appendChild(fieldset);
+          modalVariantOptions.appendChild(optionGroup);
 
-          // --- Conditional Color Options based on product handle ---
-          if (currentProductHandle === product2Handle) {
-            // Render BLUE and BLACK options for product_2
-            const blueValue = option.values.find(v => v.toLowerCase() === 'blue');
-            const blackValue = option.values.find(v => v.toLowerCase() === 'black');
+          // Get the dynamically created elements for event listeners
+          const colorOption1 = document.getElementById(`colorOption1-${currentProductHandle}`);
+          const colorOption2 = document.getElementById(`colorOption2-${currentProductHandle}`);
+          const slider = document.getElementById(`slider-${currentProductHandle}`);
 
-            if (blueValue) {
-              const blueOption = document.createElement('div');
-              blueOption.classList.add('color-option');
-              blueOption.id = `blueBox-${currentProductHandle}`; // Unique ID
-              blueOption.dataset.value = blueValue;
-              blueOption.innerHTML = `<span class="color-swatch blue-swatch"></span> ${blueValue}`;
-              colorBox.appendChild(blueOption);
-            }
+          if (colorOption1 && colorOption2 && slider) {
+            colorOption1.addEventListener("click", () => {
+              slider.style.display = "block";
+              slider.classList.remove("right");
+              colorOption1.classList.add("active");
+              colorOption2.classList.remove("active");
+              updateVariantInfo();
+            });
 
-            if (blackValue) {
-              const blackOption = document.createElement('div');
-              blackOption.classList.add('color-option');
-              blackOption.id = `blackBox-${currentProductHandle}`; // Unique ID
-              blackOption.dataset.value = blackValue;
-              blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
-              colorBox.appendChild(blackOption);
-            }
+            colorOption2.addEventListener("click", () => {
+              slider.style.display = "block";
+              slider.classList.add("right");
+              colorOption2.classList.add("active");
+              colorOption1.classList.remove("active");
+              updateVariantInfo();
+            });
 
-            optionGroup.appendChild(fieldset);
-            modalVariantOptions.appendChild(optionGroup);
-
-            // Add event listeners for Blue/Black
-            const blueBox = document.getElementById(`blueBox-${currentProductHandle}`);
-            const blackBox = document.getElementById(`blackBox-${currentProductHandle}`);
-            const currentSlider = document.getElementById(`slider-${currentProductHandle}`);
-
-
-            if (blueBox) {
-                blueBox.addEventListener("click", () => {
-                    currentSlider.style.display = "block";
-                    currentSlider.classList.remove("right");
-                    blueBox.classList.add("active");
-                    if (blackBox) blackBox.classList.remove("active");
-                    updateVariantInfo();
-                });
-            }
-            if (blackBox) {
-                blackBox.addEventListener("click", () => {
-                    currentSlider.style.display = "block";
-                    currentSlider.classList.add("right");
-                    blackBox.classList.add("active");
-                    if (blueBox) blueBox.classList.remove("active");
-                    updateVariantInfo();
-                });
-            }
-            // Auto-select first available color
-            if (blueBox) blueBox.click();
-            else if (blackBox) blackBox.click();
-
-          } else {
-            // Render WHITE and BLACK options (for product_1 and other products)
-            const whiteValue = option.values.find(v => v.toLowerCase() === 'white');
-            const blackValue = option.values.find(v => v.toLowerCase() === 'black');
-
-            if (whiteValue) {
-              const whiteOption = document.createElement('div');
-              whiteOption.classList.add('color-option');
-              whiteOption.id = `whiteBox-${currentProductHandle}`; // Unique ID
-              whiteOption.dataset.value = whiteValue;
-              whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
-              colorBox.appendChild(whiteOption);
-            }
-
-            if (blackValue) {
-              const blackOption = document.createElement('div');
-              blackOption.classList.add('color-option');
-              blackOption.id = `blackBox-${currentProductHandle}`; // Unique ID
-              blackOption.dataset.value = blackValue;
-              blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
-              colorBox.appendChild(blackOption);
-            }
-
-            optionGroup.appendChild(fieldset);
-            modalVariantOptions.appendChild(optionGroup);
-
-            // Add event listeners for White/Black
-            const whiteBox = document.getElementById(`whiteBox-${currentProductHandle}`);
-            const blackBox = document.getElementById(`blackBox-${currentProductHandle}`);
-            const currentSlider = document.getElementById(`slider-${currentProductHandle}`);
-
-            if (whiteBox) {
-                whiteBox.addEventListener("click", () => {
-                    currentSlider.style.display = "block";
-                    currentSlider.classList.remove("right");
-                    whiteBox.classList.add("active");
-                    if (blackBox) blackBox.classList.remove("active");
-                    updateVariantInfo();
-                });
-            }
-            if (blackBox) {
-                blackBox.addEventListener("click", () => {
-                    currentSlider.style.display = "block";
-                    currentSlider.classList.add("right");
-                    blackBox.classList.add("active");
-                    if (whiteBox) whiteBox.classList.remove("active");
-                    updateVariantInfo();
-                });
-            }
-            // Auto-select first available color
-            if (whiteBox) whiteBox.click();
-            else if (blackBox) blackBox.click();
+            // Auto-select the first option
+            colorOption1.click();
           }
+
         } else if (option.name.toLowerCase().includes('size')) {
           // CUSTOM DROPDOWN FOR SIZE
           const dropdownDiv = document.createElement('div');
