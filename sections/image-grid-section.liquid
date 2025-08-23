@@ -85,8 +85,7 @@
         </div>
 
         <h3 class="modal-product-title"></h3>
-        
-        <p class="modal-product-price">{{ product.price | money }}</p>
+        <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
@@ -500,8 +499,8 @@
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     font-size: 14px;
-    line-height: 110%;
-    letter-spacing: -1%;
+    line-height: 110%; /* Updated line-height */
+    letter-spacing: -1%; /* Updated letter-spacing */
     text-align: left;
     color: #666;
     overflow-y: hidden;
@@ -774,7 +773,7 @@
 
     // Helper to format money
     const formatMoney = (cents) => {
-      // Ensure cents is a number, default to 0 if not
+      // Ensure cents is a number, default to 0 if not valid
       const numericCents = parseFloat(cents) || 0;
 
       if (typeof Shopify === 'undefined' || !Shopify.currency) {
@@ -1323,7 +1322,7 @@
     {
       "type": "image_picker",
       "id": "overlay_image_5",
-      "label": "Overlay Image 5 (Optional)" // <-- This was the changed ID
+      "label": "Overlay Image 5 (Optional)"
     },
     {
       "type": "product",
