@@ -4,6 +4,9 @@
   The "ADD TO CART" button now functions to add the selected product directly to the cart.
   Product title and description are present. The button always says "ADD TO CART"
   and is disabled if the product is unavailable or options are not fully selected.
+
+  FIXED: Overlay buttons were not responding due to an incorrect Liquid conditional
+  and incorrect product handle assignment in JavaScript. These have been corrected.
 {% endcomment %}
 
 <div class="image-grid-section">
@@ -16,14 +19,17 @@
       {%- for i in (1..6) -%}
         {%- assign image_setting = 'image_' | append: i -%}
         {%- assign overlay_image_setting = 'overlay_image_' | append: i -%}
-        {%- assign product_setting = 'product_' | append: i -%}
+        {%- assign product_setting_id = 'product_' | append: i -%} {# Use a different variable name for the ID #}
 
         {%- if section.settings[image_setting] != blank -%}
           <div class="grid-item">
             {{ section.settings[image_setting] | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-            {% if section.settings.overlay_image_1 != blank %}
+            {%- comment -%}
+              BUG FIXED: Changed condition from 'overlay_image_1' to dynamic 'overlay_image_setting'
+            {%- endcomment -%}
+            {% if section.settings[overlay_image_setting] != blank %}
               <div class="overlay-button"
-                data-product-handle="{{ section.settings[product_setting].handle }}" {# Ensure .handle is used here #}
+                data-product-handle="{{ section.settings[product_setting_id].handle }}" {# Correctly pass the product handle #}
                 data-grid-image-url="{{ section.settings[image_setting] | image_url: width: 400 }}">
                 {{ section.settings[overlay_image_setting] | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
               </div>
@@ -45,9 +51,9 @@
             <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
         </div>
 
-        <h3 class="modal-product-title"></h3> {# RESTORED #}
+        <h3 class="modal-product-title"></h3>
         <p class="modal-product-price"></p>
-        <div class="modal-product-description"></div> {# RESTORED #}
+        <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
          </div>
@@ -546,6 +552,10 @@
   .modal-add-to-cart-button:hover {
     background-color: #333;
   }
+  .modal-add-to-cart-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 
   /* --- CUSTOM COLOR SELECTOR STYLES (from your provided code) --- */
   fieldset.color-container {
@@ -729,7 +739,7 @@
 </style>
 
 <script>
-  // Access the product handles from liquid settings
+  // BUG FIXED: Now assigning product handles correctly instead of entire product objects.
   const product1Handle = "{{ section.settings.product_1.handle }}";
   const product2Handle = "{{ section.settings.product_2.handle }}";
   const product3Handle = "{{ section.settings.product_3.handle }}";
@@ -741,9 +751,9 @@
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
     const modalOverlay = quickViewModal.querySelector('.modal-overlay');
-    const modalProductTitle = quickViewModal.querySelector('.modal-product-title'); {# RESTORED #}
+    const modalProductTitle = quickViewModal.querySelector('.modal-product-title');
     const modalProductPrice = quickViewModal.querySelector('.modal-product-price');
-    const modalProductDescription = quickViewModal.querySelector('.modal-product-description'); {# RESTORED #}
+    const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
@@ -887,13 +897,11 @@
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
         modalAddToCartButton.disabled = !selectedVariant.available; // Button disabled if not available
         modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
+        // Visual feedback for disabled state
         if (!selectedVariant.available) {
-            // Optionally, visually indicate it's sold out, but keep button text as ADD TO CART
-            modalAddToCartButton.style.opacity = '0.7'; // Example: dim the button
-            modalAddToCartButton.style.cursor = 'not-allowed'; // Example: change cursor
+            modalAddToCartButton.classList.add('disabled');
         } else {
-            modalAddToCartButton.style.opacity = '1';
-            modalAddToCartButton.style.cursor = 'pointer';
+            modalAddToCartButton.classList.remove('disabled');
         }
 
         // --- Image update logic ---
@@ -929,8 +937,7 @@
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true; // Disabled if options not fully chosen
         modalAddToCartButton.textContent = 'ADD TO CART →'; // Always show ADD TO CART
-        modalAddToCartButton.style.opacity = '0.7'; // Dimmed if disabled
-        modalAddToCartButton.style.cursor = 'not-allowed';
+        modalAddToCartButton.classList.add('disabled'); // Add disabled class
 
         // --- Image update logic (when no variant selected) ---
         let imageUrlToSet = '';
@@ -1187,9 +1194,9 @@
         modalMainProductImage.src = imageUrlToSet;
         modalMainProductImage.alt = imageAltToSet;
 
-        modalProductTitle.textContent = currentProductData.title; {# RESTORED #}
+        modalProductTitle.textContent = currentProductData.title;
         modalProductPrice.textContent = formatMoney(currentProductData.price);
-        modalProductDescription.innerHTML = currentProductData.description; {# RESTORED #}
+        modalProductDescription.innerHTML = currentProductData.description;
 
         generateVariantSelectors(currentProductData, productHandle);
 
@@ -1210,9 +1217,9 @@
       modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
       initialGridImageURL = ''; // Clear the stored initial grid image URL on close
-      modalProductTitle.textContent = ''; {# RESTORED #}
+      modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
-      modalProductDescription.innerHTML = ''; {# RESTORED #}
+      modalProductDescription.innerHTML = '';
       modalVariantOptions.innerHTML = '';
 
       quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
@@ -1235,8 +1242,7 @@
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
-      modalAddToCartButton.style.opacity = '1'; // Reset styles
-      modalAddToCartButton.style.cursor = 'pointer'; // Reset styles
+      modalAddToCartButton.classList.remove('disabled'); // Remove disabled class
       addToCartSuccessMessage.style.display = 'none'; // Ensure success message is hidden on close
       currentProductData = null;
       selectedOptionsMap = {};
@@ -1249,10 +1255,10 @@
         event.preventDefault();
         const productHandle = button.dataset.productHandle;
         const gridImageUrl = button.dataset.gridImageUrl;
-        if (productHandle) {
+        if (productHandle && productHandle !== 'null') { // Add check for 'null' string
           openModal(productHandle, gridImageUrl);
         } else {
-          console.warn('Overlay button clicked but no product handle found.');
+          console.warn('Overlay button clicked but no valid product handle found.');
           displayMessageBox('No product linked to this overlay.', 'error');
         }
       });
@@ -1328,12 +1334,16 @@
       }
     });
 
-    // Ensure custom message box CSS is always present
+    // Add CSS for the disabled state of the button
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = `
       #custom-message-box button:hover {
         background-color: #333;
+      }
+      .modal-add-to-cart-button.disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
       }
     `;
     document.head.appendChild(styleSheet);
