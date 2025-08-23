@@ -206,10 +206,7 @@
     transition: transform 0.2s ease-in-out;
   }
 
-  /* Specific styles for each overlay image - **THESE ARE PIXEL-BASED AND WILL LIKELY CAUSE NON-RESPONSIVE BEHAVIOR.**
-     They are kept as per your request for initial 'perfect shape' on larger screens.
-     You will need to manually adjust these (e.g., to percentages) in media queries for responsiveness.
-  */
+  
   .grid-overlay-image-1 {
     top: 238px;
     left: 256.5px;
@@ -255,11 +252,7 @@
       height: auto;
       aspect-ratio: 433 / 444;
     }
-    /* WARNING: Fixed pixel positioning of overlays will be problematic here.
-       They will not scale/move proportionally with the images.
-       You will need to re-evaluate their positioning to use percentages here
-       if you want them responsive.
-    */
+    
     .grid-overlay-image { /* Generic responsive adjustments if needed */
       width: 5%;
       height: auto;
@@ -875,7 +868,7 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'SELECT OPTIONS';
+        modalAddToCartButton.textContent = 'ADD TO CART →';
       }
     };
 
