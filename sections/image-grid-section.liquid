@@ -88,11 +88,8 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-        {# The size chart button has been removed completely #}
-
         <div class="modal-variant-options">
-          {# All variant options will now be rendered here, using Shopify's default behavior (e.g., pill selectors). #}
-        </div>
+         </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -100,8 +97,6 @@
     </div>
   </div>
 </div>
-
-{% comment %} The dedicated size chart modal has been completely removed {% endcomment %}
 
 
 <style>
@@ -507,8 +502,6 @@
     z-index: 2;
   }
 
-  /* The size chart button is removed */
-
   .modal-variant-options {
     position: absolute;
     top: 220px;
@@ -682,6 +675,82 @@
   .color-option.active {
     color: #fff !important;
   }
+
+  /* CUSTOM DROPDOWN CSS */
+  .dropdown {
+    position: relative;
+    width: 250px; /* Adjust width as needed for your layout */
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    margin-top: 5px; /* Added for spacing */
+  }
+
+  .dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+  }
+
+  .dropdown-header span {
+    font-size: 16px;
+    flex: 1;
+    padding: 0 10px;
+    line-height: 40px;
+  }
+
+  /* Vertical line separator */
+  .line {
+    border-left: 0.5px solid #000;
+    height: 100%;
+  }
+
+  .arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 4px;
+    margin: 0 10px;
+    transform: rotate(45deg);
+    transition: transform 300ms ease-out; /* smooth arrow rotation */
+  }
+
+  .arrow.up {
+    transform: rotate(-135deg);
+  }
+
+  .dropdown-list {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    z-index: 100;
+    border: 1px solid #ccc;
+    border-top: none;
+    font-family: 'Jost', sans-serif;
+    max-height: 150px; /* Added to allow scrolling for many options */
+    overflow-y: auto; /* Added for scrolling */
+  }
+
+  .dropdown-list div {
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    border-top: 1px solid #ccc;
+    transition: all 300ms ease-out; /* 👈 smooth hover animation */
+  }
+
+  .dropdown-list div:last-child {
+    border-bottom: 1px solid #ccc;
+  }
+
+  /* Hover effect */
+  .dropdown-list div:hover {
+    background: #000;
+    color: #fff;
+  }
+
 </style>
 
 <script>
@@ -695,8 +764,6 @@
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
-
-    // No size chart related elements or listeners here anymore.
 
     let currentProductData = null;
 
@@ -730,8 +797,16 @@
             } else {
                 allOptionsSelected = false;
             }
+        } else if (optionName.toLowerCase() === 'size') {
+            // For the custom size dropdown
+            const selectedSizeSpan = group.querySelector('.dropdown-header #selected');
+            if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
+                selectedOptions[optionName] = selectedSizeSpan.dataset.value;
+            } else {
+                allOptionsSelected = false;
+            }
         } else {
-            // For all other variants (including Size), use the pill selection
+            // For all other variants (pill selection)
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
@@ -861,8 +936,59 @@
                     updateVariantInfo();
                 });
             }
+        } else if (option.name.toLowerCase() === 'size') {
+            // CUSTOM DROPDOWN FOR SIZE
+            const dropdownDiv = document.createElement('div');
+            dropdownDiv.classList.add('dropdown');
+            dropdownDiv.id = `dropdown-${option.name.toLowerCase()}`; // Unique ID
+
+            dropdownDiv.innerHTML = `
+                <div class="dropdown-header">
+                    <span id="selected-${option.name.toLowerCase()}" data-value="Choose your size">Choose your size</span>
+                    <div class="line"></div>
+                    <i class="arrow" id="arrow-${option.name.toLowerCase()}"></i>
+                </div>
+                <div class="dropdown-list" id="dropdown-list-${option.name.toLowerCase()}">
+                    ${option.values.map(val => `<div>${val}</div>`).join('')}
+                </div>
+            `;
+            optionGroup.appendChild(dropdownDiv);
+            modalVariantOptions.appendChild(optionGroup);
+
+            // Initialize dropdown behavior for the newly created dropdown
+            const dropdownElement = dropdownDiv;
+            const arrowElement = dropdownDiv.querySelector('.arrow');
+            const listElement = dropdownDiv.querySelector('.dropdown-list');
+            const selectedElement = dropdownDiv.querySelector('.dropdown-header span');
+
+            dropdownElement.addEventListener("click", (e) => {
+              e.stopPropagation(); // Prevent document click from immediately closing
+              listElement.style.display = listElement.style.display === "block" ? "none" : "block";
+              arrowElement.classList.toggle("up");
+            });
+
+            listElement.querySelectorAll("div").forEach(item => {
+              item.addEventListener("click", (e) => {
+                e.stopPropagation(); // Prevent dropdown click from bubbling to dropdown header
+                selectedElement.innerText = item.innerText;
+                selectedElement.dataset.value = item.innerText; // Store selected value
+                listElement.style.display = "none";
+                arrowElement.classList.remove("up");
+                updateVariantInfo(); // Update variant info when size is selected
+              });
+            });
+
+            // Set default selected value to the first size, if available
+            if (option.values.length > 0) {
+              selectedElement.innerText = option.values[0];
+              selectedElement.dataset.value = option.values[0];
+            } else {
+              selectedElement.innerText = 'Choose your size';
+              selectedElement.dataset.value = 'Choose your size';
+            }
+
         } else {
-          // For all other variants (including Size), use the pill selection
+          // For all other variants (pill selection)
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -930,7 +1056,7 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        generateVariantSelectors(currentProductData);
+        generateVariantSelectors(currentProductData); // This will now create the custom dropdown for Size
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -977,6 +1103,15 @@
     modalCloseButton.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
 
+    // Global click listener to close dropdowns if clicked outside
+    window.addEventListener("click", (e) => {
+      quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
+        if (!dropdownElement.contains(e.target)) {
+          dropdownElement.querySelector('.dropdown-list').style.display = "none";
+          dropdownElement.querySelector('.arrow').classList.remove("up");
+        }
+      });
+    });
 
     // Add to Cart functionality
     modalAddToCartButton.addEventListener('click', async () => {
