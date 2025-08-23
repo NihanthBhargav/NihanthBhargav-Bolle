@@ -88,7 +88,8 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-         <button class="modal-size-chart-button">Size Chart</button>
+        {# ADDED SIZE CHART BUTTON HERE #}
+        <button class="modal-size-chart-button">Size Chart</button>
 
         <div class="modal-variant-options">
         </div>
@@ -100,20 +101,21 @@
   </div>
 </div>
 
-{% comment %} Dedicated Size Chart Modal HTML (now contains user's dropdown) {% endcomment %}
+{% comment %} Dedicated Size Chart Modal HTML (now contains user's exact dropdown code) {% endcomment %}
 <div id="size-chart-modal" class="size-chart-modal" style="display: none;">
   <div class="modal-overlay"></div>
   <div class="modal-content size-chart-content">
-     <button class="modal-close-button">&times;</button>
+    <button class="modal-close-button">&times;</button>
     <h3 class="size-chart-title">Product Size Selection</h3>
-    <label for="size-chart-dropdown">Size</label>
-    <div class="dropdown" id="size-chart-dropdown-instance">
+    {# User's provided size chart HTML #}
+    <label for="size">Size</label>
+    <div class="dropdown" id="size-chart-specific-dropdown"> {# Added unique ID for this instance #}
       <div class="dropdown-header">
-        <span class="selected">Choose your size</span>
+        <span id="size-chart-selected">Choose your size</span>
         <div class="line"></div>
-        <i class="arrow"></i>
+        <i class="arrow" id="size-chart-arrow"></i>
       </div>
-      <div class="dropdown-list">
+      <div class="dropdown-list" id="size-chart-dropdown-list">
         <div>XS</div>
         <div>S</div>
         <div>M</div>
@@ -121,11 +123,34 @@
         <div>XL</div>
       </div>
     </div>
-     <script>
+    {# User's provided size chart JavaScript, adapted for this specific instance #}
+    <script>
       document.addEventListener('DOMContentLoaded', () => {
-        const sizeChartDropdown = document.getElementById('size-chart-dropdown-instance');
-        if (sizeChartDropdown) {
-          initializeDropdown(sizeChartDropdown, false); // No variant update needed for this standalone dropdown
+        const dropdown = document.getElementById("size-chart-specific-dropdown");
+        const arrow = document.getElementById("size-chart-arrow");
+        const list = document.getElementById("size-chart-dropdown-list");
+        const selected = document.getElementById("size-chart-selected");
+
+        if (dropdown && arrow && list && selected) {
+          dropdown.addEventListener("click", () => {
+            list.style.display = list.style.display === "block" ? "none" : "block";
+            arrow.classList.toggle("up");
+          });
+
+          document.querySelectorAll("#size-chart-dropdown-list div").forEach(item => {
+            item.addEventListener("click", (e) => {
+              selected.innerText = item.innerText;
+              list.style.display = "none";
+              arrow.classList.remove("up");
+            });
+          });
+
+          window.addEventListener("click", (e) => {
+            if (!dropdown.contains(e.target)) {
+              list.style.display = "none";
+              arrow.classList.remove("up");
+            }
+          });
         }
       });
     </script>
@@ -401,9 +426,6 @@
     .variant-option-group label {
       margin-bottom: 5px;
     }
-    .variant-option-values {
-      gap: 5px;
-    }
 
     /* Size Chart Modal Responsive */
     .size-chart-modal .modal-content {
@@ -412,15 +434,6 @@
       max-height: 90vh;
       overflow-y: auto;
       padding: 20px;
-    }
-
-    .size-chart-image-container img {
-      width: 100%;
-      height: auto;
-    }
-    .size-table {
-      width: 100%;
-      font-size: 0.8em;
     }
   }
 
@@ -458,7 +471,7 @@
     transform: rotate(0deg);
     opacity: 1;
     animation: fadeIn 0s ease-out;
-    overflow: hidden; /* Changed from auto to hidden for consistent sizing */
+    overflow: hidden;
   }
 
   @keyframes fadeIn {
@@ -562,12 +575,12 @@
     z-index: 2;
   }
 
-  /* NEW: Size Chart Button */
+  /* Size Chart Button */
   .modal-size-chart-button {
     position: absolute;
-    width: 100px; /* Adjust as needed */
-    height: 25px; /* Adjust as needed */
-    top: 185px; /* Position below description */
+    width: 100px;
+    height: 25px;
+    top: 185px;
     left: 145px;
     background-color: #f0f0f0;
     color: #333;
@@ -588,7 +601,7 @@
 
   .modal-variant-options {
     position: absolute;
-    top: 220px; /* Adjusted to be below the new size chart button */
+    top: 220px;
     left: 17px;
     width: calc(100% - 34px);
     height: 130px;
@@ -614,7 +627,7 @@
     color: #333;
   }
 
-  /* YOUR CUSTOM SIZE DROPDOWN STYLES - FROM USER'S PROVIDED CODE */
+  /* YOUR EXACT CUSTOM SIZE DROPDOWN STYLES */
   .dropdown {
     position: relative;
     width: 250px;
@@ -685,7 +698,7 @@
     background: #000;
     color: #fff;
   }
-  /* END OF YOUR CUSTOM SIZE DROPDOWN STYLES */
+  /* END OF YOUR EXACT CUSTOM SIZE DROPDOWN STYLES */
 
 
   .modal-add-to-cart-form {
@@ -834,14 +847,11 @@
     color: black;
     text-align: center;
   }
-
-  /* Removed .size-chart-image-container and .size-table styles as they are no longer in this modal's content */
-
 </style>
 
 <script>
-  // Reusable function to initialize a dropdown instance
-  function initializeDropdown(dropdownElement, shouldUpdateVariants = true) {
+  // Reusable function to initialize a dropdown instance based on user's code structure
+  function initializeUserDropdown(dropdownElement, shouldUpdateVariants = true) {
     const arrow = dropdownElement.querySelector(".arrow");
     const list = dropdownElement.querySelector(".dropdown-list");
     const selected = dropdownElement.querySelector(".selected");
@@ -874,7 +884,7 @@
       item.addEventListener("click", listItemClickHandler);
     });
 
-    // Store listener references to remove them later
+    // Store listener references to remove them later, important for dynamic elements
     dropdownElement._dropdownClickHandler = dropdownClickHandler;
     dropdownElement._listItemClickHandler = listItemClickHandler;
     dropdownElement._globalClickHandler = globalClickHandler;
@@ -925,6 +935,7 @@
         const optionName = group.dataset.optionName;
 
         if (optionName.toLowerCase() === 'size') {
+            // For the size dropdown using user's code structure
             const dropdownSelectedSpan = group.querySelector('.dropdown-header .selected');
             if (dropdownSelectedSpan) {
                 const selectedText = dropdownSelectedSpan.textContent;
@@ -1012,20 +1023,20 @@
             dropdownContainer.appendChild(dropdownHeader);
 
             const selectedSpan = document.createElement('span');
-            selectedSpan.classList.add('selected');
+            selectedSpan.classList.add('selected'); // Using user's class name
             selectedSpan.textContent = "Choose your size";
             dropdownHeader.appendChild(selectedSpan);
 
             const lineDiv = document.createElement('div');
-            lineDiv.classList.add('line');
+            lineDiv.classList.add('line'); // Using user's class name
             dropdownHeader.appendChild(lineDiv);
 
             const arrowI = document.createElement('i');
-            arrowI.classList.add('arrow');
+            arrowI.classList.add('arrow'); // Using user's class name
             dropdownHeader.appendChild(arrowI);
 
             const dropdownList = document.createElement('div');
-            dropdownList.classList.add('dropdown-list');
+            dropdownList.classList.add('dropdown-list'); // Using user's class name
             dropdownContainer.appendChild(dropdownList);
 
             option.values.forEach(value => {
@@ -1039,7 +1050,7 @@
             modalVariantOptions.appendChild(optionGroup);
 
             // Initialize this dropdown instance with the reusable function
-            initializeDropdown(dropdownContainer, true); // Pass true to update variants
+            initializeUserDropdown(dropdownContainer, true); // Pass true to update variants
             
         } else if (option.name.toLowerCase() === 'color') {
             const fieldset = document.createElement('fieldset');
@@ -1208,12 +1219,11 @@
       modalAddToCartButton.textContent = 'ADD TO CART →';
       currentProductData = null;
 
-      // Clean up global click listeners from custom dropdowns
+      // Clean up global click listeners from custom dropdowns in quick view
       modalVariantOptions.querySelectorAll('.dropdown').forEach(dropdownElement => {
         if (dropdownElement._globalClickHandler) {
           document.removeEventListener("click", dropdownElement._globalClickHandler);
           delete dropdownElement._globalClickHandler;
-          // Also remove other specific listeners if necessary
           dropdownElement.removeEventListener("click", dropdownElement._dropdownClickHandler);
           dropdownElement.querySelector('.dropdown-list').querySelectorAll("div").forEach(item => {
               item.removeEventListener("click", dropdownElement._listItemClickHandler);
