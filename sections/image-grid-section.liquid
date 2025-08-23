@@ -733,6 +733,7 @@
 
     let currentProductData = null;
     let selectedOptionsMap = {};
+    let initialImageForModal = ''; // Store the image that opened the modal
 
     // --- Custom Message Box Function ---
     function displayMessageBox(message, type = 'info') {
@@ -845,6 +846,10 @@
             imageUrlToSet = selectedVariant.featured_image.src;
             imageAltToSet = selectedVariant.featured_image.alt || currentProductData.title;
             console.log("Image source from selected variant:", imageUrlToSet);
+        } else if (initialImageForModal && initialImageForModal !== 'undefined' && initialImageForModal.trim() !== '') {
+            // Fallback to the initial image that opened the modal if no variant image
+            imageUrlToSet = initialImageForModal;
+            console.log("Image source (no variant image) from initial modal image:", imageUrlToSet);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
             // Fallback to product featured image
             imageUrlToSet = currentProductData.featured_image.src;
@@ -872,10 +877,10 @@
         let imageUrlToSet = '';
         let imageAltToSet = currentProductData.title;
 
-        // When no variant is selected, revert to the initial image passed from the grid or product featured image
-        if (modalMainProductImage.dataset.initialGridImageUrl && modalMainProductImage.dataset.initialGridImageUrl !== 'undefined') { // Check if gridImageUrl was set initially
-            imageUrlToSet = modalMainProductImage.dataset.initialGridImageUrl;
-            console.log("Image source (no variant selected) from initial grid image:", imageUrlToSet);
+        // When no variant is selected, prioritize the initial image passed from the grid
+        if (initialImageForModal && initialImageForModal !== 'undefined' && initialImageForModal.trim() !== '') {
+            imageUrlToSet = initialImageForModal;
+            console.log("Image source (no variant selected) from initial grid image (retained):", imageUrlToSet);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
             imageUrlToSet = currentProductData.featured_image.src;
             imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
@@ -1093,29 +1098,30 @@
         currentProductData = await response.json();
         console.log('Fetched product data:', currentProductData);
 
-        let initialImageUrl = '';
-        let initialImageAlt = currentProductData.title;
+        // Store the gridImageUrl globally for this modal instance
+        initialImageForModal = gridImageUrl;
 
-        // NEW: Store the gridImageUrl in a dataset for potential fallback during variant selection
-        modalMainProductImage.dataset.initialGridImageUrl = gridImageUrl;
+        let imageUrlToSet = '';
+        let imageAltToSet = currentProductData.title;
 
-        if (gridImageUrl && gridImageUrl !== 'undefined' && gridImageUrl !== null && gridImageUrl.trim() !== '') {
-            initialImageUrl = gridImageUrl;
-            console.log("Initial modal image (prioritized from gridImageUrl):", initialImageUrl);
+        // CRITICAL: Always use the gridImageUrl first if it's valid
+        if (initialImageForModal && initialImageForModal !== 'undefined' && initialImageForModal.trim() !== '') {
+            imageUrlToSet = initialImageForModal;
+            console.log("Initial modal image (prioritized from gridImageUrl):", imageUrlToSet);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            initialImageUrl = currentProductData.featured_image.src;
+            imageUrlToSet = currentProductData.featured_image.src;
             initialImageAlt = currentProductData.featured_image.alt || currentProductData.title;
-            console.log("Initial modal image (from product featured):", initialImageUrl);
+            console.log("Initial modal image (from product featured - fallback):", imageUrlToSet);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            initialImageUrl = currentProductData.images[0].src;
+            imageUrlToSet = currentProductData.images[0].src;
             initialImageAlt = currentProductData.images[0].alt || currentProductData.title;
-            console.log("Initial modal image (from first product image):", initialImageUrl);
+            console.log("Initial modal image (from first product image - fallback):", imageUrlToSet);
         } else {
             console.warn("No initial image source found for product, using placeholder.");
-            initialImageUrl = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image';
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image';
             initialImageAlt = 'No image available';
         }
-        modalMainProductImage.src = initialImageUrl;
+        modalMainProductImage.src = imageUrlToSet;
         modalMainProductImage.alt = initialImageAlt;
 
         modalProductTitle.textContent = currentProductData.title;
@@ -1140,7 +1146,7 @@
       document.body.style.overflow = '';
       modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
-      modalMainProductImage.dataset.initialGridImageUrl = ''; // Clear stored initial URL
+      initialImageForModal = ''; // Clear the stored initial image URL on close
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
