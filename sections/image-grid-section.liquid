@@ -89,7 +89,8 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-         </div>
+          {# Variant options will be rendered here dynamically, including the custom dropdown for 'Size' #}
+        </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -504,9 +505,9 @@
 
   .modal-variant-options {
     position: absolute;
-    top: 220px;
-    left: 17px;
-    width: calc(100% - 34px);
+    top: 186px; /* Adjusted from 220px */
+    left: 20px; /* Adjusted from 17px */
+    width: calc(100% - 40px); /* Adjusted from calc(100% - 34px) */
     height: 130px; /* Keep this height or adjust if needed for more options */
     overflow-y: hidden;
     display: block;
@@ -560,7 +561,7 @@
 
   .modal-add-to-cart-form {
     position: absolute;
-    top: 380px; /* Adjusted from 330px to move it down */
+    top: 380px;
     left: 17px;
     width: calc(100% - 34px);
     display: flex;
@@ -848,7 +849,7 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'ADD TO CART';
+        modalAddToCartButton.textContent = 'SELECT OPTIONS';
       }
     };
 
