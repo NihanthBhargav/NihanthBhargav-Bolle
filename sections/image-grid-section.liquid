@@ -89,7 +89,8 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-         </div>
+          {# Variant options will be rendered here dynamically, including the custom dropdown for 'Size' #}
+        </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -504,10 +505,10 @@
 
   .modal-variant-options {
     position: absolute;
-    top: 220px;
-    left: 17px;
-    width: calc(100% - 34px);
-    height: 130px;
+    top: 186px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: 130px; /* Keep this height or adjust if needed for more options */
     overflow-y: hidden;
     display: block;
     z-index: 2;
@@ -560,7 +561,7 @@
 
   .modal-add-to-cart-form {
     position: absolute;
-    top: 330px;
+    top: 380px;
     left: 17px;
     width: calc(100% - 34px);
     display: flex;
@@ -671,6 +672,12 @@
     background: #000;
   }
 
+  /* New blue swatch for product 2 */
+  .blue-swatch {
+    width: 5.8071px;
+    background: #0D499F; /* Blue swatch */
+  }
+
   /* Active state */
   .color-option.active {
     color: #fff !important;
@@ -754,6 +761,10 @@
 </style>
 
 <script>
+  // Access the product handles from liquid settings
+  const product1Handle = "{{ section.settings.product_1 }}";
+  const product2Handle = "{{ section.settings.product_2 }}"; // New variable for product_2 handle
+
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
@@ -797,16 +808,14 @@
             } else {
                 allOptionsSelected = false;
             }
-        } else if (optionName.toLowerCase() === 'size') {
-            // For the custom size dropdown
-            const selectedSizeSpan = group.querySelector('.dropdown-header span'); // Changed from #selected
+        } else if (optionName.toLowerCase().includes('size')) {
+            const selectedSizeSpan = group.querySelector('.dropdown-header span');
             if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
                 selectedOptions[optionName] = selectedSizeSpan.dataset.value;
             } else {
                 allOptionsSelected = false;
             }
         } else {
-            // For all other variants (pill selection)
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
@@ -853,9 +862,25 @@
     };
 
     // Function to generate variant selectors
-    const generateVariantSelectors = (productData) => {
+    const generateVariantSelectors = (productData, currentProductHandle) => {
       modalVariantOptions.innerHTML = '';
-      productData.options.forEach((option, optionIndex) => {
+      let optionsToRender = [...productData.options];
+
+      // Apply reordering for all products EXCEPT product_1
+      if (currentProductHandle !== product1Handle) {
+        const colorOption = optionsToRender.find(opt => opt.name.toLowerCase() === 'color');
+        const sizeOption = optionsToRender.find(opt => opt.name.toLowerCase().includes('size'));
+
+        if (colorOption && sizeOption) {
+          optionsToRender = optionsToRender.filter(opt =>
+            opt.name.toLowerCase() !== 'color' && !opt.name.toLowerCase().includes('size')
+          );
+          optionsToRender.unshift(colorOption); // Color comes first
+          optionsToRender.splice(1, 0, sizeOption); // Size comes second
+        }
+      }
+
+      optionsToRender.forEach((option) => {
         const optionGroup = document.createElement('div');
         optionGroup.classList.add('variant-option-group');
         optionGroup.dataset.optionName = option.name;
@@ -865,122 +890,165 @@
         optionGroup.appendChild(label);
 
         if (option.name.toLowerCase() === 'color') {
-            const fieldset = document.createElement('fieldset');
-            fieldset.classList.add('color-container');
+          const fieldset = document.createElement('fieldset');
+          fieldset.classList.add('color-container');
 
-            const legend = document.createElement('legend');
-            legend.textContent = option.name;
-            fieldset.appendChild(legend);
+          const legend = document.createElement('legend');
+          legend.textContent = option.name;
+          fieldset.appendChild(legend);
 
-            const colorBox = document.createElement('div');
-            colorBox.classList.add('color-box');
-            fieldset.appendChild(colorBox);
+          const colorBox = document.createElement('div');
+          colorBox.classList.add('color-box');
+          fieldset.appendChild(colorBox);
 
-            const slider = document.createElement('div');
-            slider.classList.add('slider');
-            colorBox.appendChild(slider);
+          const slider = document.createElement('div');
+          slider.classList.add('slider');
+          slider.style.display = 'none'; // Initially hidden
+          colorBox.appendChild(slider);
 
-            const whiteValue = option.values.find(v => v.toLowerCase() === 'white');
+          // --- Conditional Color Options based on product handle ---
+          if (currentProductHandle === product2Handle) {
+            // Render BLUE and BLACK options for product_2
+            const blueValue = option.values.find(v => v.toLowerCase() === 'blue');
             const blackValue = option.values.find(v => v.toLowerCase() === 'black');
 
-            if (whiteValue) {
-                const whiteOption = document.createElement('div');
-                whiteOption.classList.add('color-option');
-                whiteOption.dataset.value = whiteValue;
-                whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
-                colorBox.appendChild(whiteOption);
+            if (blueValue) {
+              const blueOption = document.createElement('div');
+              blueOption.classList.add('color-option');
+              blueOption.dataset.value = blueValue;
+              blueOption.innerHTML = `<span class="color-swatch blue-swatch"></span> ${blueValue}`;
+              colorBox.appendChild(blueOption);
             }
 
             if (blackValue) {
-                const blackOption = document.createElement('div');
-                blackOption.classList.add('color-option');
-                blackOption.dataset.value = blackValue;
-                blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
-                colorBox.appendChild(blackOption);
+              const blackOption = document.createElement('div');
+              blackOption.classList.add('color-option');
+              blackOption.dataset.value = blackValue;
+              blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
+              colorBox.appendChild(blackOption);
             }
 
             optionGroup.appendChild(fieldset);
             modalVariantOptions.appendChild(optionGroup);
 
+            // Add event listeners for Blue/Black
+            const blueBox = optionGroup.querySelector(".color-option[data-value='Blue']");
+            const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
+
+            if (blueBox) {
+                blueBox.addEventListener("click", () => {
+                    slider.style.display = "block";
+                    slider.classList.remove("right");
+                    blueBox.classList.add("active");
+                    if (blackBox) blackBox.classList.remove("active");
+                    updateVariantInfo();
+                });
+            }
+            if (blackBox) {
+                blackBox.addEventListener("click", () => {
+                    slider.style.display = "block";
+                    slider.classList.add("right");
+                    blackBox.classList.add("active");
+                    if (blueBox) blueBox.classList.remove("active");
+                    updateVariantInfo();
+                });
+            }
+            // Auto-select first available color
+            if (blueBox) blueBox.click();
+            else if (blackBox) blackBox.click();
+
+          } else {
+            // Render WHITE and BLACK options (for product_1 and other products)
+            const whiteValue = option.values.find(v => v.toLowerCase() === 'white');
+            const blackValue = option.values.find(v => v.toLowerCase() === 'black');
+
+            if (whiteValue) {
+              const whiteOption = document.createElement('div');
+              whiteOption.classList.add('color-option');
+              whiteOption.dataset.value = whiteValue;
+              whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
+              colorBox.appendChild(whiteOption);
+            }
+
+            if (blackValue) {
+              const blackOption = document.createElement('div');
+              blackOption.classList.add('color-option');
+              blackOption.dataset.value = blackValue;
+              blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
+              colorBox.appendChild(blackOption);
+            }
+
+            optionGroup.appendChild(fieldset);
+            modalVariantOptions.appendChild(optionGroup);
+
+            // Add event listeners for White/Black
             const whiteBox = optionGroup.querySelector(".color-option[data-value='White']");
             const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
-            const colorSlider = optionGroup.querySelector(".color-box .slider");
-
-            // Auto-select the first color if available
-            if (whiteBox) {
-                whiteBox.click();
-            } else if (blackBox) {
-                blackBox.click();
-            }
 
             if (whiteBox) {
                 whiteBox.addEventListener("click", () => {
-                    if (colorSlider) {
-                        colorSlider.style.display = "block";
-                        colorSlider.classList.remove("right");
-                    }
+                    slider.style.display = "block";
+                    slider.classList.remove("right");
                     whiteBox.classList.add("active");
                     if (blackBox) blackBox.classList.remove("active");
                     updateVariantInfo();
                 });
             }
-
             if (blackBox) {
                 blackBox.addEventListener("click", () => {
-                    if (colorSlider) {
-                        colorSlider.style.display = "block";
-                        colorSlider.classList.add("right");
-                    }
+                    slider.style.display = "block";
+                    slider.classList.add("right");
                     blackBox.classList.add("active");
                     if (whiteBox) whiteBox.classList.remove("active");
                     updateVariantInfo();
                 });
             }
-        } else if (option.name.toLowerCase() === 'size') {
-            // CUSTOM DROPDOWN FOR SIZE
-            const dropdownDiv = document.createElement('div');
-            dropdownDiv.classList.add('dropdown');
-            dropdownDiv.id = `dropdown-${option.name.toLowerCase()}`; // Unique ID
+            // Auto-select first available color
+            if (whiteBox) whiteBox.click();
+            else if (blackBox) blackBox.click();
+          }
+        } else if (option.name.toLowerCase().includes('size')) {
+          // CUSTOM DROPDOWN FOR SIZE
+          const dropdownDiv = document.createElement('div');
+          dropdownDiv.classList.add('dropdown');
+          dropdownDiv.id = `dropdown-${option.name.toLowerCase().replace(/\s/g, '-')}`;
 
-            dropdownDiv.innerHTML = `
-                <div class="dropdown-header">
-                    <span data-value="Choose your size">Choose your size</span>
-                    <div class="line"></div>
-                    <i class="arrow"></i>
-                </div>
-                <div class="dropdown-list">
-                    ${option.values.map(val => `<div>${val}</div>`).join('')}
-                </div>
-            `;
-            optionGroup.appendChild(dropdownDiv);
-            modalVariantOptions.appendChild(optionGroup);
+          dropdownDiv.innerHTML = `
+              <div class="dropdown-header">
+                  <span data-value="Choose your size">Choose your size</span>
+                  <div class="line"></div>
+                  <i class="arrow"></i>
+              </div>
+              <div class="dropdown-list">
+                  ${option.values.map(val => `<div>${val}</div>`).join('')}
+              </div>
+          `;
+          optionGroup.appendChild(dropdownDiv);
+          modalVariantOptions.appendChild(optionGroup);
 
-            // Initialize dropdown behavior for the newly created dropdown
-            const dropdownElement = dropdownDiv;
-            const arrowElement = dropdownDiv.querySelector('.arrow');
-            const listElement = dropdownDiv.querySelector('.dropdown-list');
-            const selectedElement = dropdownDiv.querySelector('.dropdown-header span');
+          const dropdownElement = dropdownDiv;
+          const arrowElement = dropdownDiv.querySelector('.arrow');
+          const listElement = dropdownDiv.querySelector('.dropdown-list');
+          const selectedElement = dropdownDiv.querySelector('.dropdown-header span');
 
-            dropdownElement.addEventListener("click", (e) => {
-              e.stopPropagation(); // Prevent document click from immediately closing
-              listElement.style.display = listElement.style.display === "block" ? "none" : "block";
-              arrowElement.classList.toggle("up");
+          dropdownElement.addEventListener("click", (e) => {
+            e.stopPropagation();
+            listElement.style.display = listElement.style.display === "block" ? "none" : "block";
+            arrowElement.classList.toggle("up");
+          });
+
+          listElement.querySelectorAll("div").forEach(item => {
+            item.addEventListener("click", (e) => {
+              e.stopPropagation();
+              selectedElement.innerText = item.innerText;
+              selectedElement.dataset.value = item.innerText;
+              listElement.style.display = "none";
+              arrowElement.classList.remove("up");
+              updateVariantInfo();
             });
-
-            listElement.querySelectorAll("div").forEach(item => {
-              item.addEventListener("click", (e) => {
-                e.stopPropagation(); // Prevent dropdown click from bubbling to dropdown header
-                selectedElement.innerText = item.innerText;
-                selectedElement.dataset.value = item.innerText; // Store selected value
-                listElement.style.display = "none";
-                arrowElement.classList.remove("up");
-                updateVariantInfo(); // Update variant info when size is selected
-              });
-            });
-
-            // Ensure it always defaults to "Choose your size"
-            selectedElement.innerText = 'Choose your size';
-            selectedElement.dataset.value = 'Choose your size';
+          });
+          selectedElement.innerText = 'Choose your size';
+          selectedElement.dataset.value = 'Choose your size';
 
         } else {
           // For all other variants (pill selection)
@@ -1003,10 +1071,10 @@
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
 
-            const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
-            if (firstPill) {
-                firstPill.classList.add('selected');
-            }
+          const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
+          if (firstPill) {
+              firstPill.classList.add('selected');
+          }
         }
       });
 
@@ -1051,7 +1119,8 @@
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        generateVariantSelectors(currentProductData); // This will now create the custom dropdown for Size
+        // Pass the current product handle to the variant selector generator
+        generateVariantSelectors(currentProductData, productHandle);
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
