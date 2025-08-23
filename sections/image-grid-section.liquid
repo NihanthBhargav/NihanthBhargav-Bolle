@@ -799,7 +799,7 @@
             }
         } else if (optionName.toLowerCase() === 'size') {
             // For the custom size dropdown
-            const selectedSizeSpan = group.querySelector('.dropdown-header #selected');
+            const selectedSizeSpan = group.querySelector('.dropdown-header span'); // Changed from #selected
             if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
                 selectedOptions[optionName] = selectedSizeSpan.dataset.value;
             } else {
@@ -944,11 +944,11 @@
 
             dropdownDiv.innerHTML = `
                 <div class="dropdown-header">
-                    <span id="selected-${option.name.toLowerCase()}" data-value="Choose your size">Choose your size</span>
+                    <span data-value="Choose your size">Choose your size</span>
                     <div class="line"></div>
-                    <i class="arrow" id="arrow-${option.name.toLowerCase()}"></i>
+                    <i class="arrow"></i>
                 </div>
-                <div class="dropdown-list" id="dropdown-list-${option.name.toLowerCase()}">
+                <div class="dropdown-list">
                     ${option.values.map(val => `<div>${val}</div>`).join('')}
                 </div>
             `;
@@ -978,14 +978,9 @@
               });
             });
 
-            // Set default selected value to the first size, if available
-            if (option.values.length > 0) {
-              selectedElement.innerText = option.values[0];
-              selectedElement.dataset.value = option.values[0];
-            } else {
-              selectedElement.innerText = 'Choose your size';
-              selectedElement.dataset.value = 'Choose your size';
-            }
+            // Ensure it always defaults to "Choose your size"
+            selectedElement.innerText = 'Choose your size';
+            selectedElement.dataset.value = 'Choose your size';
 
         } else {
           // For all other variants (pill selection)
@@ -1076,7 +1071,27 @@
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
-      modalVariantOptions.innerHTML = '';
+      modalVariantOptions.innerHTML = ''; // Clear variant options
+
+      // Reset all custom dropdowns
+      quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
+        const selectedElement = dropdownElement.querySelector('.dropdown-header span');
+        const listElement = dropdownElement.querySelector('.dropdown-list');
+        const arrowElement = dropdownElement.querySelector('.arrow');
+
+        if (selectedElement) {
+          selectedElement.innerText = 'Choose your size';
+          selectedElement.dataset.value = 'Choose your size';
+        }
+        if (listElement) {
+          listElement.style.display = 'none';
+        }
+        if (arrowElement) {
+          arrowElement.classList.remove('up');
+        }
+      });
+
+
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
