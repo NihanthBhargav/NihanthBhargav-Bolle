@@ -89,7 +89,8 @@
         <div class="modal-product-description"></div>
 
         <div class="modal-variant-options">
-         </div>
+          {# Variant options will be rendered here dynamically, including the custom dropdown for 'Size' #}
+        </div>
 
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
@@ -683,6 +684,16 @@
     background: #fff; /* White swatch */
   }
 
+  .red-swatch {
+    width: 5.8071px;
+    background: #B20F36; /* Red swatch */
+  }
+
+  .grey-swatch {
+    width: 4.8392px;
+    background: #AFAFB7; /* Grey swatch */
+  }
+
 
   /* CUSTOM DROPDOWN CSS */
   .dropdown {
@@ -764,7 +775,8 @@
 <script>
   // Access the product handles from liquid settings
   const product1Handle = "{{ section.settings.product_1 }}";
-  const product2Handle = "{{ section.settings.product_2 }}"; // New variable for product_2 handle
+  const product2Handle = "{{ section.settings.product_2 }}";
+  const product3Handle = "{{ section.settings.product_3 }}"; // New product handle
 
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
@@ -901,20 +913,56 @@
           legend.textContent = option.name;
           fieldset.appendChild(legend);
 
-          // Your provided HTML structure for color-box
-          const colorBoxHTML = `
-            <div class="color-box">
-              <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-              <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="${currentProductHandle === product2Handle ? 'blue' : 'white'}">
-                <span class="color-swatch ${currentProductHandle === product2Handle ? 'blue-swatch' : 'white-swatch'}"></span>
-                ${currentProductHandle === product2Handle ? 'Blue' : 'White'}
+          let colorBoxHTML = ''; // Initialize HTML string for color box
+
+          // --- Conditional Color Options based on product handle ---
+          if (currentProductHandle === product2Handle) {
+            // Product 2: Blue and Black
+            colorBoxHTML = `
+              <div class="color-box">
+                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
+                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="blue">
+                  <span class="color-swatch blue-swatch"></span>
+                  Blue
+                </div>
+                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
+                  <span class="color-swatch black-swatch"></span>
+                  Black
+                </div>
               </div>
-              <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                <span class="color-swatch black-swatch"></span>
-                Black
+            `;
+          } else if (currentProductHandle === product3Handle) {
+            // Product 3: Red and Grey
+            colorBoxHTML = `
+              <div class="color-box">
+                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
+                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="red">
+                  <span class="color-swatch red-swatch"></span>
+                  Red
+                </div>
+                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="grey">
+                  <span class="color-swatch grey-swatch"></span>
+                  Grey
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          } else {
+            // Default: White and Black (for product 1 and others)
+            colorBoxHTML = `
+              <div class="color-box">
+                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
+                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="white">
+                  <span class="color-swatch white-swatch"></span>
+                  White
+                </div>
+                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
+                  <span class="color-swatch black-swatch"></span>
+                  Black
+                </div>
+              </div>
+            `;
+          }
+
           fieldset.insertAdjacentHTML('beforeend', colorBoxHTML); // Insert the HTML
 
           optionGroup.appendChild(fieldset);
@@ -941,8 +989,7 @@
               colorOption1.classList.remove("active");
               updateVariantInfo();
             });
-
-            // Removed the initial click() call to ensure neutral state
+            // No initial click for neutral state
           }
 
         } else if (option.name.toLowerCase().includes('size')) {
