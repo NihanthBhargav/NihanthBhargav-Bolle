@@ -5,67 +5,97 @@
     </div>
 
     <div class="image-grid-container">
+      {% comment %} Grid Item 1 {% endcomment %}
       <div class="grid-item">
-        {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% if section.settings.image_1 != blank %}
+          {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
         {% if section.settings.overlay_image_1 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_1 }}"
-            data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_1 }}">
             {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
+      {% comment %} Grid Item 2 {% endcomment %}
       <div class="grid-item">
-        {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% if section.settings.image_2 != blank %}
+           {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
         {% if section.settings.overlay_image_2 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_2 }}"
-            data-grid-image-url="{{ section.settings.image_2 | image_url: width: 400 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_2 }}">
             {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
+      {% comment %} Grid Item 3 {% endcomment %}
       <div class="grid-item">
-        {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% if section.settings.image_3 != blank %}
+           {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
         {% if section.settings.overlay_image_3 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_3 }}"
-            data-grid-image-url="{{ section.settings.image_3 | image_url: width: 400 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_3 }}">
             {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
+      {% comment %} Grid Item 4 {% endcomment %}
       <div class="grid-item">
-        {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% if section.settings.image_4 != blank %}
+           {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
         {% if section.settings.overlay_image_4 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_4 }}"
-            data-grid-image-url="{{ section.settings.image_4 | image_url: width: 400 }}">
+          <div class="overlay-button" data-product-handle="{{ section.settings.product_4 }}">
             {{ section.settings.overlay_image_4 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-4', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
+      {% comment %} Grid Item 5 {% endcomment %}
       <div class="grid-item">
-        {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% if section.settings.image_5 != blank %}
+           {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
         {% if section.settings.overlay_image_5 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_5 }}"
-            data-grid-image-url="{{ section.settings.image_5 | image_url: width: 400 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_5 }}">
             {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
           </div>
         {% endif %}
       </div>
 
+      {% comment %} Grid Item 6 {% endcomment %}
       <div class="grid-item">
-        {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% if section.settings.image_6 != blank %}
+           {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+        {% else %}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
         {% if section.settings.overlay_image_6 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_6 }}"
-            data-grid-image-url="{{ section.settings.image_6 | image_url: width: 400 }}">
+           <div class="overlay-button" data-product-handle="{{ section.settings.product_6 }}">
             {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
           </div>
         {% endif %}
@@ -79,68 +109,30 @@
   <div class="modal-overlay"></div>
   <div class="modal-content">
     <button class="modal-close-button">&times;</button>
-    <div class="modal-elements-container">
-        <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="120" height="140">
+    <div class="modal-elements-container">  
+        <div class="modal-product-image-wrapper">
+          <img src="" alt="Product Image" class="modal-product-image">
         </div>
-
         <h3 class="modal-product-title"></h3>
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-         <button class="modal-size-chart-button">Size Chart</button>
-
         <div class="modal-variant-options">
+           
         </div>
 
         <div class="modal-add-to-cart-form">
+          <input type="number" class="modal-quantity-selector" value="1" min="1">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
     </div>
   </div>
 </div>
 
-{% comment %} Size Chart Modal HTML {% endcomment %}
-<div id="size-chart-modal" class="size-chart-modal" style="display: none;">
-  <div class="modal-overlay"></div>
-  <div class="modal-content size-chart-content">
-    <button class="modal-close-button">&times;</button>
-    <h3 class="size-chart-title">Product Size Chart</h3>
-    <div class="size-chart-image-container">
-       <img src="https://placehold.co/400x300/e0e0e0/333333?text=Your+Size+Chart+Here" alt="Size Chart" style="max-width: 100%; height: auto; display: block;">
-    </div>
-     <table class="size-table">
-        <thead>
-            <tr>
-                <th>Size</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>XS</td>
-            </tr>
-            <tr>
-                <td>S</td>
-            </tr>
-            <tr>
-                <td>M</td>
-            </tr>
-            <tr>
-                <td>L</td>
-            </tr>
-            <tr>
-                <td>XL</td>
-            </tr>
-        </tbody>
-    </table>
-  </div>
-</div>
-
-
 <style>
   /* Base font for the theme */
   body {
-    font-family: 'Jost', sans-serif;
+    font-family: 'Jost', sans-serif; /* Your specified font from the dropdown code */
   }
 
   .image-grid-section {
@@ -196,6 +188,7 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    /* Removed: transition for scale effect on main image */
   }
 
   .placeholder-image {
@@ -223,24 +216,25 @@
 
   /* Hover effect for the overlay button, targeting the image inside it */
   .overlay-button:hover .grid-overlay-image {
-    transform: translate(-50%, -50%) scale(1.1);
-    transition: transform 0.2s ease-in-out;
+    transform: translate(-50%, -50%) scale(1.1); /* Slightly enlarge the image */
+    transition: transform 0.2s ease-in-out; /* Smooth transition */
   }
 
   /* General styles for all overlay images */
   .grid-overlay-image {
     position: absolute;
     z-index: 9;
-    pointer-events: none;
+    pointer-events: none; /* Allows clicks to pass through to the parent .overlay-button */
     background: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 1;
-    width: 22px;
-    height: 22px;
-    transform: translate(-50%, -50%);
+    width: 22px; /* Fixed size as per your request */
+    height: 22px; /* Fixed size as per your request */
+    transform: translate(-50%, -50%); /* Centers the image on its top/left point */
+    /* Add transition for smooth hover effect if other properties are animated */
     transition: transform 0.2s ease-in-out;
   }
 
@@ -299,12 +293,12 @@
        if you want them responsive.
     */
     .grid-overlay-image { /* Generic responsive adjustments if needed */
-      width: 5%;
+      width: 5%; /* Example: small percentage size */
       height: auto;
-      top: 15%;
-      right: 15%;
-      left: auto;
-      transform: translate(0,0);
+      top: 15%; /* Example for mobile positioning */
+      right: 15%; /* Example for mobile positioning */
+      left: auto; /* Override fixed left */
+      transform: translate(0,0); /* Remove transform if no longer centering on a point */
     }
   }
 
@@ -336,31 +330,30 @@
       width: 90%;
       height: auto;
       padding: 15px;
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: column; /* Stack vertically on mobile */
+      align-items: flex-start; /* Align content to start */
     }
 
     .modal-elements-container {
-        position: static;
+        position: static; /* Disable absolute positioning on mobile */
         width: 100%;
         height: auto;
         overflow-y: visible;
         padding: 0;
     }
 
-    /* Single image adjustments for mobile */
-    .modal-single-image {
-        position: static;
+    .modal-product-image-wrapper {
+        position: static; /* Disable absolute positioning on mobile */
         width: 100%;
         height: auto;
-        margin-bottom: 15px;
-        aspect-ratio: 120 / 140;
+        margin-bottom: 15px; /* Add space below image */
+        object-fit: contain; /* Ensure image fits */
     }
-    .modal-single-image img {
-      position: static;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+
+    .modal-product-image {
+        position: static; /* Disable absolute positioning on mobile */
+        width: 100%;
+        height: auto;
     }
 
     .modal-product-title,
@@ -368,16 +361,16 @@
     .modal-product-description,
     .modal-variant-options,
     .modal-add-to-cart-form {
-        position: static;
+        position: static; /* Disable absolute positioning on mobile */
         width: 100%;
         height: auto;
         margin-left: 0;
         margin-top: 0;
-        padding: 0;
+        padding: 0; /* Remove fixed padding */
     }
 
     .modal-product-title {
-        font-size: 1.5em;
+        font-size: 1.5em; /* Restore larger mobile font size */
     }
     .modal-product-price {
         font-size: 1.2em;
@@ -385,14 +378,12 @@
     .modal-product-description {
         font-size: 0.9em;
     }
-    .modal-size-chart-button { /* Responsive for button */
-      position: static;
-      width: 100%;
-      margin-bottom: 15px;
-    }
 
     .modal-add-to-cart-form {
       flex-direction: column;
+      width: 100%;
+    }
+    .modal-quantity-selector {
       width: 100%;
     }
     .modal-add-to-cart-button {
@@ -400,39 +391,21 @@
     }
 
     .variant-option-group {
-      margin-bottom: 10px;
+      margin-bottom: 10px; /* Smaller margin between variant groups on mobile */
     }
     .variant-option-group label {
-      margin-bottom: 5px;
+      margin-bottom: 5px; /* Smaller margin for label on mobile */
     }
     .variant-option-values {
-      gap: 5px;
+      gap: 5px; /* Smaller gap for pills on mobile */
     }
-    /* .custom-dropdown-container { /* This will be overridden by your .dropdown styles below */
-      /* width: 100%; */
-    /* } */
-
-    /* Size Chart Modal Responsive */
-    .size-chart-modal .modal-content {
-      width: 95%;
-      height: auto;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .size-chart-image-container img {
+    .custom-dropdown-container {
       width: 100%;
-      height: auto;
-    }
-    .size-table {
-      width: 100%;
-      font-size: 0.8em;
     }
   }
 
   /* Styles for Product Quick View Modal */
-  .product-quick-view-modal, .size-chart-modal {
+  .product-quick-view-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -441,7 +414,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; /* Ensure it's on top of everything */
   }
 
   .modal-overlay {
@@ -450,22 +423,23 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
   }
 
   .modal-content {
     background-color: white;
-    padding: 0;
-    border-radius: 0;
+    padding: 0; /* Remove padding as elements will be absolutely positioned inside */
+    border-radius: 0; /* Sharp borders */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
+    position: relative; /* Crucial for absolute positioning of children */
     z-index: 1001;
     width: 311px;
     height: 447px;
-    transform: rotate(0deg);
-    opacity: 1;
+    transform: rotate(0deg); /* Explicitly set angle */
+    opacity: 1; /* Explicitly set opacity */
+    /* Removed display:flex and gap as child elements will be absolute */
     animation: fadeIn 0s ease-out;
-    overflow: hidden;
+    overflow: hidden; /* Hide overflow from absolutely positioned elements if they go outside */
   }
 
   @keyframes fadeIn {
@@ -482,135 +456,115 @@
     font-size: 24px;
     cursor: pointer;
     color: #333;
-    z-index: 1003;
+    z-index: 1003; /* Ensure close button is always on top */
   }
 
-  .modal-elements-container {
+  .modal-elements-container { /* New wrapper for all absolutely positioned elements */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    /* No padding here, elements position relative to content box edge */
+    /* overflow-y: auto; */ /* Enable scrolling if content exceeds height, but complex with absolute children */
   }
 
-  /* --- Single Image Styles --- */
-  .modal-single-image {
+  .modal-product-image-wrapper {
     position: absolute;
-    width: 120px;
-    height: 140px;
-    top: 36px;
-    left: 17px;
-    overflow: hidden;
-    border-radius: 0;
+    width: 120px; /* From your specified properties */
+    height: 140px; /* From your specified properties */
+    top: 36px; /* From your specified properties */
+    left: 17px; /* From your specified properties */
+    transform: rotate(0deg); /* From your specified properties */
+    opacity: 1; /* From your specified properties */
+    overflow: hidden; /* In case image doesn't perfectly fit */
+    border-radius: 0; /* Sharp borders */
   }
 
-  .modal-single-image img {
+  .modal-product-image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0;
+    height: 100%; /* Fill the wrapper */
+    display: block;
+    border-radius: 0; /* Sharp borders */
+    object-fit: cover; /* Crop image to fill the 120x140 space */
   }
+
 
   /* TEXT CONTEXTS - ABSOLUTELY POSITIONED */
-  .modal-product-title {
+  .modal-product-title { /* Orange Wide Leg */
     position: absolute;
-    width: 136px;
-    height: 19px;
-    top: 49px;
-    left: 145px;
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 120%;
-    letter-spacing: 0px;
-    text-align: left;
-    color: black;
+    width: 136px; /* From your specified properties */
+    height: 19px; /* From your specified properties */
+    top: 49px; /* From your specified properties */
+    left: 145px; /* From your specified properties */
+    font-family: 'Jost', sans-serif; /* From your specified properties */
+    font-weight: 300; /* From your specified properties (Light) */
+    font-size: 16px; /* From your specified properties */
+    line-height: 120%; /* From your specified properties */
+    letter-spacing: 0px; /* From your specified properties */
+    text-align: left; /* Default text alignment */
+    color: black; /* Assuming default text color */
+    overflow: hidden; /* Hide if text overflows fixed height */
+    white-space: nowrap; /* Prevent wrapping if text is long for fixed width */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    z-index: 2; /* Ensure text is above image if overlapping */
+  }
+
+  .modal-product-price { /* 980,00€ */
+    position: absolute;
+    width: 64px; /* From your specified properties */
+    height: 19px; /* From your specified properties */
+    top: 88px; /* From your specified properties */
+    left: 145px; /* From your specified properties */
+    font-family: 'Lustria', serif; /* From your specified properties */
+    font-weight: 400; /* From your specified properties (Regular) */
+    font-size: 16px; /* From your specified properties */
+    line-height: 120%; /* From your specified properties */
+    letter-spacing: 0px; /* From your specified properties */
+    text-align: left; /* Default text alignment */
+    color: #333; /* Assuming default price color */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    z-index: 2;
+    z-index: 2; /* Ensure text is above image if overlapping */
   }
 
-  .modal-product-price {
+  .modal-product-description { /* This one-piece swimsuit... */
     position: absolute;
-    width: 64px;
-    height: 19px;
-    top: 88px;
-    left: 145px;
-    font-family: 'Lustria', serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 120%;
-    letter-spacing: 0px;
-    background: #000000;
-    color: #FFFFFF; /* Ensures text is visible on black background */
-    text-align: left;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    z-index: 2;
-  }
-
-  .modal-product-description {
-    position: absolute;
-    width: 146px;
-    height: 60px;
-    top: 119px;
-    left: 145px;
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 110%; /* Updated line-height */
-    letter-spacing: -1%; /* Updated letter-spacing */
-    text-align: left;
-    color: #666;
-    overflow-y: hidden;
-    z-index: 2;
-  }
-
-  /* NEW: Size Chart Button */
-  .modal-size-chart-button {
-    position: absolute;
-    width: 100px; /* Adjust as needed */
-    height: 25px; /* Adjust as needed */
-    top: 185px; /* Position below description */
-    left: 145px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    font-family: 'Jost', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    z-index: 2;
-  }
-
-  .modal-size-chart-button:hover {
-    background-color: #e0e0e0;
-    color: #000;
+    width: 146px; /* From your specified properties */
+    height: 60px; /* From your specified properties */
+    top: 119px; /* From your specified properties */
+    left: 145px; /* From your specified properties */
+    font-family: 'Jost', sans-serif; /* From your specified properties */
+    font-weight: 300; /* From your specified properties (Light) */
+    font-size: 14px; /* From your specified properties */
+    line-height: 110%; /* From your specified properties (adjusted from 110.00000000000001% to 110%) */
+    letter-spacing: -1%; /* From your specified properties */
+    text-align: left; /* Default text alignment */
+    color: #666; /* Assuming default description color */
+    overflow-y: auto; /* Allow scrolling for description if it overflows its fixed height */
+    z-index: 2; /* Ensure text is above image if overlapping */
   }
 
   .modal-variant-options {
     position: absolute;
-    top: 220px; /* Adjusted to be below the new size chart button */
-    left: 17px;
-    width: calc(100% - 34px);
-    height: 130px;
-    overflow-y: hidden;
-    display: block;
-    z-index: 2;
+    /* NEW: Positioned below the description. Description top 119px + height 60px + margin. */
+    top: 190px; /* Calculated: 119 (desc top) + 60 (desc height) + ~11px (spacing) */
+    left: 17px; /* Aligned with image left */
+    width: calc(100% - 34px); /* Full width minus left/right padding */
+    height: 130px; /* Giving it a fixed height for absolute positioning flow */
+    overflow-y: auto; /* Allow scrolling if many variants */
+    display: block; /* Ensures block layout for variant groups */
+    z-index: 2; /* Ensure variants are above image if overlapping */
   }
 
   .variant-option-group {
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Space between each option group */
     width: 100%;
     height: auto;
-    display: flex;
+    display: flex; /* Keep internal flex for label/input */
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: flex-start; /* Align to top */
   }
 
   .variant-option-group label {
@@ -630,7 +584,7 @@
   .variant-option-value-pill {
     padding: 6px 10px;
     border: 1px solid #ccc;
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
     cursor: pointer;
     font-size: 0.8em;
     background-color: white;
@@ -648,50 +602,51 @@
     background-color: #eee;
   }
 
-  /* YOUR CUSTOM SIZE DROPDOWN STYLES */
-  .dropdown {
-    position: relative;
-    width: 250px;
+  /* Custom dropdown styles */
+  .custom-dropdown-container {
+    position: relative; /* Position relative to its parent .variant-option-group */
+    width: 100%; /* Adjusted to be 100% of its parent group for absolute layout */
     border: 1px solid #ccc;
     cursor: pointer;
     font-family: 'Jost', sans-serif;
+    border-radius: 0; /* Sharp borders */
   }
 
-  .dropdown-header {
+  .custom-dropdown-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
+    height: 35px;
   }
 
-  .dropdown-header span {
-    font-size: 16px;
+  .custom-dropdown-header span {
+    font-size: 14px;
     flex: 1;
-    padding: 0 10px;
-    line-height: 40px;
+    padding: 0 8px;
+    line-height: 35px;
   }
 
   /* Vertical line separator */
-  .line {
+  .custom-line {
     border-left: 0.5px solid #000;
     height: 100%;
   }
 
-  .arrow {
+  .custom-arrow {
     border: solid black;
     border-width: 0 2px 2px 0;
     display: inline-block;
-    padding: 4px;
-    margin: 0 10px;
+    padding: 3px;
+    margin: 0 8px;
     transform: rotate(45deg);
-    transition: transform 300ms ease-out; /* smooth arrow rotation */
+    transition: transform 300ms ease-out;
   }
 
-  .arrow.up {
+  .custom-arrow.up {
     transform: rotate(-135deg);
   }
 
-  .dropdown-list {
+  .custom-dropdown-list {
     display: none;
     position: absolute;
     width: 100%;
@@ -700,38 +655,48 @@
     border: 1px solid #ccc;
     border-top: none;
     font-family: 'Jost', sans-serif;
+    border-radius: 0; /* Sharp borders */
   }
 
-  .dropdown-list div {
-    padding: 12px;
+  .custom-dropdown-list div {
+    padding: 10px;
     text-align: center;
     cursor: pointer;
     border-top: 1px solid #ccc;
-    transition: all 300ms ease-out; /* 👈 smooth hover animation */
+    transition: all 300ms ease-out;
   }
 
-  .dropdown-list div:last-child {
+  .custom-dropdown-list div:last-child {
     border-bottom: 1px solid #ccc;
   }
 
   /* Hover effect */
-  .dropdown-list div:hover {
+  .custom-dropdown-list div:hover {
     background: #000;
     color: #fff;
   }
-  /* END OF YOUR CUSTOM SIZE DROPDOWN STYLES */
 
 
   .modal-add-to-cart-form {
     position: absolute;
-    top: 330px;
-    left: 17px;
-    width: calc(100% - 34px);
+    /* NEW: Positioned below variants. Variant top 190px + height 130px + spacing. */
+    top: 330px; /* Calculated: 190 (variant top) + 130 (variant height) + ~10px (spacing) */
+    left: 17px; /* Align with other left-aligned elements */
+    width: calc(100% - 34px); /* Fill width minus left/right offset */
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
-    z-index: 2;
+    z-index: 2; /* Ensure button is above image if overlapping */
+  }
+
+  .modal-quantity-selector {
+    width: 70px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 0; /* Sharp borders */
+    text-align: center;
+    font-size: 0.9em;
   }
 
   .modal-add-to-cart-button {
@@ -739,7 +704,7 @@
     color: white;
     padding: 10px 18px;
     border: none;
-    border-radius: 0;
+    border-radius: 0; /* Sharp borders */
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
@@ -749,7 +714,6 @@
     justify-content: center;
     gap: 6px;
     flex-grow: 1;
-    width: 100%;
   }
 
   .modal-add-to-cart-button:hover {
@@ -757,15 +721,17 @@
   }
 
   /* --- CUSTOM COLOR SELECTOR STYLES --- */
-  fieldset.color-container {
+  /* These styles are taken directly from your provided HTML snippet */
+
+  fieldset.color-container { /* Renamed from original for better specificity/avoiding global conflicts */
     border: none;
     padding: 0;
     margin: 0;
     min-width: 0;
-    width: 100%;
+    width: 100%; /* Ensure it takes full width of variant option group */
   }
 
-  fieldset.color-container legend {
+  fieldset.color-container legend { /* Renamed for specificity */
     font-size: 14px;
     font-weight: 400;
     margin-bottom: 5px;
@@ -776,7 +742,7 @@
   .color-box {
     position: relative;
     display: flex;
-    width: 271px;
+    width: 271px; /* Fixed width as per your design */
     height: 40.4413px;
     border: 0.5px solid #000;
     box-sizing: border-box;
@@ -784,7 +750,7 @@
   }
 
   /* Sliding background */
-  .color-box .slider {
+  .color-box .slider { /* Added .color-box for specificity */
     position: absolute;
     top: 0;
     left: 0;
@@ -793,7 +759,7 @@
     background: #000;
     transition: transform 0.4s ease;
     z-index: 1;
-    display: none;
+    display: none; /* Initially hidden, shown on selection */
   }
 
   .color-box .slider.right {
@@ -810,8 +776,9 @@
     text-transform: capitalize;
     position: relative;
     cursor: pointer;
-    z-index: 2;
-    color: #000;
+    z-index: 2; /* on top of slider */
+    transition: color 0.4s ease;
+    color: #000; /* default black text */
   }
 
   /* Swatch styles */
@@ -836,63 +803,8 @@
   }
 
   /* Active state */
-  .color-option.active {
+  .color-option.active { /* Added .color-option for specificity */
     color: #fff !important;
-  }
-
-  /* Size Chart Modal Specific Styles */
-  .size-chart-modal .modal-content {
-    /* ADDED PROPERTIES AS REQUESTED */
-    width: 311px;
-    height: 447px;
-    transform: rotate(0deg); /* Corresponds to angle: 0 deg */
-    opacity: 1;
-    /* End of added properties */
-
-    max-height: 90vh; /* Max height to prevent overflow on small screens */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto; /* Enable scrolling if content is too tall */
-    background-color: white; /* Ensure background is white for visibility */
-    border-radius: 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1001;
-  }
-
-  .size-chart-title {
-    font-family: 'Lustria', serif;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: black;
-    text-align: center;
-  }
-
-  .size-chart-image-container {
-    margin-bottom: 20px;
-    border: 1px solid #eee;
-    padding: 5px;
-  }
-
-  .size-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-family: 'Jost', sans-serif;
-  }
-
-  .size-table th, .size-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-    font-size: 14px;
-  }
-
-  .size-table th {
-    background-color: #f5f5f5;
-    font-weight: bold;
   }
 
 </style>
@@ -902,34 +814,26 @@
     const quickViewModal = document.getElementById('product-quick-view-modal');
     const modalCloseButton = quickViewModal.querySelector('.modal-close-button');
     const modalOverlay = quickViewModal.querySelector('.modal-overlay');
+    const modalProductImage = quickViewModal.querySelector('.modal-product-image');
     const modalProductTitle = quickViewModal.querySelector('.modal-product-title');
     const modalProductPrice = quickViewModal.querySelector('.modal-product-price');
     const modalProductDescription = quickViewModal.querySelector('.modal-product-description');
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
+    const modalQuantitySelector = quickViewModal.querySelector('.modal-quantity-selector');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
-    const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
 
-    // NEW: Size Chart elements
-    const sizeChartButton = quickViewModal.querySelector('.modal-size-chart-button');
-    const sizeChartModal = document.getElementById('size-chart-modal');
-    const sizeChartCloseButton = sizeChartModal.querySelector('.modal-close-button');
-    const sizeChartOverlay = sizeChartModal.querySelector('.modal-overlay');
-
-    let currentProductData = null;
+    let currentProductData = null; // Store fetched product data globally for variant selection
 
     // Helper to format money
     const formatMoney = (cents) => {
-      // Ensure cents is a number, default to 0 if not valid
-      const numericCents = parseFloat(cents) || 0;
-
       if (typeof Shopify === 'undefined' || !Shopify.currency) {
-        // Fallback for environments without Shopify object
-        return `$${(numericCents / 100).toFixed(2)}`;
+        // Fallback if Shopify object is not available
+        return `$${(cents / 100).toFixed(2)}`;
       }
       return new Intl.NumberFormat(Shopify.currency.active, {
           style: 'currency',
-          currency: Shopify.currency.active || 'EUR' // Default to EUR as per user request
-      }).format(numericCents / 100);
+          currency: Shopify.currency.active || 'USD'
+      }).format(cents / 100);
     };
 
     // Function to update modal content based on selected variant
@@ -937,82 +841,119 @@
       if (!currentProductData) return;
 
       const selectedOptions = {};
-      let allOptionsSelected = true;
+      let allOptionsSelected = true; // Flag to check if all necessary options have a valid selection
 
       modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
         const optionName = group.dataset.optionName;
 
         if (optionName.toLowerCase() === 'size') {
-            const dropdownSelectedSpan = group.querySelector('.dropdown-header .selected');
-            if (dropdownSelectedSpan) {
-                const selectedText = dropdownSelectedSpan.textContent;
-                // Check if a size has actually been selected, not just the placeholder
+            // Check for custom dropdown selection (Size)
+            const customDropdownSelectedSpan = group.querySelector('.custom-dropdown-header span.selected-value');
+            if (customDropdownSelectedSpan) {
+                const selectedText = customDropdownSelectedSpan.textContent;
+                // Only consider it a valid selection if it's not the default "Choose your size"
                 if (selectedText && selectedText !== "Choose your size") {
                     selectedOptions[optionName] = selectedText;
                 } else {
-                    allOptionsSelected = false;
+                    allOptionsSelected = false; // A custom dropdown option is not yet chosen
                 }
             } else {
-                allOptionsSelected = false;
+                allOptionsSelected = false; // Size dropdown element not found or incorrectly structured
             }
         } else if (optionName.toLowerCase() === 'color') {
+            // Check for custom color selector selection (Color)
             const activeColorOption = group.querySelector('.color-option.active');
             if (activeColorOption) {
                 selectedOptions[optionName] = activeColorOption.dataset.value;
             } else {
-                allOptionsSelected = false;
+                allOptionsSelected = false; // A color option is not yet chosen
             }
-        } else {
+        }
+         else {
+            // Check for pill selection (other variants)
             const selectedPill = group.querySelector('.variant-option-value-pill.selected');
             if (selectedPill) {
                 selectedOptions[optionName] = selectedPill.dataset.value;
             } else {
-                allOptionsSelected = false;
+                allOptionsSelected = false; // A pill option is not yet chosen
             }
         }
       });
 
       let selectedVariant = null;
-      if (allOptionsSelected) {
+      if (allOptionsSelected) { // Only try to find a variant if all options have been selected by the user
           selectedVariant = currentProductData.variants.find(variant => {
             return Object.keys(selectedOptions).every(optionName => {
               const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
+              // Ensure optionIndex is valid before accessing variant.options
               if (optionIndex === -1) return false;
               return variant.options[optionIndex] === selectedOptions[optionName];
             });
           });
       }
 
+
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
         modalAddToCartButton.disabled = selectedVariant.available ? false : true;
         modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
+        modalQuantitySelector.disabled = !selectedVariant.available;
 
-        // Update the single image based on the selected variant
+        // Update modal image if variant has a different featured image
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
-            modalMainProductImage.src = selectedVariant.featured_image.src;
-            modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
-        } else if (currentProductData.images && currentProductData.images.length > 0) {
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+            modalProductImage.src = selectedVariant.featured_image.src;
+            if (selectedVariant.featured_image.width && selectedVariant.featured_image.height) {
+                modalProductImage.setAttribute('width', selectedVariant.featured_image.width);
+                modalProductImage.setAttribute('height', selectedVariant.featured_image.height);
+            } else {
+                modalProductImage.removeAttribute('width');
+                modalProductImage.removeAttribute('height');
+            }
+        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            // Fallback to main product image if variant doesn't have one
+            modalProductImage.src = currentProductData.featured_image.src;
+            if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
+                modalProductImage.setAttribute('width', currentProductData.featured_image.width);
+                modalProductImage.setAttribute('height', currentProductData.featured_image.height);
+            } else {
+                modalProductImage.removeAttribute('width');
+                modalProductImage.removeAttribute('height');
+            }
         } else {
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-            modalMainProductImage.alt = 'No image available';
+            modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            modalProductImage.removeAttribute('width');
+            modalProductImage.removeAttribute('height');
         }
 
       } else {
-        // If no specific variant is selected, show the base product price
-        modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Use 0 as fallback if base price is also problematic
+        // If not all options are selected, or no matching variant is found
+        modalProductPrice.textContent = ''; // Clear price
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'SELECT OPTIONS';
+        modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Prompt user to select options
+        modalQuantitySelector.disabled = true;
+        // Keep the main product image if no variant is specifically selected
+        if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            modalProductImage.src = currentProductData.featured_image.src;
+            if (currentProductData.featured_image.width && currentProductData.featured_image.height) {
+                modalProductImage.setAttribute('width', currentProductData.featured_image.width);
+                modalProductImage.setAttribute('height', currentProductData.featured_image.height);
+            } else {
+                modalProductImage.removeAttribute('width');
+                modalProductImage.removeAttribute('height');
+            }
+        } else {
+            modalProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+            modalProductImage.removeAttribute('width');
+            modalProductImage.removeAttribute('height');
+        }
       }
     };
 
     // Function to generate variant selectors
     const generateVariantSelectors = (productData) => {
-      modalVariantOptions.innerHTML = '';
+      modalVariantOptions.innerHTML = ''; // Clear previous options
       productData.options.forEach((option, optionIndex) => {
         const optionGroup = document.createElement('div');
         optionGroup.classList.add('variant-option-group');
@@ -1022,73 +963,70 @@
         label.textContent = option.name;
         optionGroup.appendChild(label);
 
-        if (option.name.toLowerCase() === 'size') {
-            // Replicating user's provided HTML structure for size dropdown
-            const dropdownContainer = document.createElement('div');
-            dropdownContainer.classList.add('dropdown'); // Using user's class name
+        if (option.name.toLowerCase() === 'size') { // Use custom dropdown for "Size"
+          const dropdownContainer = document.createElement('div');
+          dropdownContainer.classList.add('custom-dropdown-container');
 
-            const dropdownHeader = document.createElement('div');
-            dropdownHeader.classList.add('dropdown-header');
-            dropdownContainer.appendChild(dropdownHeader);
+          const dropdownHeader = document.createElement('div');
+          dropdownHeader.classList.add('custom-dropdown-header');
+          dropdownContainer.appendChild(dropdownHeader);
 
-            const selectedSpan = document.createElement('span');
-            selectedSpan.classList.add('selected'); // Using user's class name
-            selectedSpan.textContent = "Choose your size";
-            dropdownHeader.appendChild(selectedSpan);
+          const selectedSpan = document.createElement('span');
+          selectedSpan.classList.add('selected-value'); // Class for easy querying
+          selectedSpan.textContent = "Choose your size"; // Initial text
+          dropdownHeader.appendChild(selectedSpan);
 
-            const lineDiv = document.createElement('div');
-            lineDiv.classList.add('line'); // Using user's class name
-            dropdownHeader.appendChild(lineDiv);
+          const lineDiv = document.createElement('div');
+          lineDiv.classList.add('custom-line'); // This is the vertical line
+          dropdownHeader.appendChild(lineDiv);
 
-            const arrowI = document.createElement('i');
-            arrowI.classList.add('arrow'); // Using user's class name
-            dropdownHeader.appendChild(arrowI);
+          const arrowI = document.createElement('i');
+          arrowI.classList.add('custom-arrow');
+          dropdownHeader.appendChild(arrowI);
 
-            const dropdownList = document.createElement('div');
-            dropdownList.classList.add('dropdown-list'); // Using user's class name
-            dropdownContainer.appendChild(dropdownList);
+          const dropdownList = document.createElement('div');
+          dropdownList.classList.add('custom-dropdown-list');
+          dropdownContainer.appendChild(dropdownList);
 
-            option.values.forEach(value => {
-              const listItem = document.createElement('div');
-              listItem.textContent = value;
-              listItem.dataset.value = value;
-              dropdownList.appendChild(listItem);
-            });
+          option.values.forEach(value => {
+            const listItem = document.createElement('div');
+            listItem.textContent = value;
+            listItem.dataset.value = value; // Store value for selection
+            dropdownList.appendChild(listItem);
+          });
 
-            optionGroup.appendChild(dropdownContainer);
-            modalVariantOptions.appendChild(optionGroup);
+          optionGroup.appendChild(dropdownContainer);
+          modalVariantOptions.appendChild(optionGroup);
 
-            // Adapting user's JS event listeners for this dynamically created dropdown
-            dropdownContainer.addEventListener("click", (e) => {
-              e.stopPropagation(); // Prevent modal closing if clicked inside dropdown
-              dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
-              arrowI.classList.toggle("up");
-            });
+          // Attach custom dropdown specific event listeners
+          dropdownHeader.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent modal close from immediate click
+            dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
+            arrowI.classList.toggle("up");
+          });
 
-            dropdownList.querySelectorAll("div").forEach(item => {
-              item.addEventListener("click", (e) => {
-                e.stopPropagation();
+          dropdownList.querySelectorAll("div").forEach(item => {
+            item.addEventListener("click", (e) => {
+                e.stopPropagation(); // Stop click from bubbling to header or container
                 selectedSpan.innerText = item.innerText;
                 dropdownList.style.display = "none";
                 arrowI.classList.remove("up");
-                updateVariantInfo(); // Update variant info after selection
-              });
+                updateVariantInfo(); // Trigger variant info update on selection
             });
+          });
 
-            // Global click listener for closing dropdowns when clicking outside
-            const handleGlobalClick = (e) => {
-              if (!dropdownContainer.contains(e.target) && dropdownList.style.display === "block") {
-                dropdownList.style.display = "none";
-                arrowI.classList.remove("up");
-              }
-            };
-            // Store the listener reference to remove it later
-            dropdownContainer._globalClickListener = handleGlobalClick;
-            document.addEventListener("click", dropdownContainer._globalClickListener);
+          const handleGlobalClick = (e) => {
+            if (!dropdownContainer.contains(e.target) && dropdownList.style.display === "block") {
+              dropdownList.style.display = "none";
+              arrowI.classList.remove("up");
+            }
+          };
+          dropdownContainer._globalClickListener = handleGlobalClick; // Store reference
+          document.addEventListener("click", dropdownContainer._globalClickListener);
 
-        } else if (option.name.toLowerCase() === 'color') {
+        } else if (option.name.toLowerCase() === 'color') { // Use custom color selector for "Color"
             const fieldset = document.createElement('fieldset');
-            fieldset.classList.add('color-container');
+            fieldset.classList.add('color-container'); // Use this class from your styles
 
             const legend = document.createElement('legend');
             legend.textContent = option.name;
@@ -1102,13 +1040,14 @@
             slider.classList.add('slider');
             colorBox.appendChild(slider);
 
+            // Dynamically create color options based on available values for 'White' and 'Black'
             const whiteValue = option.values.find(v => v.toLowerCase() === 'white');
             const blackValue = option.values.find(v => v.toLowerCase() === 'black');
 
             if (whiteValue) {
                 const whiteOption = document.createElement('div');
                 whiteOption.classList.add('color-option');
-                whiteOption.dataset.value = whiteValue;
+                whiteOption.dataset.value = whiteValue; // Store the actual variant value
                 whiteOption.innerHTML = `<span class="color-swatch white-swatch"></span> ${whiteValue}`;
                 colorBox.appendChild(whiteOption);
             }
@@ -1116,7 +1055,7 @@
             if (blackValue) {
                 const blackOption = document.createElement('div');
                 blackOption.classList.add('color-option');
-                blackOption.dataset.value = blackValue;
+                blackOption.dataset.value = blackValue; // Store the actual variant value
                 blackOption.innerHTML = `<span class="color-swatch black-swatch"></span> ${blackValue}`;
                 colorBox.appendChild(blackOption);
             }
@@ -1124,41 +1063,41 @@
             optionGroup.appendChild(fieldset);
             modalVariantOptions.appendChild(optionGroup);
 
+            // Attach event listeners for the custom color selector
             const whiteBox = optionGroup.querySelector(".color-option[data-value='White']");
             const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
-            const colorSlider = optionGroup.querySelector(".color-box .slider");
+            const colorSlider = optionGroup.querySelector(".color-box .slider"); // Specific to this color box
 
-            // Auto-select the first color if available
-            if (whiteBox) {
-                whiteBox.click(); // Simulate a click to select white by default
-            } else if (blackBox) {
-                blackBox.click(); // Simulate a click to select black by default
-            }
-
+            // Event listener for White
             if (whiteBox) {
                 whiteBox.addEventListener("click", () => {
-                    if (colorSlider) {
+                    if (colorSlider) { // Ensure slider exists
                         colorSlider.style.display = "block";
                         colorSlider.classList.remove("right");
                     }
                     whiteBox.classList.add("active");
-                    if (blackBox) blackBox.classList.remove("active");
+                    if (blackBox) blackBox.classList.remove("active"); // Remove active from black
                     updateVariantInfo();
                 });
             }
 
+            // Event listener for Black
             if (blackBox) {
                 blackBox.addEventListener("click", () => {
-                    if (colorSlider) {
+                    if (colorSlider) { // Ensure slider exists
                         colorSlider.style.display = "block";
                         colorSlider.classList.add("right");
                     }
                     blackBox.classList.add("active");
-                    if (whiteBox) whiteBox.classList.remove("active");
+                    if (whiteBox) whiteBox.classList.remove("active"); // Remove active from white
                     updateVariantInfo();
                 });
             }
-        } else {
+
+            // *** IMPORTANT: REMOVED INITIAL CLICK TO ENSURE NO DEFAULT SELECTION ***
+            // This ensures both boxes start white with black text.
+
+        } else { // Use pills for other options (if any other custom variant is added later)
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -1169,16 +1108,19 @@
             pill.dataset.value = value;
             valuesContainer.appendChild(pill);
 
+            // Add click listener to pills
             pill.addEventListener('click', () => {
+              // Remove 'selected' from all other pills in this group
               valuesContainer.querySelectorAll('.variant-option-value-pill').forEach(p => p.classList.remove('selected'));
+              // Add 'selected' to the clicked pill
               pill.classList.add('selected');
-              updateVariantInfo();
+              updateVariantInfo(); // Update info based on new selection
             });
           });
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
 
-            // Auto-select the first pill if available
+            // For pill options, automatically select the first value for convenience
             const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
             if (firstPill) {
                 firstPill.classList.add('selected');
@@ -1186,57 +1128,47 @@
         }
       });
 
+      // Initial update after generating all selectors (excluding the removed default color click)
+      // This will ensure "SELECT OPTIONS" is shown if no variants are pre-selected.
       updateVariantInfo();
     };
 
 
     // Function to open the modal
-    const openModal = async (productHandle, gridImageUrl) => {
+    const openModal = async (productHandle) => {
       try {
-        console.log('Opening modal for product handle:', productHandle);
-        console.log('Grid image URL provided:', gridImageUrl);
-
         const response = await fetch(`/products/${productHandle}.js`);
         if (!response.ok) {
-          let errorMessage = `HTTP error! status: ${response.status}`;
-          try {
-            const errorBody = await response.json();
-            if (errorBody && errorBody.message) {
-              errorMessage += ` - ${errorBody.message}`;
-            }
-          } catch (e) {
-            console.error('Error parsing error response:', e);
-          }
-          throw new Error(errorMessage);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        currentProductData = await response.json();
-        console.log('Fetched product data:', currentProductData);
+        currentProductData = await response.json(); // Store fetched data
 
-        // Set the main product image (prefer grid image, then first product image, then placeholder)
-        if (gridImageUrl) {
-            modalMainProductImage.src = gridImageUrl;
-            modalMainProductImage.alt = currentProductData.title;
-        } else if (currentProductData.images && currentProductData.images.length > 0) {
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+        // Populate modal with product data - ensure .src is accessed
+        modalProductImage.src = (currentProductData.featured_image && currentProductData.featured_image.src) ? currentProductData.featured_image.src : 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
+        modalProductImage.alt = currentProductData.title;
+
+        // Set width and height attributes if available in product data
+        if (currentProductData.featured_image && currentProductData.featured_image.width && currentProductData.featured_image.height) {
+            modalProductImage.setAttribute('width', currentProductData.featured_image.width);
+            modalProductImage.setAttribute('height', currentProductData.featured_image.height);
         } else {
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-            modalMainProductImage.alt = 'No image available';
+            modalProductImage.removeAttribute('width');
+            modalProductImage.removeAttribute('height');
         }
 
+
+        // Set text content for absolutely positioned elements
         modalProductTitle.textContent = currentProductData.title;
-        // Always set the base product price when opening the modal, using '0' if price is not a valid number
-        // Now, formatMoney function handles invalid input by defaulting to 0.
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        generateVariantSelectors(currentProductData);
+        generateVariantSelectors(currentProductData); // Generate and set initial state of variants
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
       } catch (error) {
         console.error('Error fetching product data:', error);
-        alert(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`);
+        console.log('Could not load product details. Please check the product handle and network connection.');
         quickViewModal.style.display = 'none';
       }
     };
@@ -1245,75 +1177,55 @@
     const closeModal = () => {
       quickViewModal.style.display = 'none';
       document.body.style.overflow = '';
-      modalMainProductImage.src = '';
-      modalMainProductImage.alt = '';
+      modalProductImage.src = '';
+      modalProductImage.removeAttribute('width'); // Clear width attribute
+      modalProductImage.removeAttribute('height'); // Clear height attribute
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
-      modalVariantOptions.innerHTML = '';
+      modalVariantOptions.innerHTML = ''; // Clear variant options on close
+      modalQuantitySelector.value = 1;
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
-      modalAddToCartButton.textContent = 'ADD TO CART →';
-      currentProductData = null;
+      modalAddToCartButton.textContent = 'ADD TO CART →'; // Reset button text
+      currentProductData = null; // Clear product data
 
-      // Clean up global click listeners from custom dropdowns
-      modalVariantOptions.querySelectorAll('.dropdown').forEach(container => {
+      // Remove the global click listener for the custom dropdown when modal closes
+      // This is crucial to prevent multiple listeners accumulating
+      modalVariantOptions.querySelectorAll('.custom-dropdown-container').forEach(container => {
         if (container._globalClickListener) {
           document.removeEventListener("click", container._globalClickListener);
-          delete container._globalClickListener;
+          delete container._globalClickListener; // Clean up reference
         }
       });
     };
-
-    // NEW: Function to open size chart modal
-    const openSizeChartModal = () => {
-      sizeChartModal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    };
-
-    // NEW: Function to close size chart modal
-    const closeSizeChartModal = () => {
-      sizeChartModal.style.display = 'none';
-      // Only unlock body scroll if no other modals are open
-      if (quickViewModal.style.display === 'none') {
-        document.body.style.overflow = '';
-      }
-    };
-
 
     // Event listeners for opening modal (all overlays)
     document.querySelectorAll('.overlay-button').forEach(button => {
       button.addEventListener('click', (event) => {
         event.preventDefault();
         const productHandle = button.dataset.productHandle;
-        const gridImageUrl = button.dataset.gridImageUrl;
         if (productHandle) {
-          openModal(productHandle, gridImageUrl);
+          openModal(productHandle);
         } else {
           console.warn('Overlay button clicked but no product handle found.');
-          alert('No product linked to this overlay.');
         }
       });
     });
 
-    // Event listeners for closing quick view modal
+    // Event listeners for closing modal
     modalCloseButton.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
-
-    // NEW: Event listeners for size chart modal
-    sizeChartButton.addEventListener('click', openSizeChartModal);
-    sizeChartCloseButton.addEventListener('click', closeSizeChartModal);
-    sizeChartOverlay.addEventListener('click', closeSizeChartModal);
-
 
     // Add to Cart functionality
     modalAddToCartButton.addEventListener('click', async () => {
       const variantId = modalAddToCartButton.dataset.variantId;
-      const quantity = 1;
+      const quantity = parseInt(modalQuantitySelector.value, 10);
 
-      if (!variantId) {
-        console.error('Invalid variant ID.');
-        alert('Please select all required options.');
+      if (!variantId || isNaN(quantity) || quantity <= 0) {
+        console.error('Invalid variant ID or quantity.');
+        // Using alert for simplicity, consider a custom modal UI for better UX
+        alert('Please select all required options and ensure quantity is valid.');
         return;
       }
 
@@ -1340,76 +1252,15 @@
 
         const cartData = await response.json();
         console.log('Product added to cart:', cartData);
+        // Optionally, close the modal and provide user feedback (e.g., small success message, update cart icon)
         closeModal();
-        alert('Product added to cart successfully!');
+        alert('Product added to cart successfully!'); // Using alert for simplicity, consider custom UI
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        alert('Failed to add product to cart. Please try again.');
+        alert('Failed to add product to cart. Please try again.'); // Using alert for simplicity, consider custom UI
       }
     });
-
-    // Simple custom alert for demonstration (replace with a proper modal in production)
-    function alert(message) {
-      const existingAlert = document.getElementById('custom-alert');
-      if (existingAlert) {
-        existingAlert.remove();
-      }
-
-      const alertDiv = document.createElement('div');
-      alertDiv.id = 'custom-alert';
-      alertDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #f44336;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        z-index: 10000;
-        font-family: 'Jost', sans-serif;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        animation: slideIn 0.5s forwards, fadeOut 3s forwards 2s;
-      `;
-      alertDiv.innerHTML = `
-        <span>${message}</span>
-        <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
-      `;
-
-      document.body.appendChild(alertDiv);
-
-      alertDiv.querySelector('button').addEventListener('click', () => {
-        alertDiv.remove();
-      });
-
-      const styleSheet = document.createElement("style");
-      styleSheet.type = "text/css";
-      styleSheet.innerText = `
-        @keyframes slideIn {
-          from { top: -50px; opacity: 0; }
-          to { top: 20px; opacity: 1; }
-        }
-        @keyframes fadeOut {
-          from { opacity: 1; }
-          to { opacity: 0; }
-        }
-      `;
-      document.head.appendChild(styleSheet);
-
-      setTimeout(() => {
-        if (document.body.contains(alertDiv)) {
-          alertDiv.remove();
-        }
-        if (document.head.contains(styleSheet)) {
-            styleSheet.remove();
-        }
-      }, 5000);
-    }
 
   });
 </script>
@@ -1487,7 +1338,7 @@
     {
       "type": "image_picker",
       "id": "image_5",
-      "label": "Image 5"
+      "label": "Image 5 (Bottom Middle)"
     },
     {
       "type": "image_picker",
