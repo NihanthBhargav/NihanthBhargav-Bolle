@@ -39,7 +39,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/FF0000/FFFFFF?text=Image+Load+Error'; this.alt='Error Loading Image'; console.error('Modal image failed to load for src:', this.src);">
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -715,7 +715,7 @@
   const product1Handle = "{{ section.settings.product_1.handle }}";
   const product2Handle = "{{ section.settings.product_2.handle }}";
   const product3Handle = "{{ section.settings.product_3.handle }}";
-  const product4Handle = "{{ section.settings.product_4.handle }}"; // Added product_4 handle
+  const product4Handle = "{{ section.settings.product_4.handle }}";
   const product5Handle = "{{ section.settings.product_5.handle }}";
   const product6Handle = "{{ section.settings.product_6.handle }}";
 
@@ -729,12 +729,12 @@
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
-    const addToCartSuccessMessage = quickViewModal.querySelector('.add-to-cart-success-message'); // Success message element
+    const addToCartSuccessMessage = quickViewModal.querySelector('.add-to-cart-success-message');
 
     let currentProductData = null;
-    let selectedOptionsMap = {}; // To store selected options for the current product
+    let selectedOptionsMap = {};
 
-    // --- Custom Message Box Function (replaces alert()) ---
+    // --- Custom Message Box Function ---
     function displayMessageBox(message, type = 'info') {
       const existingMessageBox = document.getElementById('custom-message-box');
       if (existingMessageBox) {
@@ -743,14 +743,13 @@
       const messageBox = document.createElement('div');
       messageBox.id = 'custom-message-box';
 
-      // Basic styling for the message box
-      let bgColor = '#f0f8ff'; // Light blue for info
+      let bgColor = '#f0f8ff';
       let textColor = '#333';
       if (type === 'error') {
-        bgColor = '#ffebee'; // Light red for error
+        bgColor = '#ffebee';
         textColor = '#d32f2f';
       } else if (type === 'success') {
-        bgColor = '#e8f5e9'; // Light green for success
+        bgColor = '#e8f5e9';
         textColor = '#2e7d32';
       }
 
@@ -791,10 +790,9 @@
       const numericCents = parseFloat(cents) || 0;
 
       if (typeof Shopify === 'undefined' || !Shopify.currency || !Shopify.currency.active) {
-        // Fallback for when Shopify.currency is not fully loaded or available
         return `$${(numericCents / 100).toFixed(2)}`;
       }
-      return new Intl.NumberFormat(navigator.language, { // Use navigator.language for user's locale
+      return new Intl.NumberFormat(navigator.language, {
           style: 'currency',
           currency: Shopify.currency.active
       }).format(numericCents / 100);
@@ -805,7 +803,7 @@
       if (!currentProductData) return;
 
       let allOptionsSelected = true;
-      const currentSelectedOptions = {}; // Temporary map for current selections
+      const currentSelectedOptions = {};
 
       currentProductData.options.forEach(option => {
           const optionName = option.name;
@@ -827,71 +825,83 @@
           });
       }
 
+      // --- LOGGING FOR IMAGE DEBUGGING ---
+      console.log('--- updateVariantInfo started ---');
+      console.log('Current Product Data:', currentProductData);
+      console.log('All options selected:', allOptionsSelected);
+      console.log('Selected Variant:', selectedVariant);
+      // --- END LOGGING ---
+
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
         modalAddToCartButton.dataset.variantId = selectedVariant.id;
         modalAddToCartButton.disabled = selectedVariant.available ? false : true;
         modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
 
-        // Update main product image based on selected variant if available
+        let imageUrlToSet = '';
+        let imageAltToSet = currentProductData.title;
+
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
-            console.log("Setting modal image from variant:", selectedVariant.featured_image.src);
-            modalMainProductImage.src = selectedVariant.featured_image.src;
-            modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
+            imageUrlToSet = selectedVariant.featured_image.src;
+            imageAltToSet = selectedVariant.featured_image.alt || currentProductData.title;
+            console.log("Image source from selected variant:", imageUrlToSet);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            // Fallback to product featured image
-            console.log("Setting modal image from product featured:", currentProductData.featured_image.src);
-            modalMainProductImage.src = currentProductData.featured_image.src;
-            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
+            imageUrlToSet = currentProductData.featured_image.src;
+            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
+            console.log("Image source from product featured image (fallback):", imageUrlToSet);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            // Fallback to the first product image if no variant image
-            console.log("Setting modal image from first product image:", currentProductData.images[0].src);
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+            imageUrlToSet = currentProductData.images[0].src;
+            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
+            console.log("Image source from first product image (fallback):", imageUrlToSet);
         } else {
-            console.log("No images found, using placeholder for modal image.");
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/333333?text=No+Image'; // Ensure placeholder is visible
-            modalMainProductImage.alt = 'No image available';
+            console.warn("No valid image source found for selected variant or product, using placeholder.");
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            imageAltToSet = 'No image available';
         }
+        modalMainProductImage.src = imageUrlToSet;
+        modalMainProductImage.alt = imageAltToSet;
 
       } else {
-        modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Show default product price if no variant selected
+        modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'SELECT OPTIONS'; // Indicate options need selection
-        // Revert to initial image if no valid variant is selected, or if initial image was gridImageUrl
+        modalAddToCartButton.textContent = 'SELECT OPTIONS';
+
+        let imageUrlToSet = '';
+        let imageAltToSet = currentProductData.title;
+
+        // When no variant is selected, fallback to the initial grid image or product featured image
         if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            console.log("Reverting modal image to product featured (no variant selected):", currentProductData.featured_image.src);
-            modalMainProductImage.src = currentProductData.featured_image.src;
-            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
+            imageUrlToSet = currentProductData.featured_image.src;
+            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
+            console.log("Image source (no variant selected) from product featured image:", imageUrlToSet);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            console.log("Reverting modal image to first product image (no variant selected):", currentProductData.images[0].src);
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+            imageUrlToSet = currentProductData.images[0].src;
+            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
+            console.log("Image source (no variant selected) from first product image:", imageUrlToSet);
         } else {
-            console.log("No images found, using placeholder for modal image (no variant selected).");
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/333333?text=No+Image';
-            modalMainProductImage.alt = 'No image available';
+            console.warn("No valid image source found for product (no variant selected), using placeholder.");
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            imageAltToSet = 'No image available';
         }
+        modalMainProductImage.src = imageUrlToSet;
+        modalMainProductImage.alt = imageAltToSet;
       }
+      console.log('--- updateVariantInfo finished ---');
     };
 
     // Function to generate variant selectors
     const generateVariantSelectors = (productData, currentProductHandle) => {
       modalVariantOptions.innerHTML = '';
-      selectedOptionsMap = {}; // Reset selected options for new product
+      selectedOptionsMap = {};
 
-      // Initial population of selectedOptionsMap with first available values
-      // This ensures a default variant is selected if possible upon modal open
       currentProductData.options.forEach((option, index) => {
-          // Find the first variant that has this option value
-          const firstAvailableValue = option.values[0]; // Always pick the first value
+          const firstAvailableValue = option.values[0];
           selectedOptionsMap[option.name] = firstAvailableValue;
       });
 
       let optionsToRender = [...productData.options];
 
-      // Apply reordering for all products EXCEPT product_1
       if (currentProductHandle !== product1Handle) {
         const colorOption = optionsToRender.find(opt => opt.name.toLowerCase() === 'color');
         const sizeOption = optionsToRender.find(opt => opt.name.toLowerCase().includes('size'));
@@ -900,8 +910,8 @@
           optionsToRender = optionsToRender.filter(opt =>
             opt.name.toLowerCase() !== 'color' && !opt.name.toLowerCase().includes('size')
           );
-          optionsToRender.unshift(colorOption); // Color comes first
-          optionsToRender.splice(1, 0, sizeOption); // Size comes second
+          optionsToRender.unshift(colorOption);
+          optionsToRender.splice(1, 0, sizeOption);
         }
       }
 
@@ -918,9 +928,8 @@
           const fieldset = document.createElement('fieldset');
           fieldset.classList.add('color-container');
 
-          let colorBoxHTML = ''; // Initialize HTML string for color box
+          let colorBoxHTML = '';
 
-          // Determine which color options to show based on product handle
           let colors = [];
           if (currentProductHandle === product2Handle || currentProductHandle === product6Handle) {
             colors = [{name: 'blue', class: 'blue-swatch', value: 'Blue'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
@@ -928,7 +937,7 @@
             colors = [{name: 'red', class: 'red-swatch', value: 'Red'}, {name: 'grey', class: 'grey-swatch', value: 'Grey'}];
           } else if (currentProductHandle === product5Handle) {
             colors = [{name: 'grey', class: 'grey-swatch', value: 'Grey'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
-          } else { // Default for product 1, 4 and others not explicitly defined
+          } else {
             colors = [{name: 'white', class: 'white-swatch', value: 'White'}, {name: 'black', class: 'black-swatch', value: 'Black'}];
           }
 
@@ -947,37 +956,34 @@
           optionGroup.appendChild(fieldset);
           modalVariantOptions.appendChild(optionGroup);
 
-          // Get the dynamically created elements for event listeners
           const colorOptionsDivs = fieldset.querySelectorAll('.color-option');
           const slider = document.getElementById(`slider-${currentProductHandle}`);
 
           colorOptionsDivs.forEach((colorOption, index) => {
               colorOption.addEventListener("click", () => {
-                  slider.style.display = "block"; // Ensure slider is visible on first click
+                  slider.style.display = "block";
                   colorOptionsDivs.forEach(opt => opt.classList.remove('active'));
                   colorOption.classList.add('active');
                   selectedOptionsMap[option.name] = colorOption.dataset.value;
 
-                  if (index === 0) { // First option (left)
+                  if (index === 0) {
                       slider.classList.remove("right");
-                  } else { // Second option (right)
+                  } else {
                       slider.classList.add("right");
                   }
                   updateVariantInfo();
               });
 
-              // Set initial active state if a default color is pre-selected
               if (selectedOptionsMap[option.name] === colorOption.dataset.value) {
                   colorOption.classList.add('active');
                   slider.style.display = "block";
-                  if (index === 1) { // If the second color is default
+                  if (index === 1) {
                       slider.classList.add("right");
                   }
               }
           });
 
         } else if (option.name.toLowerCase().includes('size')) {
-          // CUSTOM DROPDOWN FOR SIZE
           const dropdownDiv = document.createElement('div');
           dropdownDiv.classList.add('dropdown');
           dropdownDiv.id = `dropdown-${option.name.toLowerCase().replace(/\s/g, '-')}-${currentProductHandle}`;
@@ -1019,7 +1025,6 @@
               updateVariantInfo();
             });
           });
-          // Set initial selection for size dropdown
           if (selectedOptionsMap[option.name] && selectedOptionsMap[option.name] !== 'Choose your size') {
               selectedElement.innerText = selectedOptionsMap[option.name];
               selectedElement.dataset.value = selectedOptionsMap[option.name];
@@ -1029,7 +1034,6 @@
           }
 
         } else {
-          // For all other variants (pill selection)
           const valuesContainer = document.createElement('div');
           valuesContainer.classList.add('variant-option-values');
 
@@ -1047,7 +1051,6 @@
               updateVariantInfo();
             });
 
-            // Set initial active state if a default value is pre-selected
             if (selectedOptionsMap[option.name] === value) {
                 pill.classList.add('selected');
             }
@@ -1057,14 +1060,15 @@
         }
       });
 
-      updateVariantInfo(); // Initial update after rendering all options
+      updateVariantInfo();
     };
 
 
     // Function to open the modal
     const openModal = async (productHandle, gridImageUrl) => {
       try {
-        console.log('Opening modal for product handle:', productHandle);
+        console.log('--- openModal started ---');
+        console.log('Product handle for modal:', productHandle);
         console.log('Grid image URL provided:', gridImageUrl);
 
         const response = await fetch(`/products/${productHandle}.js`);
@@ -1083,36 +1087,39 @@
         currentProductData = await response.json();
         console.log('Fetched product data:', currentProductData);
 
-        // Set the main product image from gridImageUrl first, then variant image, then first product image
+        let initialImageUrl = '';
+        let initialImageAlt = currentProductData.title;
+
         if (gridImageUrl) {
-            console.log("Initial modal image from gridImageUrl:", gridImageUrl);
-            modalMainProductImage.src = gridImageUrl;
-            modalMainProductImage.alt = currentProductData.title;
+            initialImageUrl = gridImageUrl;
+            console.log("Initial modal image (from gridImageUrl):", initialImageUrl);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            console.log("Initial modal image from product featured:", currentProductData.featured_image.src);
-            modalMainProductImage.src = currentProductData.featured_image.src;
-            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
+            initialImageUrl = currentProductData.featured_image.src;
+            initialImageAlt = currentProductData.featured_image.alt || currentProductData.title;
+            console.log("Initial modal image (from product featured):", initialImageUrl);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            console.log("Initial modal image from first product image:", currentProductData.images[0].src);
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+            initialImageUrl = currentProductData.images[0].src;
+            initialImageAlt = currentProductData.images[0].alt || currentProductData.title;
+            console.log("Initial modal image (from first product image):", initialImageUrl);
         } else {
-            console.log("No initial images found, using placeholder.");
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/333333?text=No+Image'; // Fallback
-            modalMainProductImage.alt = 'No image available';
+            console.warn("No initial image source found for product, using placeholder.");
+            initialImageUrl = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            initialImageAlt = 'No image available';
         }
+        modalMainProductImage.src = initialImageUrl;
+        modalMainProductImage.alt = initialImageAlt;
 
         modalProductTitle.textContent = currentProductData.title;
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        // Pass the current product handle to the variant selector generator
         generateVariantSelectors(currentProductData, productHandle);
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        console.log('--- openModal finished ---');
       } catch (error) {
-        console.error('Error fetching product data:', error);
+        console.error('Error fetching product data in openModal:', error);
         displayMessageBox(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`, 'error');
         quickViewModal.style.display = 'none';
       }
@@ -1127,9 +1134,8 @@
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
-      modalVariantOptions.innerHTML = ''; // Clear variant options
+      modalVariantOptions.innerHTML = '';
 
-      // Reset all custom dropdowns
       quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
         const selectedElement = dropdownElement.querySelector('.dropdown-header span');
         const listElement = dropdownElement.querySelector('.dropdown-list');
@@ -1150,9 +1156,9 @@
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
-      addToCartSuccessMessage.style.display = 'none'; // Hide success message
+      addToCartSuccessMessage.style.display = 'none';
       currentProductData = null;
-      selectedOptionsMap = {}; // Clear selected options
+      selectedOptionsMap = {};
     };
 
 
@@ -1219,11 +1225,10 @@
 
         const cartData = await response.json();
         console.log('Product added to cart:', cartData);
-        addToCartSuccessMessage.style.display = 'block'; // Show success message
+        addToCartSuccessMessage.style.display = 'block';
         setTimeout(() => {
             closeModal();
-            addToCartSuccessMessage.style.display = 'none'; // Hide success message after closing modal
-            // Optional: Dispatch a custom event to notify other parts of your theme (e.g., mini-cart)
+            addToCartSuccessMessage.style.display = 'none';
             document.dispatchEvent(new CustomEvent('cart:item_added', {
                 detail: {
                     variantId: variantId,
@@ -1231,7 +1236,7 @@
                     cart: cartData
                 }
             }));
-        }, 1500); // Hide success message and close modal after 1.5 seconds
+        }, 1500);
 
       } catch (error) {
         console.error('Error adding to cart:', error);
