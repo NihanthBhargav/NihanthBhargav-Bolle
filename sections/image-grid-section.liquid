@@ -797,9 +797,9 @@
             } else {
                 allOptionsSelected = false;
             }
-        } else if (optionName.toLowerCase() === 'size') {
+        } else if (optionName.toLowerCase().includes('size')) { // Use .includes for more robust detection
             // For the custom size dropdown
-            const selectedSizeSpan = group.querySelector('.dropdown-header span'); // Changed from #selected
+            const selectedSizeSpan = group.querySelector('.dropdown-header span');
             if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
                 selectedOptions[optionName] = selectedSizeSpan.dataset.value;
             } else {
@@ -936,11 +936,11 @@
                     updateVariantInfo();
                 });
             }
-        } else if (option.name.toLowerCase() === 'size') {
+        } else if (option.name.toLowerCase().includes('size')) { // Changed to .includes for broader detection
             // CUSTOM DROPDOWN FOR SIZE
             const dropdownDiv = document.createElement('div');
             dropdownDiv.classList.add('dropdown');
-            dropdownDiv.id = `dropdown-${option.name.toLowerCase()}`; // Unique ID
+            dropdownDiv.id = `dropdown-${option.name.toLowerCase().replace(/\s/g, '-')}`; // Unique ID, safe for ID
 
             dropdownDiv.innerHTML = `
                 <div class="dropdown-header">
