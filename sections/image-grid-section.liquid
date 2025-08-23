@@ -81,7 +81,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="120" height="140">
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200"> {# Set explicit width/height or use CSS object-fit for better control #}
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -294,17 +294,17 @@
       height: 20px;
     }
 
-    /* Modal Responsive Styling Adjustments - Re-enable flexible layout for mobile */
+    /* Modal Responsive Styling Adjustments */
     .modal-content {
       width: 90%;
       height: auto;
       padding: 15px;
-      flex-direction: column;
-      align-items: flex-start;
+      /* flex-direction: column; This is already on the parent, no need to repeat */
+      /* align-items: flex-start; This is already on the parent, no need to repeat */
     }
 
     .modal-elements-container {
-        position: static;
+        /* position: static; This is already the default for flex item children, redundant */
         width: 100%;
         height: auto;
         overflow-y: visible;
@@ -313,14 +313,14 @@
 
     /* Single image adjustments for mobile */
     .modal-single-image {
-        position: static;
+        /* position: static; Redundant */
         width: 100%;
         height: auto;
-        margin-bottom: 15px;
-        aspect-ratio: 120 / 140;
+        margin-bottom: 15px; /* Re-add some margin for mobile spacing */
+        aspect-ratio: 120 / 140; /* Maintain aspect ratio */
     }
     .modal-single-image img {
-      position: static;
+      /* position: static; Redundant */
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -331,7 +331,7 @@
     .modal-product-description,
     .modal-variant-options,
     .modal-add-to-cart-form {
-        position: static;
+        /* position: static; Redundant */
         width: 100%;
         height: auto;
         margin-left: 0;
@@ -362,6 +362,18 @@
     }
     .variant-option-group label {
       margin-bottom: 5px;
+    }
+
+    /* Adjust color selector width for mobile to be flexible */
+    fieldset.color-container {
+      width: 100%;
+    }
+    .color-box {
+      width: 100%; /* Make it responsive */
+      height: 40px; /* Adjust height as needed */
+    }
+    .color-swatch {
+      width: 10px; /* Smaller swatch on mobile */
     }
   }
 
@@ -436,12 +448,16 @@
     overflow: hidden;
     border-radius: 0;
     margin-bottom: 0; /* Managed by parent gap */
+    display: flex; /* Use flex to center image if it doesn't fill */
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Placeholder background */
   }
 
   .modal-single-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Changed to 'contain' to ensure full image visibility */
     border-radius: 0;
   }
 
@@ -588,7 +604,7 @@
     padding: 0;
     margin: 0;
     min-width: 0;
-    width: 100%;
+    width: 100%; /* Ensure it takes full width within modal flex context */
   }
 
   fieldset.color-container legend {
@@ -602,15 +618,17 @@
   .color-box {
     position: relative;
     display: flex;
-    width: 100%; /* Full width of its container */
+    width: 271px; /* Set specific width as per your example */
+    max-width: 100%; /* Ensure it doesn't overflow on smaller screens */
     height: 40.4413px;
     border: 0.5px solid #000;
     box-sizing: border-box;
     overflow: hidden;
+    align-self: flex-start; /* Align to start in flex container, if narrower than 100% */
   }
 
-  /* Sliding background */
-  .color-box .slider {
+  /* Sliding background (always black) */
+  .slider {
     position: absolute;
     top: 0;
     left: 0;
@@ -619,10 +637,10 @@
     background: #000;
     transition: transform 0.4s ease;
     z-index: 1;
-    display: none; /* Initially hidden */
+    display: none; /* Keep hidden until a color is selected */
   }
 
-  .color-box .slider.right {
+  .slider.right {
     transform: translateX(100%);
   }
 
@@ -636,9 +654,14 @@
     text-transform: capitalize;
     position: relative;
     cursor: pointer;
-    z-index: 2;
+    z-index: 2; /* above slider */
     color: #000; /* default text */
     transition: color 0.3s ease;
+  }
+
+  /* Active state text turns white */
+  .color-option.active {
+    color: #fff !important;
   }
 
   /* Swatch styles */
@@ -652,25 +675,19 @@
     z-index: 3;
   }
 
-  .white-swatch {
-    width: 5.8071px;
-    background: #fff;
-  }
-
-  .black-swatch {
-    width: 4.8392px;
-    background: #000;
-  }
-
-  /* New blue swatch for product 2 */
   .blue-swatch {
     width: 5.8071px;
     background: #0D499F; /* Blue swatch */
   }
 
-  /* Active state */
-  .color-option.active {
-    color: #fff !important;
+  .black-swatch {
+    width: 4.8392px;
+    background: #000; /* Black swatch */
+  }
+
+  .white-swatch {
+    width: 5.8071px;
+    background: #fff; /* White swatch */
   }
 
   /* CUSTOM DROPDOWN CSS */
@@ -832,13 +849,16 @@
         modalAddToCartButton.disabled = selectedVariant.available ? false : true;
         modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
 
+        // Update main product image based on selected variant if available
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
             modalMainProductImage.src = selectedVariant.featured_image.src;
             modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
         } else if (currentProductData.images && currentProductData.images.length > 0) {
+            // Fallback to the first product image if no variant image
             modalMainProductImage.src = currentProductData.images[0].src;
             modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
         } else {
+            // Generic fallback if no images at all
             modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
             modalMainProductImage.alt = 'No image available';
         }
@@ -922,8 +942,8 @@
             modalVariantOptions.appendChild(optionGroup);
 
             // Add event listeners for Blue/Black
-            const blueBox = optionGroup.querySelector(".color-option[data-value='Blue']");
-            const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
+            const blueBox = optionGroup.querySelector(".color-option[data-value='blue']");
+            const blackBox = optionGroup.querySelector(".color-option[data-value='black']");
 
             if (blueBox) {
                 blueBox.addEventListener("click", () => {
@@ -972,8 +992,8 @@
             modalVariantOptions.appendChild(optionGroup);
 
             // Add event listeners for White/Black
-            const whiteBox = optionGroup.querySelector(".color-option[data-value='White']");
-            const blackBox = optionGroup.querySelector(".color-option[data-value='Black']");
+            const whiteBox = optionGroup.querySelector(".color-option[data-value='white']");
+            const blackBox = optionGroup.querySelector(".color-option[data-value='black']");
 
             if (whiteBox) {
                 whiteBox.addEventListener("click", () => {
@@ -1078,6 +1098,12 @@
         console.log('Opening modal for product handle:', productHandle);
         console.log('Grid image URL provided:', gridImageUrl);
 
+        // Show a loading state or spinner if desired
+        // modalProductTitle.textContent = 'Loading...';
+        // modalProductPrice.textContent = '';
+        // modalProductDescription.innerHTML = '';
+        // modalMainProductImage.src = 'https://placehold.co/400x400/eeeeee/cccccc?text=Loading...';
+
         const response = await fetch(`/products/${productHandle}.js`);
         if (!response.ok) {
           let errorMessage = `HTTP error! status: ${response.status}`;
@@ -1094,9 +1120,13 @@
         currentProductData = await response.json();
         console.log('Fetched product data:', currentProductData);
 
+        // Set the main product image from gridImageUrl first, then variant image, then first product image
         if (gridImageUrl) {
             modalMainProductImage.src = gridImageUrl;
             modalMainProductImage.alt = currentProductData.title;
+        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            modalMainProductImage.src = currentProductData.featured_image.src;
+            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
         } else if (currentProductData.images && currentProductData.images.length > 0) {
             modalMainProductImage.src = currentProductData.images[0].src;
             modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
