@@ -88,7 +88,6 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-        {# ADDED SIZE CHART BUTTON HERE #}
         <button class="modal-size-chart-button">Size Chart</button>
 
         <div class="modal-variant-options">
@@ -108,43 +107,29 @@
     <button class="modal-close-button">&times;</button>
     <h3 class="size-chart-title">Product Size Chart</h3>
     <div class="size-chart-image-container">
-      {# Replace this with your actual size chart image or table content #}
       <img src="https://placehold.co/400x300/e0e0e0/333333?text=Your+Size+Chart+Here" alt="Size Chart" style="max-width: 100%; height: auto; display: block;">
     </div>
-    {# You can also add a table here for the size chart #}
     <table class="size-table">
         <thead>
             <tr>
                 <th>Size</th>
-                <th>Bust (cm)</th>
-                <th>Waist (cm)</th>
-                <th>Hips (cm)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>XS</td>
-                <td>80-84</td>
-                <td>60-64</td>
-                <td>86-90</td>
             </tr>
             <tr>
                 <td>S</td>
-                <td>85-89</td>
-                <td>65-69</td>
-                <td>91-95</td>
             </tr>
             <tr>
                 <td>M</td>
-                <td>90-94</td>
-                <td>70-74</td>
-                <td>96-100</td>
             </tr>
             <tr>
                 <td>L</td>
-                <td>95-99</td>
-                <td>75-79</td>
-                <td>101-105</td>
+            </tr>
+            <tr>
+                <td>XL</td>
             </tr>
         </tbody>
     </table>
@@ -856,16 +841,26 @@
     color: #fff !important;
   }
 
-  /* NEW: Size Chart Modal Specific Styles */
+  /* Size Chart Modal Specific Styles */
   .size-chart-modal .modal-content {
-    width: 500px; /* Adjust size as needed for the chart */
-    height: auto; /* Auto height to fit content */
+    /* ADDED PROPERTIES AS REQUESTED */
+    width: 311px;
+    height: 447px;
+    transform: rotate(0deg); /* Corresponds to angle: 0 deg */
+    opacity: 1;
+    /* End of added properties */
+
     max-height: 90vh; /* Max height to prevent overflow on small screens */
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-y: auto; /* Enable scrolling if content is too tall */
+    background-color: white; /* Ensure background is white for visibility */
+    border-radius: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1001;
   }
 
   .size-chart-title {
