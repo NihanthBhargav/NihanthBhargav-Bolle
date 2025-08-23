@@ -1,3 +1,8 @@
+{% comment %}
+  This section creates a responsive image grid with optional overlay images and product links.
+  It also includes a product quick-view modal with custom color and size selection dropdowns.
+{% endcomment %}
+
 <div class="image-grid-section">
   <div class="page-width">
     <div class="grid-header">
@@ -5,71 +10,24 @@
     </div>
 
     <div class="image-grid-container">
-      <div class="grid-item">
-        {{ section.settings.image_1 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_1 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_1 }}"
-            data-grid-image-url="{{ section.settings.image_1 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_1 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
+      {%- for i in (1..6) -%}
+        {%- assign image_setting = 'image_' | append: i -%}
+        {%- assign overlay_image_setting = 'overlay_image_' | append: i -%}
+        {%- assign product_setting = 'product_' | append: i -%}
 
-      <div class="grid-item">
-        {{ section.settings.image_2 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_2 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_2 }}"
-            data-grid-image-url="{{ section.settings.image_2 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_2 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-2', width: 22, height: 22 }}
+        {%- if section.settings[image_setting] != blank -%}
+          <div class="grid-item">
+            {{ section.settings[image_setting] | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
+            {% if section.settings.overlay_image_1 != blank %}
+              <div class="overlay-button"
+                data-product-handle="{{ section.settings[product_setting].handle }}" {# Ensure .handle is used here #}
+                data-grid-image-url="{{ section.settings[image_setting] | image_url: width: 400 }}">
+                {{ section.settings[overlay_image_setting] | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-1', width: 22, height: 22 }}
+              </div>
+            {% endif %}
           </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_3 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_3 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_3 }}"
-            data-grid-image-url="{{ section.settings.image_3 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_3 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-3', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_4 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_4 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_4 }}"
-            data-grid-image-url="{{ section.settings.image_4 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_4 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-4', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_5 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_5 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_5 }}"
-            data-grid-image-url="{{ section.settings.image_5 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_5 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-5', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        {{ section.settings.image_6 | image_url: width: 600 | image_tag: class: 'grid-image', width: 600, height: 615 }}
-        {% if section.settings.overlay_image_6 != blank %}
-          <div class="overlay-button"
-            data-product-handle="{{ section.settings.product_6 }}"
-            data-grid-image-url="{{ section.settings.image_6 | image_url: width: 400 }}">
-            {{ section.settings.overlay_image_6 | image_url: width: 22 | image_tag: class: 'grid-overlay-image grid-overlay-image-6', width: 22, height: 22 }}
-          </div>
-        {% endif %}
-      </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
@@ -81,7 +39,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200">
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" onerror="this.src='https://placehold.co/400x400/cccccc/333333?text=No+Image'; this.alt='No Image Available'">
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -94,6 +52,8 @@
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
+        {# NEW: Add a success message element here for in-modal feedback #}
+        <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart successfully!</p>
     </div>
   </div>
 </div>
@@ -206,7 +166,7 @@
     transition: transform 0.2s ease-in-out;
   }
 
-  
+
   .grid-overlay-image-1 {
     top: 238px;
     left: 256.5px;
@@ -252,7 +212,7 @@
       height: auto;
       aspect-ratio: 433 / 444;
     }
-    
+
     .grid-overlay-image { /* Generic responsive adjustments if needed */
       width: 5%;
       height: auto;
@@ -770,6 +730,8 @@
   const product1Handle = "{{ section.settings.product_1 }}";
   const product2Handle = "{{ section.settings.product_2 }}";
   const product3Handle = "{{ section.settings.product_3 }}";
+  // Assuming product_4, product_5, product_6 are also handles and not product objects directly
+  const product4Handle = "{{ section.settings.product_4 }}"; // Added for completeness if needed
   const product5Handle = "{{ section.settings.product_5 }}";
   const product6Handle = "{{ section.settings.product_6 }}";
 
@@ -783,19 +745,88 @@
     const modalVariantOptions = quickViewModal.querySelector('.modal-variant-options');
     const modalAddToCartButton = quickViewModal.querySelector('.modal-add-to-cart-button');
     const modalMainProductImage = quickViewModal.querySelector('#modal-main-product-image');
+    // NEW: Reference to the success message element
+    const addToCartSuccessMessage = quickViewModal.querySelector('.add-to-cart-success-message');
+
 
     let currentProductData = null;
+    let selectedOptionsMap = {}; // Map to hold current selections for each option type
+    let initialGridImageURL = ''; // Store the URL of the grid image that opened the modal
+
+    // --- Custom Message Box Function (replaces alert()) ---
+    function displayMessageBox(message, type = 'info') {
+      const existingMessageBox = document.getElementById('custom-message-box');
+      if (existingMessageBox) {
+        existingMessageBox.remove();
+      }
+      const messageBox = document.createElement('div');
+      messageBox.id = 'custom-message-box';
+
+      // Basic styling for the message box
+      let bgColor = '#f0f8ff'; // Light blue for info
+      let textColor = '#333';
+      if (type === 'error') {
+        bgColor = '#ffebee'; // Light red for error
+        textColor = '#d32f2f';
+      } else if (type === 'success') {
+        bgColor = '#e8f5e9'; // Light green for success
+        textColor = '#2e7d32';
+      }
+
+      messageBox.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: ${bgColor};
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 2000;
+        text-align: center;
+        font-family: 'Jost', sans-serif;
+        color: ${textColor};
+        font-size: 1.1rem;
+        max-width: 300px;
+        border: 1px solid ${textColor};
+      `;
+      messageBox.innerHTML = `
+        <p>${message}</p>
+        <button style="
+          margin-top: 15px;
+          padding: 8px 15px;
+          background-color: #000;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        ">OK</button>
+      `;
+      document.body.appendChild(messageBox);
+      messageBox.querySelector('button').addEventListener('click', () => {
+        messageBox.remove();
+      });
+      // Automatically remove message after 5 seconds
+      setTimeout(() => {
+          if (messageBox && messageBox.parentNode) {
+              messageBox.remove();
+          }
+      }, 5000);
+    }
+
 
     // Helper to format money
     const formatMoney = (cents) => {
       const numericCents = parseFloat(cents) || 0;
 
-      if (typeof Shopify === 'undefined' || !Shopify.currency) {
+      if (typeof Shopify === 'undefined' || !Shopify.currency || !Shopify.currency.active) {
+        // Fallback for when Shopify object is not fully initialized
         return `$${(numericCents / 100).toFixed(2)}`;
       }
-      return new Intl.NumberFormat(Shopify.currency.active, {
+      return new Intl.NumberFormat(navigator.language, {
           style: 'currency',
-          currency: Shopify.currency.active || 'EUR'
+          currency: Shopify.currency.active
       }).format(numericCents / 100);
     };
 
@@ -803,46 +834,52 @@
     window.updateVariantInfo = () => {
       if (!currentProductData) return;
 
-      const selectedOptions = {};
       let allOptionsSelected = true;
+      const currentSelectedOptions = {}; // Collects the *currently visible* selections
 
-      modalVariantOptions.querySelectorAll('.variant-option-group').forEach(group => {
-        const optionName = group.dataset.optionName;
+      currentProductData.options.forEach(option => {
+          const optionName = option.name;
+          let selectedValue = null;
 
-        if (optionName.toLowerCase() === 'color') {
-            const activeColorOption = group.querySelector('.color-option.active');
-            if (activeColorOption) {
-                selectedOptions[optionName] = activeColorOption.dataset.value;
-            } else {
-                allOptionsSelected = false;
-            }
-        } else if (optionName.toLowerCase().includes('size')) {
-            const selectedSizeSpan = group.querySelector('.dropdown-header span');
-            if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
-                selectedOptions[optionName] = selectedSizeSpan.dataset.value;
-            } else {
-                allOptionsSelected = false;
-            }
-        } else {
-            const selectedPill = group.querySelector('.variant-option-value-pill.selected');
-            if (selectedPill) {
-                selectedOptions[optionName] = selectedPill.dataset.value;
-            } else {
-                allOptionsSelected = false;
-            }
-        }
+          if (optionName.toLowerCase() === 'color') {
+              const activeColorOption = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${optionName}"] .color-option.active`);
+              if (activeColorOption) {
+                  selectedValue = activeColorOption.dataset.value;
+              }
+          } else if (optionName.toLowerCase().includes('size')) {
+              const selectedSizeSpan = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${optionName}"] .dropdown-header span`);
+              if (selectedSizeSpan && selectedSizeSpan.dataset.value && selectedSizeSpan.dataset.value !== 'Choose your size') {
+                  selectedValue = selectedSizeSpan.dataset.value;
+              }
+          } else {
+              const selectedPill = modalVariantOptions.querySelector(`.variant-option-group[data-option-name="${optionName}"] .variant-option-value-pill.selected`);
+              if (selectedPill) {
+                  selectedValue = selectedPill.dataset.value;
+              }
+          }
+
+          if (!selectedValue || selectedValue === 'Choose your size') {
+              allOptionsSelected = false;
+          } else {
+              currentSelectedOptions[optionName] = selectedValue;
+          }
       });
 
       let selectedVariant = null;
       if (allOptionsSelected) {
+          // Find the variant that matches all selected options
           selectedVariant = currentProductData.variants.find(variant => {
-            return Object.keys(selectedOptions).every(optionName => {
-              const optionIndex = currentProductData.options.findIndex(opt => opt.name === optionName);
-              if (optionIndex === -1) return false;
-              return variant.options[optionIndex] === selectedOptions[optionName];
+            return currentProductData.options.every((option, index) => {
+              // Ensure the variant's option matches the currently selected option
+              return variant.options[index] === currentSelectedOptions[option.name];
             });
           });
       }
+
+      console.log('--- updateVariantInfo triggered ---');
+      console.log('Selected options for variant matching:', currentSelectedOptions);
+      console.log('Found matching variant:', selectedVariant);
+
 
       if (selectedVariant) {
         modalProductPrice.textContent = formatMoney(selectedVariant.price);
@@ -850,34 +887,87 @@
         modalAddToCartButton.disabled = selectedVariant.available ? false : true;
         modalAddToCartButton.textContent = selectedVariant.available ? 'ADD TO CART →' : 'SOLD OUT';
 
-        // Update main product image based on selected variant if available
+        // --- Image update logic ---
+        let imageUrlToSet = '';
+        let imageAltToSet = currentProductData.title;
+
         if (selectedVariant.featured_image && selectedVariant.featured_image.src) {
-            modalMainProductImage.src = selectedVariant.featured_image.src;
-            modalMainProductImage.alt = selectedVariant.featured_image.alt || currentProductData.title;
+            imageUrlToSet = selectedVariant.featured_image.src;
+            imageAltToSet = selectedVariant.featured_image.alt || currentProductData.title;
+            console.log("Setting modal image from selected variant:", imageUrlToSet);
+        } else if (initialGridImageURL && initialGridImageURL.trim() !== '') {
+            imageUrlToSet = initialGridImageURL;
+            console.log("Setting modal image from initial grid image (variant fallback):", imageUrlToSet);
+        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            imageUrlToSet = currentProductData.featured_image.src;
+            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
+            console.log("Setting modal image from product featured (variant fallback):", imageUrlToSet);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            // Fallback to the first product image if no variant image
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+            imageUrlToSet = currentProductData.images[0].src;
+            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
+            console.log("Setting modal image from first product image (variant fallback):", imageUrlToSet);
         } else {
-            // Generic fallback if no images at all
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-            modalMainProductImage.alt = 'No image available';
+            console.warn("No image found for variant or product, using placeholder.");
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Red placeholder for clarity
+            imageAltToSet = 'No image available';
         }
+        modalMainProductImage.src = imageUrlToSet;
+        modalMainProductImage.alt = imageAltToSet;
 
       } else {
-        modalProductPrice.textContent = formatMoney(currentProductData.price || 0);
+        // If no valid variant is selected (e.g., options not fully chosen or invalid combination)
+        modalProductPrice.textContent = formatMoney(currentProductData.price || 0); // Show base price
         modalAddToCartButton.dataset.variantId = '';
         modalAddToCartButton.disabled = true;
-        modalAddToCartButton.textContent = 'ADD TO CART →';
+        modalAddToCartButton.textContent = 'SELECT OPTIONS';
+
+        // --- Image update logic (when no variant selected) ---
+        let imageUrlToSet = '';
+        let imageAltToSet = currentProductData.title;
+
+        // Prioritize the initial grid image that opened the modal
+        if (initialGridImageURL && initialGridImageURL.trim() !== '') {
+            imageUrlToSet = initialGridImageURL;
+            console.log("Setting modal image from initial grid image (no variant selected):", imageUrlToSet);
+        } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
+            imageUrlToSet = currentProductData.featured_image.src;
+            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
+            console.log("Setting modal image from product featured (no variant selected fallback):", imageUrlToSet);
+        } else if (currentProductData.images && currentProductData.images.length > 0) {
+            imageUrlToSet = currentProductData.images[0].src;
+            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
+            console.log("Setting modal image from first product image (no variant selected fallback):", imageUrlToSet);
+        } else {
+            console.warn("No image found for product, using placeholder (no variant selected).");
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Red placeholder
+            imageAltToSet = 'No image available';
+        }
+        modalMainProductImage.src = imageUrlToSet;
+        modalMainProductImage.alt = imageAltToSet;
       }
+      console.log('Final modal image src (after updateVariantInfo):', modalMainProductImage.src);
+      console.log('--- updateVariantInfo finished ---');
     };
 
     // Function to generate variant selectors
     const generateVariantSelectors = (productData, currentProductHandle) => {
-      modalVariantOptions.innerHTML = '';
+      modalVariantOptions.innerHTML = ''; // Clear previous options
+      selectedOptionsMap = {}; // Reset selected options map
+
+      // Initializing selectedOptionsMap based on current product's options
+      productData.options.forEach((option) => {
+          if (option.name.toLowerCase().includes('size')) {
+              selectedOptionsMap[option.name] = 'Choose your size'; // Default for size dropdown
+          } else {
+              // For other options like color, select the first available value by default
+              selectedOptionsMap[option.name] = option.values[0];
+          }
+      });
+
       let optionsToRender = [...productData.options];
 
-      // Apply reordering for all products EXCEPT product_1
+      // Reordering for specific products (only if product.handle property is available and comparison is correct)
+      // Note: Assuming product1Handle etc. are string handles, not full product objects.
       if (currentProductHandle !== product1Handle) {
         const colorOption = optionsToRender.find(opt => opt.name.toLowerCase() === 'color');
         const sizeOption = optionsToRender.find(opt => opt.name.toLowerCase().includes('size'));
@@ -904,129 +994,71 @@
           const fieldset = document.createElement('fieldset');
           fieldset.classList.add('color-container');
 
-          const legend = document.createElement('legend');
-          legend.textContent = option.name;
-          fieldset.appendChild(legend);
+          let colorBoxHTML = '';
 
-          let colorBoxHTML = ''; // Initialize HTML string for color box
-
-          // --- Conditional Color Options based on product handle ---
-          if (currentProductHandle === product2Handle) {
-            // Product 2: Blue and Black
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="blue">
-                  <span class="color-swatch blue-swatch"></span>
-                  Blue
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
+          // Conditional color options logic (KEEPING YOUR ORIGINAL LOGIC)
+          let colors = [];
+          if (currentProductHandle === product2Handle || currentProductHandle === product6Handle) {
+            colors = [{name: 'blue', class: 'blue-swatch', value: 'blue'}, {name: 'black', class: 'black-swatch', value: 'black'}];
           } else if (currentProductHandle === product3Handle) {
-            // Product 3: Red and Grey
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="red">
-                  <span class="color-swatch red-swatch"></span>
-                  Red
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="grey">
-                  <span class="color-swatch grey-swatch"></span>
-                  Grey
-                </div>
-              </div>
-            `;
+            colors = [{name: 'red', class: 'red-swatch', value: 'red'}, {name: 'grey', class: 'grey-swatch', value: 'grey'}];
           } else if (currentProductHandle === product5Handle) {
-            // Product 5: Grey and Black
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="grey">
-                  <span class="color-swatch grey-swatch"></span>
-                  Grey
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
-          } else if (currentProductHandle === product6Handle) {
-            // Product 6: Blue and Black
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="blue">
-                  <span class="color-swatch blue-swatch"></span>
-                  Blue
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
-          }
-          else {
-            // Default: White and Black (for product 1 and others)
-            colorBoxHTML = `
-              <div class="color-box">
-                <div class="slider" id="slider-${currentProductHandle}" style="display:none;"></div>
-                <div class="color-option" id="colorOption1-${currentProductHandle}" data-value="white">
-                  <span class="color-swatch white-swatch"></span>
-                  White
-                </div>
-                <div class="color-option" id="colorOption2-${currentProductHandle}" data-value="black">
-                  <span class="color-swatch black-swatch"></span>
-                  Black
-                </div>
-              </div>
-            `;
+            colors = [{name: 'grey', class: 'grey-swatch', value: 'grey'}, {name: 'black', class: 'black-swatch', value: 'black'}];
+          } else {
+            colors = [{name: 'white', class: 'white-swatch', value: 'white'}, {name: 'black', class: 'black-swatch', value: 'black'}];
           }
 
-          fieldset.insertAdjacentHTML('beforeend', colorBoxHTML); // Insert the HTML
+          colorBoxHTML += `<div class="color-box"><div class="slider" id="slider-${currentProductHandle}"></div>`;
+          colors.forEach((col, idx) => {
+              colorBoxHTML += `
+                  <div class="color-option" id="colorOption${idx + 1}-${currentProductHandle}" data-value="${col.value}">
+                      <span class="color-swatch ${col.class}"></span>
+                      ${col.name.charAt(0).toUpperCase() + col.name.slice(1)}
+                  </div>
+              `;
+          });
+          colorBoxHTML += `</div>`;
 
+          fieldset.insertAdjacentHTML('beforeend', colorBoxHTML);
           optionGroup.appendChild(fieldset);
           modalVariantOptions.appendChild(optionGroup);
 
           // Get the dynamically created elements for event listeners
-          const colorOption1 = document.getElementById(`colorOption1-${currentProductHandle}`);
-          const colorOption2 = document.getElementById(`colorOption2-${currentProductHandle}`);
+          const colorOptionsDivs = fieldset.querySelectorAll('.color-option');
           const slider = document.getElementById(`slider-${currentProductHandle}`);
 
-          if (colorOption1 && colorOption2 && slider) {
-            colorOption1.addEventListener("click", () => {
-              slider.style.display = "block";
-              slider.classList.remove("right");
-              colorOption1.classList.add("active");
-              colorOption2.classList.remove("active");
-              updateVariantInfo();
-            });
+          colorOptionsDivs.forEach((colorOption, index) => {
+              colorOption.addEventListener("click", () => {
+                  slider.style.display = "block";
+                  colorOptionsDivs.forEach(opt => opt.classList.remove('active')); // Deactivate all
+                  colorOption.classList.add('active'); // Activate clicked
+                  selectedOptionsMap[option.name] = colorOption.dataset.value; // Update map with new selection
+                  updateVariantInfo();
+              });
 
-            colorOption2.addEventListener("click", () => {
-              slider.style.display = "block";
-              slider.classList.add("right");
-              colorOption2.classList.add("active");
-              colorOption1.classList.remove("active");
-              updateVariantInfo();
-            });
-            // No initial click for neutral state
-          }
+              // Set initial active state and slider position based on selectedOptionsMap
+              if (selectedOptionsMap[option.name] === colorOption.dataset.value) {
+                  colorOption.classList.add('active');
+                  slider.style.display = "block"; // Ensure slider is shown if a default is active
+                  if (index === 1) { // If the second color is initially selected
+                      slider.classList.add("right");
+                  } else { // If the first color is initially selected
+                      slider.classList.remove("right");
+                  }
+              }
+          });
 
         } else if (option.name.toLowerCase().includes('size')) {
-          // CUSTOM DROPDOWN FOR SIZE
           const dropdownDiv = document.createElement('div');
           dropdownDiv.classList.add('dropdown');
           dropdownDiv.id = `dropdown-${option.name.toLowerCase().replace(/\s/g, '-')}-${currentProductHandle}`;
 
+          // Initial selected text for size dropdown
+          const initialSelectedSizeText = selectedOptionsMap[option.name]; // Use value from map
+
           dropdownDiv.innerHTML = `
               <div class="dropdown-header">
-                  <span data-value="Choose your size">Choose your size</span>
+                  <span data-value="${initialSelectedSizeText}">${initialSelectedSizeText}</span>
                   <div class="line"></div>
                   <i class="arrow"></i>
               </div>
@@ -1055,11 +1087,13 @@
               selectedElement.dataset.value = item.innerText;
               listElement.style.display = "none";
               arrowElement.classList.remove("up");
+              selectedOptionsMap[option.name] = item.innerText; // Update map with new selection
               updateVariantInfo();
             });
           });
-          selectedElement.innerText = 'Choose your size';
-          selectedElement.dataset.value = 'Choose your size';
+          // Set the initial display for the size dropdown based on selectedOptionsMap
+          selectedElement.innerText = selectedOptionsMap[option.name];
+          selectedElement.dataset.value = selectedOptionsMap[option.name];
 
         } else {
           // For all other variants (pill selection)
@@ -1076,27 +1110,29 @@
             pill.addEventListener('click', () => {
               valuesContainer.querySelectorAll('.variant-option-value-pill').forEach(p => p.classList.remove('selected'));
               pill.classList.add('selected');
+              selectedOptionsMap[option.name] = value; // Update map with new selection
               updateVariantInfo();
             });
+
+            // Set initial active state based on selectedOptionsMap
+            if (selectedOptionsMap[option.name] === value) {
+                pill.classList.add('selected');
+            }
           });
           optionGroup.appendChild(valuesContainer);
           modalVariantOptions.appendChild(optionGroup);
-
-          const firstPill = valuesContainer.querySelector('.variant-option-value-pill');
-          if (firstPill) {
-              firstPill.classList.add('selected');
-          }
         }
       });
 
-      updateVariantInfo();
+      updateVariantInfo(); // Call once after creating all selectors to set initial state
     };
 
 
     // Function to open the modal
     const openModal = async (productHandle, gridImageUrl) => {
       try {
-        console.log('Opening modal for product handle:', productHandle);
+        console.log('--- openModal started ---');
+        console.log('Product handle for modal:', productHandle);
         console.log('Grid image URL provided:', gridImageUrl);
 
         const response = await fetch(`/products/${productHandle}.js`);
@@ -1115,33 +1151,44 @@
         currentProductData = await response.json();
         console.log('Fetched product data:', currentProductData);
 
-        // Set the main product image from gridImageUrl first, then variant image, then first product image
-        if (gridImageUrl) {
-            modalMainProductImage.src = gridImageUrl;
-            modalMainProductImage.alt = currentProductData.title;
+        // Store the gridImageUrl globally for this modal instance
+        initialGridImageURL = gridImageUrl; // Use a distinct variable name to avoid confusion
+
+        let imageUrlToSet = '';
+        let imageAltToSet = currentProductData.title;
+
+        // CRITICAL: Always use the gridImageUrl first if it's valid
+        if (initialGridImageURL && initialGridImageURL.trim() !== '') {
+            imageUrlToSet = initialGridImageURL;
+            console.log("Initial modal image (prioritized from gridImageUrl):", imageUrlToSet);
         } else if (currentProductData.featured_image && currentProductData.featured_image.src) {
-            modalMainProductImage.src = currentProductData.featured_image.src;
-            modalMainProductImage.alt = currentProductData.featured_image.alt || currentProductData.title;
+            imageUrlToSet = currentProductData.featured_image.src;
+            imageAltToSet = currentProductData.featured_image.alt || currentProductData.title;
+            console.log("Initial modal image (from product featured - fallback):", imageUrlToSet);
         } else if (currentProductData.images && currentProductData.images.length > 0) {
-            modalMainProductImage.src = currentProductData.images[0].src;
-            modalMainProductImage.alt = currentProductData.images[0].alt || currentProductData.title;
+            imageUrlToSet = currentProductData.images[0].src;
+            imageAltToSet = currentProductData.images[0].alt || currentProductData.title;
+            console.log("Initial modal image (from first product image - fallback):", imageUrlToSet);
         } else {
-            modalMainProductImage.src = 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image';
-            modalMainProductImage.alt = 'No image available';
+            console.warn("No initial image source found for product, using placeholder.");
+            imageUrlToSet = 'https://placehold.co/400x400/FF0000/FFFFFF?text=No+Image'; // Distinct placeholder
+            imageAltToSet = 'No image available';
         }
+        modalMainProductImage.src = imageUrlToSet;
+        modalMainProductImage.alt = imageAltToSet;
 
         modalProductTitle.textContent = currentProductData.title;
         modalProductPrice.textContent = formatMoney(currentProductData.price);
         modalProductDescription.innerHTML = currentProductData.description;
 
-        // Pass the current product handle to the variant selector generator
         generateVariantSelectors(currentProductData, productHandle);
 
         quickViewModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        console.log('--- openModal finished ---');
       } catch (error) {
-        console.error('Error fetching product data:', error);
-        alert(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`);
+        console.error('Error fetching product data in openModal:', error);
+        displayMessageBox(`Could not load product details. Please check the product handle and network connection, or if the product exists. Error: ${error.message}`, 'error');
         quickViewModal.style.display = 'none';
       }
     };
@@ -1152,12 +1199,12 @@
       document.body.style.overflow = '';
       modalMainProductImage.src = '';
       modalMainProductImage.alt = '';
+      initialGridImageURL = ''; // Clear the stored initial grid image URL on close
       modalProductTitle.textContent = '';
       modalProductPrice.textContent = '';
       modalProductDescription.innerHTML = '';
-      modalVariantOptions.innerHTML = ''; // Clear variant options
+      modalVariantOptions.innerHTML = '';
 
-      // Reset all custom dropdowns
       quickViewModal.querySelectorAll('.dropdown').forEach(dropdownElement => {
         const selectedElement = dropdownElement.querySelector('.dropdown-header span');
         const listElement = dropdownElement.querySelector('.dropdown-list');
@@ -1175,11 +1222,12 @@
         }
       });
 
-
       modalAddToCartButton.dataset.variantId = '';
       modalAddToCartButton.disabled = false;
       modalAddToCartButton.textContent = 'ADD TO CART →';
+      addToCartSuccessMessage.style.display = 'none'; // Ensure success message is hidden on close
       currentProductData = null;
+      selectedOptionsMap = {};
     };
 
 
@@ -1193,7 +1241,7 @@
           openModal(productHandle, gridImageUrl);
         } else {
           console.warn('Overlay button clicked but no product handle found.');
-          alert('No product linked to this overlay.');
+          displayMessageBox('No product linked to this overlay.', 'error');
         }
       });
     });
@@ -1212,14 +1260,14 @@
       });
     });
 
-    // Add to Cart functionality
+    // --- Add to Cart functionality ---
     modalAddToCartButton.addEventListener('click', async () => {
       const variantId = modalAddToCartButton.dataset.variantId;
       const quantity = 1;
 
-      if (!variantId) {
-        console.error('Invalid variant ID.');
-        alert('Please select all required options.');
+      if (!variantId || modalAddToCartButton.disabled) {
+        console.error('Invalid variant ID or button is disabled.');
+        displayMessageBox('Please select all available options before adding to cart.', 'error');
         return;
       }
 
@@ -1246,76 +1294,47 @@
 
         const cartData = await response.json();
         console.log('Product added to cart:', cartData);
-        closeModal();
-        alert('Product added to cart successfully!');
+        // Display success message within the modal
+        addToCartSuccessMessage.style.display = 'block';
+        // Hide message and close modal after a short delay
+        setTimeout(() => {
+            closeModal();
+            addToCartSuccessMessage.style.display = 'none'; // Ensure it's hidden for next open
+            // Trigger a custom event for other parts of the theme (e.g., cart icon update)
+            document.dispatchEvent(new CustomEvent('cart:item_added', {
+                detail: {
+                    variantId: variantId,
+                    quantity: quantity,
+                    cart: cartData
+                }
+            }));
+        }, 1500); // Display success for 1.5 seconds
 
       } catch (error) {
         console.error('Error adding to cart:', error);
-        alert('Failed to add product to cart. Please try again.');
+        displayMessageBox(`Failed to add product to cart: ${error.message}`, 'error');
       }
     });
 
-    // Simple custom alert for demonstration (replace with a proper modal in production)
-    function alert(message) {
-      const existingAlert = document.getElementById('custom-alert');
-      if (existingAlert) {
-        existingAlert.remove();
+    // NEW: Define custom-alert CSS to remove the temporary stylesheet creation
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = `
+      #custom-message-box button:hover {
+        background-color: #333;
       }
+      @keyframes slideIn {
+        from { top: -50px; opacity: 0; }
+        to { top: 20px; opacity: 1; }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      #custom-alert { /* Removed this, replaced by displayMessageBox */ }
+    `;
+    document.head.appendChild(styleSheet);
 
-      const alertDiv = document.createElement('div');
-      alertDiv.id = 'custom-alert';
-      alertDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #f44336;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        z-index: 10000;
-        font-family: 'Jost', sans-serif;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        animation: slideIn 0.5s forwards, fadeOut 3s forwards 2s;
-      `;
-      alertDiv.innerHTML = `
-        <span>${message}</span>
-        <button style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
-      `;
-
-      document.body.appendChild(alertDiv);
-
-      alertDiv.querySelector('button').addEventListener('click', () => {
-        alertDiv.remove();
-      });
-
-      const styleSheet = document.createElement("style");
-      styleSheet.type = "text/css";
-      styleSheet.innerText = `
-        @keyframes slideIn {
-          from { top: -50px; opacity: 0; }
-          to { top: 20px; opacity: 1; }
-        }
-        @keyframes fadeOut {
-          from { opacity: 1; }
-          to { opacity: 0; }
-        }
-      `;
-      document.head.appendChild(styleSheet);
-
-      setTimeout(() => {
-        if (document.body.contains(alertDiv)) {
-          alertDiv.remove();
-        }
-        if (document.head.contains(styleSheet)) {
-            styleSheet.remove();
-        }
-      }, 5000);
-    }
 
   });
 </script>
