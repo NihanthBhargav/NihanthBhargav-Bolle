@@ -34,7 +34,7 @@
     <button class="modal-close-button">&times;</button>
     <div class="modal-elements-container">
         <div class="modal-single-image">
-            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" > 
+            <img id="modal-main-product-image" src="" alt="Product Image" width="271" height="200" >
         </div>
 
         <h3 class="modal-product-title"></h3>
@@ -47,7 +47,8 @@
         <div class="modal-add-to-cart-form">
           <button class="modal-add-to-cart-button">ADD TO CART →</button>
         </div>
-         <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart successfully!</p>
+        {# In-modal success message for feedback #}
+        <p class="add-to-cart-success-message" style="display: none; color: green; text-align: center; margin-top: 10px;">Item added to cart successfully!</p>
     </div>
   </div>
 </div>
@@ -562,7 +563,7 @@
     max-width: 100%; /* Ensure it shrinks on smaller screens */
     height: 40.4413px;
     border: 0.5px solid #000;
-    box-sizing: border-box; /* Corrected typo here */
+    box-sizing: border-box;
     overflow: hidden;
     align-self: flex-start; /* Align to the left in flex container */
   }
@@ -577,7 +578,8 @@
     background: #000;
     transition: transform 0.4s ease;
     z-index: 1;
-    display: none; /* Keep initially hidden */
+    /* Initially hidden by JS, but also ensure CSS default is hidden */
+    display: none;
   }
 
   .slider.right {
@@ -929,8 +931,13 @@
       productData.options.forEach((option) => {
           if (option.name.toLowerCase().includes('size')) {
               selectedOptionsMap[option.name] = 'Choose your size'; // Default for size dropdown
+          } else if (option.name.toLowerCase() === 'color') {
+              // For color, set the first available value as the logical default,
+              // but don't visually activate it yet.
+              const defaultColorValue = option.values.length > 0 ? option.values[0] : '';
+              selectedOptionsMap[option.name] = defaultColorValue;
           } else {
-              // For other options like color, select the first available value by default
+              // For other options like pill selectors, select the first available value by default
               selectedOptionsMap[option.name] = option.values[0];
           }
       });
@@ -978,7 +985,8 @@
             colors = [{name: 'white', class: 'white-swatch', value: 'white'}, {name: 'black', class: 'black-swatch', value: 'black'}];
           }
 
-          colorBoxHTML += `<div class="color-box"><div class="slider" id="slider-${currentProductHandle}"></div>`;
+          // Set slider to display: none inline style to ensure it's hidden initially
+          colorBoxHTML += `<div class="color-box"><div class="slider" id="slider-${currentProductHandle}" style="display: none;"></div>`;
           colors.forEach((col, idx) => {
               colorBoxHTML += `
                   <div class="color-option" id="colorOption${idx + 1}-${currentProductHandle}" data-value="${col.value}">
@@ -999,23 +1007,21 @@
 
           colorOptionsDivs.forEach((colorOption, index) => {
               colorOption.addEventListener("click", () => {
-                  slider.style.display = "block";
+                  slider.style.display = "block"; // Show slider on click
                   colorOptionsDivs.forEach(opt => opt.classList.remove('active')); // Deactivate all
-                  colorOption.classList.add('active'); // Activate clicked
+                  colorOption.classList.add('active'); // Activate clicked color
+
+                  // Move slider based on selected option
+                  if (index === 1) { // If second option (e.g., Black)
+                      slider.classList.add("right");
+                  } else { // If first option (e.g., White/Blue/Red/Grey)
+                      slider.classList.remove("right");
+                  }
+
                   selectedOptionsMap[option.name] = colorOption.dataset.value; // Update map with new selection
                   updateVariantInfo();
               });
-
-              // Set initial active state and slider position based on selectedOptionsMap
-              if (selectedOptionsMap[option.name] === colorOption.dataset.value) {
-                  colorOption.classList.add('active');
-                  slider.style.display = "block"; // Ensure slider is shown if a default is active
-                  if (index === 1) { // If the second color is initially selected
-                      slider.classList.add("right");
-                  } else { // If the first color is initially selected
-                      slider.classList.remove("right");
-                  }
-              }
+              // Removed initial activation logic here to ensure white background by default
           });
 
         } else if (option.name.toLowerCase().includes('size')) {
@@ -1190,6 +1196,13 @@
         if (arrowElement) {
           arrowElement.classList.remove('up');
         }
+      });
+
+      // Reset color selectors
+      quickViewModal.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+      quickViewModal.querySelectorAll('.slider').forEach(sliderElem => {
+          sliderElem.style.display = 'none';
+          sliderElem.classList.remove('right');
       });
 
       modalAddToCartButton.dataset.variantId = '';
