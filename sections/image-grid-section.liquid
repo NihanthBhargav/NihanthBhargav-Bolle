@@ -88,8 +88,7 @@
         <p class="modal-product-price"></p>
         <div class="modal-product-description"></div>
 
-        {# ADDED SIZE CHART BUTTON HERE #}
-        <button class="modal-size-chart-button">Size Chart</button>
+         <button class="modal-size-chart-button">Size Chart</button>
 
         <div class="modal-variant-options">
         </div>
@@ -107,9 +106,8 @@
   <div class="modal-content size-chart-content">
     <button class="modal-close-button">&times;</button>
     <h3 class="size-chart-title">Product Size Selection</h3>
-    {# User's provided size chart HTML #}
-    <label for="size">Size</label>
-    <div class="dropdown" id="size-chart-specific-dropdown"> {# Added unique ID for this instance #}
+     <label for="size-chart-size">Size</label>
+    <div class="dropdown" id="size-chart-specific-dropdown">
       <div class="dropdown-header">
         <span id="size-chart-selected">Choose your size</span>
         <div class="line"></div>
@@ -123,8 +121,7 @@
         <div>XL</div>
       </div>
     </div>
-    {# User's provided size chart JavaScript, adapted for this specific instance #}
-    <script>
+     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const dropdown = document.getElementById("size-chart-specific-dropdown");
         const arrow = document.getElementById("size-chart-arrow");
@@ -132,25 +129,31 @@
         const selected = document.getElementById("size-chart-selected");
 
         if (dropdown && arrow && list && selected) {
-          dropdown.addEventListener("click", () => {
+          dropdown.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent modal from closing if dropdown is inside it
             list.style.display = list.style.display === "block" ? "none" : "block";
             arrow.classList.toggle("up");
           });
 
           document.querySelectorAll("#size-chart-dropdown-list div").forEach(item => {
             item.addEventListener("click", (e) => {
+              e.stopPropagation();
               selected.innerText = item.innerText;
               list.style.display = "none";
               arrow.classList.remove("up");
             });
           });
 
-          window.addEventListener("click", (e) => {
-            if (!dropdown.contains(e.target)) {
+          // Global click listener specific to this dropdown, within the modal
+          const sizeChartModalGlobalClickListener = (e) => {
+            if (!dropdown.contains(e.target) && list.style.display === "block") {
               list.style.display = "none";
               arrow.classList.remove("up");
             }
-          });
+          };
+          window.addEventListener("click", sizeChartModalGlobalClickListener);
+          // Store for cleanup if modal content is ever dynamically removed
+          dropdown._sizeChartModalGlobalClickListener = sizeChartModalGlobalClickListener;
         }
       });
     </script>
@@ -627,7 +630,7 @@
     color: #333;
   }
 
-  /* YOUR EXACT CUSTOM SIZE DROPDOWN STYLES */
+  /* YOUR EXACT CUSTOM SIZE DROPDOWN STYLES (Classes for reusability) */
   .dropdown {
     position: relative;
     width: 250px;
@@ -643,7 +646,7 @@
     height: 40px;
   }
 
-  .dropdown-header span {
+  .dropdown-header span.selected { /* Added .selected for specificity */
     font-size: 16px;
     flex: 1;
     padding: 0 10px;
@@ -850,47 +853,8 @@
 </style>
 
 <script>
-  // Reusable function to initialize a dropdown instance based on user's code structure
-  function initializeUserDropdown(dropdownElement, shouldUpdateVariants = true) {
-    const arrow = dropdownElement.querySelector(".arrow");
-    const list = dropdownElement.querySelector(".dropdown-list");
-    const selected = dropdownElement.querySelector(".selected");
-
-    const dropdownClickHandler = (e) => {
-      e.stopPropagation();
-      list.style.display = list.style.display === "block" ? "none" : "block";
-      arrow.classList.toggle("up");
-    };
-
-    const listItemClickHandler = (e) => {
-      e.stopPropagation();
-      selected.innerText = e.target.innerText;
-      list.style.display = "none";
-      arrow.classList.remove("up");
-      if (shouldUpdateVariants && typeof updateVariantInfo === 'function') {
-        updateVariantInfo(); // Only call if in variant selection context
-      }
-    };
-
-    const globalClickHandler = (e) => {
-      if (!dropdownElement.contains(e.target) && list.style.display === "block") {
-        list.style.display = "none";
-        arrow.classList.remove("up");
-      }
-    };
-
-    dropdownElement.addEventListener("click", dropdownClickHandler);
-    list.querySelectorAll("div").forEach(item => {
-      item.addEventListener("click", listItemClickHandler);
-    });
-
-    // Store listener references to remove them later, important for dynamic elements
-    dropdownElement._dropdownClickHandler = dropdownClickHandler;
-    dropdownElement._listItemClickHandler = listItemClickHandler;
-    dropdownElement._globalClickHandler = globalClickHandler;
-    document.addEventListener("click", globalClickHandler);
-  }
-
+  // No more generalized initializeUserDropdown function for dynamic quick view dropdowns
+  // Each size dropdown in quick view will have its own embedded script.
 
   document.addEventListener('DOMContentLoaded', () => {
     const quickViewModal = document.getElementById('product-quick-view-modal');
@@ -1014,44 +978,67 @@
         optionGroup.appendChild(label);
 
         if (option.name.toLowerCase() === 'size') {
+            // Dynamically generating unique IDs for this dropdown instance
+            const dropdownId = `dropdown-${optionIndex}`;
+            const selectedId = `selected-${optionIndex}`;
+            const arrowId = `arrow-${optionIndex}`;
+            const listId = `dropdown-list-${optionIndex}`;
+
             // Constructing user's provided dropdown HTML for size selection
-            const dropdownContainer = document.createElement('div');
-            dropdownContainer.classList.add('dropdown');
-
-            const dropdownHeader = document.createElement('div');
-            dropdownHeader.classList.add('dropdown-header');
-            dropdownContainer.appendChild(dropdownHeader);
-
-            const selectedSpan = document.createElement('span');
-            selectedSpan.classList.add('selected'); // Using user's class name
-            selectedSpan.textContent = "Choose your size";
-            dropdownHeader.appendChild(selectedSpan);
-
-            const lineDiv = document.createElement('div');
-            lineDiv.classList.add('line'); // Using user's class name
-            dropdownHeader.appendChild(lineDiv);
-
-            const arrowI = document.createElement('i');
-            arrowI.classList.add('arrow'); // Using user's class name
-            dropdownHeader.appendChild(arrowI);
-
-            const dropdownList = document.createElement('div');
-            dropdownList.classList.add('dropdown-list'); // Using user's class name
-            dropdownContainer.appendChild(dropdownList);
-
-            option.values.forEach(value => {
-              const listItem = document.createElement('div');
-              listItem.textContent = value;
-              listItem.dataset.value = value;
-              dropdownList.appendChild(listItem);
-            });
-
-            optionGroup.appendChild(dropdownContainer);
+            const dropdownHTML = `
+                <div class="dropdown" id="${dropdownId}">
+                    <div class="dropdown-header">
+                        <span class="selected" id="${selectedId}">Choose your size</span>
+                        <div class="line"></div>
+                        <i class="arrow" id="${arrowId}"></i>
+                    </div>
+                    <div class="dropdown-list" id="${listId}">
+                        ${option.values.map(value => `<div>${value}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+            optionGroup.insertAdjacentHTML('beforeend', dropdownHTML);
             modalVariantOptions.appendChild(optionGroup);
 
-            // Initialize this dropdown instance with the reusable function
-            initializeUserDropdown(dropdownContainer, true); // Pass true to update variants
-            
+            // Directly embedding user's JavaScript logic for this specific dropdown instance
+            const dropdownElement = optionGroup.querySelector(`#${dropdownId}`);
+            const arrowElement = optionGroup.querySelector(`#${arrowId}`);
+            const listElement = optionGroup.querySelector(`#${listId}`);
+            const selectedElement = optionGroup.querySelector(`#${selectedId}`);
+
+            if (dropdownElement && arrowElement && listElement && selectedElement) {
+                const dropdownClickHandler = (e) => {
+                    e.stopPropagation();
+                    listElement.style.display = listElement.style.display === "block" ? "none" : "block";
+                    arrowElement.classList.toggle("up");
+                };
+
+                const listItemClickHandler = (e) => {
+                    e.stopPropagation();
+                    selectedElement.innerText = e.target.innerText;
+                    listElement.style.display = "none";
+                    arrowElement.classList.remove("up");
+                    updateVariantInfo(); // Call updateVariantInfo when a size is selected
+                };
+
+                const globalClickHandler = (e) => {
+                    if (!dropdownElement.contains(e.target) && listElement.style.display === "block") {
+                        listElement.style.display = "none";
+                        arrowElement.classList.remove("up");
+                    }
+                };
+
+                dropdownElement.addEventListener("click", dropdownClickHandler);
+                listElement.querySelectorAll("div").forEach(item => {
+                    item.addEventListener("click", listItemClickHandler);
+                });
+
+                // Store listener references for cleanup when modal closes
+                dropdownElement._dropdownClickHandler = dropdownClickHandler;
+                dropdownElement._listItemClickHandler = listItemClickHandler;
+                dropdownElement._globalClickHandler = globalClickHandler;
+                document.addEventListener("click", globalClickHandler);
+            }
         } else if (option.name.toLowerCase() === 'color') {
             const fieldset = document.createElement('fieldset');
             fieldset.classList.add('color-container');
@@ -1219,7 +1206,7 @@
       modalAddToCartButton.textContent = 'ADD TO CART →';
       currentProductData = null;
 
-      // Clean up global click listeners from custom dropdowns in quick view
+      // Clean up global click listeners from dynamically created dropdowns in quick view
       modalVariantOptions.querySelectorAll('.dropdown').forEach(dropdownElement => {
         if (dropdownElement._globalClickHandler) {
           document.removeEventListener("click", dropdownElement._globalClickHandler);
