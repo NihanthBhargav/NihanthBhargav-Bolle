@@ -57,3 +57,5 @@ shopify theme push --theme-id <your-theme-id>(id: 179530137967)
 The implemented features are visible on the connected Shopify storefront:
 
 Store URL: https://bolle-nihanth-bhargav-48-teststore.myshopify.com/
+
+Password: bollenihanthbhargav123
