@@ -1,0 +1,142 @@
+<div class="header-section">
+  <div class="page-width header-content">
+    <div class="header-logo">
+      {%- if section.settings.logo_image != blank -%}
+
+        {{ section.settings.logo_image | image_url: width: 200 | image_tag: class: 'tissos-vision-logo' }}
+      {%- else -%}
+        <h2 class="site-name">{{ shop.name }}</h2>
+      {%- endif -%}
+    </div>
+    <div class="header-info-text">
+      {{ section.settings.info_text }}
+    </div>
+    <div class="header-button">
+      {%- if section.settings.button_link != blank -%}
+        <a href="{{ section.settings.button_link }}" class="choose-gift-header-btn">
+          CHOOSE GIFT <span>→</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  
+
+  .header-button {
+    display: flex;
+    justify-content: flex-end;     align-items: center;   }
+
+  .header-section {
+    background-color: #f0f0f0;     padding: 10px 50px;     border-bottom: 1px solid #e0e0e0;     width: 100%;     height: 64px;     box-sizing: border-box;   }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;     margin: 0 auto;
+    height: 100%;   }
+
+  .header-logo {
+    opacity: 1;   }
+
+    .tissos-vision-logo {
+    max-width: 151.44px;     height: 19px;     opacity: 1;       }
+
+  .header-logo .site-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;     margin: 0;
+  }
+
+  .header-info-text {
+    flex-grow: 1;         width: 260px;     height: 14px;     font-family: 'Jost', sans-serif;     font-weight: 400;     font-size: 16px;     line-height: 13.42px;     letter-spacing: 0px;     text-align: center;     color: #555;
+      }
+
+    .choose-gift-header-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;     background-color: #FFF544;     color: #000;
+    font-family: 'Helvetica', Helvetica, Arial, sans-serif;     font-size: 0.9em;     font-weight: 700;     letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 10px 20px;     border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;     z-index: 1;
+
+        width: 207px;     height: 44px;     opacity: 1;       }
+
+  .choose-gift-header-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #000;     transition: left 0.4s ease;     z-index: -1;
+  }
+
+  .choose-gift-header-btn:hover {
+    color: #fff;   }
+
+  .choose-gift-header-btn:hover::before {
+    left: 0;   }
+
+  .choose-gift-header-btn span {
+    margin-left: 8px;     font-size: 1.2em;   }
+
+    @media screen and (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      text-align: center;
+    }
+    .header-info-text {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      width: auto;       height: auto;       line-height: normal;     }
+    .choose-gift-header-btn {
+      font-size: 0.8em;       padding: 8px 15px;       width: auto;       height: auto;     }
+    .tissos-vision-logo {
+      max-width: 100px;       height: auto;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Global Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image",
+      "info": "Group-1000007777.svg"
+    },
+    {
+      "type": "text",
+      "id": "info_text",
+      "label": "Information text",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Global Header"
+    }
+  ]
+}
+{% endschema %}
