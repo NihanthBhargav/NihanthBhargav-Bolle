@@ -307,17 +307,11 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
+    {% sections 'header-group' %}
 
-    {% section 'custom-header' %}
-      <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-        
-        {% if template.name == 'index' %}
-          {% section 'section-custom-banner' %}
-          {% section 'image-grid-section' %}
-        {% endif %}
-
-        {{ content_for_layout }}
-      </main>
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
 
