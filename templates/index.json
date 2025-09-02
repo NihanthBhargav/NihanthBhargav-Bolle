@@ -11,6 +11,7 @@
   "sections": {
     "section_custom_banner_TFjhCx": {
       "type": "section-custom-banner",
+      "disabled": true,
       "name": "Custom Banner",
       "settings": {
         "top_pattern_image": "shopify://shop_images/top-frame.svg",

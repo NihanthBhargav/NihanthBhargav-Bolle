@@ -40,10 +40,49 @@
         "button_text": "CHOOSE GIFT",
         "button_link": "shopify://collections"
       }
+    },
+    "section_custom_banner_YJBBQU": {
+      "type": "section-custom-banner",
+      "name": "Custom Banner",
+      "settings": {
+        "top_pattern_image": "shopify://shop_images/top-frame.svg",
+        "down_pattern_image": "shopify://shop_images/down-frame.svg",
+        "heading": "The Gift Guide",
+        "subheading": "<p>Discover Joy: Your Ultimate Holiday Gift Destination<br/>Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season</p>",
+        "button_link": "shopify://collections/all",
+        "conclusion_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+      }
+    },
+    "image_grid_section_excAqA": {
+      "type": "image-grid-section",
+      "name": "Image Grid Section",
+      "settings": {
+        "title": "Tisso Vison in the wild",
+        "image_1": "shopify://shop_images/image-822.png",
+        "overlay_image_1": "shopify://shop_images/Group-1000008190.svg",
+        "product_1": "black-leather-bag",
+        "image_2": "shopify://shop_images/image-823.png",
+        "overlay_image_2": "shopify://shop_images/Group-1000008185.svg",
+        "product_2": "blue-silk-tuxedo",
+        "image_3": "shopify://shop_images/image-824.png",
+        "overlay_image_3": "shopify://shop_images/Group-1000008186.svg",
+        "product_3": "chequered-red-shirt",
+        "image_4": "shopify://shop_images/image-825.png",
+        "overlay_image_4": "shopify://shop_images/Group-1000008189.svg",
+        "product_4": "classic-leather-jacket",
+        "image_5": "shopify://shop_images/image-826.png",
+        "overlay_image_5": "shopify://shop_images/Group-1000008189.svg",
+        "product_5": "classic-varsity-top",
+        "image_6": "shopify://shop_images/image-827.png",
+        "overlay_image_6": "shopify://shop_images/Group-1000008187.svg",
+        "product_6": "dark-denim-top"
+      }
     }
   },
   "order": [
     "header",
-    "custom_header_NRBDei"
+    "custom_header_NRBDei",
+    "section_custom_banner_YJBBQU",
+    "image_grid_section_excAqA"
   ]
 }
